@@ -252,49 +252,121 @@
         }
 
         .table tr td:hover {
-            background-color : #2b7d2e1e;
+            background-color: #2b7d2e1e;
         }
+
+        .table tr td[id="active"] .cell>div {
+            background-color: #edffee !important;
+
+            box-shadow: inset 0px 0px 0px 2px #2b7d2e7e;
+        }
+
+        .table tr td[id="active"]:hover .cell>div {
+            background-color: #2b7d2e1e !important;
+            box-shadow: inset 0px 0px 0px 3px #5c775d7e;
+        }
+
         .table tr td[id="active"] {
             background-color: #0d5f1125 !important;
             box-shadow: inset 0px 0px 0px 2px #2b7d2e7e;
         }
+
         .table tr td[id="active"]:hover {
             background-color: #2b7d2e1e !important;
             box-shadow: inset 0px 0px 0px 3px #2b7d2e7e;
         }
-        
-        
-        .Selecting{
+
+
+        .Selecting {
             transition-duration: all 0.1s;
             transition-duration: 0.2s;
             position: absolute;
             top: 100%;
             left: 0%;
-            
+
         }
-        #t:checked ~ .contentPage .Selecting{
+
+        #t:checked~.contentPage .Selecting {
             position: absolute;
             top: 100%;
             left: -120%;
-            
+
         }
-        .NoteTable{
+
+        .NoteTable {
             transition-duration: all 0.1s;
             transition-duration: 0.2s;
-            position: absolute;    
+            position: absolute;
             top: 100%;
             left: 120%;
         }
-        #t:checked ~ .contentPage .NoteTable{
-            position: absolute;    
+
+        #t:checked~.contentPage .NoteTable {
+            position: absolute;
             top: 100%;
             left: 0%;
         }
+
+        table {
+            width: 100% !important;
+            max-width: 650px;
+        }
+
+        table td {
+            min-width: 200px;
+            max-width: 200px;
+            min-height: 100px;
+            max-height: 100px;
+            width: 100%;
+            height: 100px;
+
+            padding: 0px !important;
+        }
+
+        .iconEdit {
+            position: absolute;
+
+            width: 44px !important;
+            height: 44px;
+            z-index: 1;
+
+            top: 0px;
+            left: 0px;
+            transform: translate(0px,0px);
+        }
+
+        .iconEdit .Icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .iconEdit>div {
+            padding: 8px 10px 10px 11px;
+
+        }
+
+        /* .cell{
+            width: 120px;
+            height: 130px;
+            min-width: 120px;
+            max-width: 120px;
+            min-height: 130px;
+            max-height: 130px;
+            margin: 0px;
+            padding: 0px;
+        } */
     </style>
 </head>
 
 <body>
 
+    <!-- <div class="iconEdit">
+        <div class="   bg-white rounded-circle border border-primary shadow">
+            <img src="/imgs/editIcon.png"
+                class="Icon"
+                alt="">
+        </div>
+    </div> -->
 
     <div class="row m-0 h-100">
         <div class="col-2 p-0">
@@ -306,7 +378,7 @@
                 </div>
                 <div class=" text-center pt-4 h-100 w-100 bg-primary">
                     <div class="d-flex flex-column align-items-start">
-                        <button 
+                        <button
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
                                 <div class="col-2 p-0 position-relative">
@@ -394,7 +466,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-10 overflow-hidden ps-5 pt-2 pe-5">
+        <div class="col-10  ps-5 pt-2 pe-5">
             <!--HEADER-->
             <div class="Header  mt-2 ms-3 me-3">
                 <div class="PageTitle float-start fw-bolder">
@@ -411,258 +483,188 @@
                 </div>
             </div>
             <input name="" id="t" class="btn btn-primary" type="checkbox" value="TestTransition">
-            <!--QUICK TAPS-->
+
             <div class="contentPage   position-relative d-flex flex-column mt-2 ms-1 me-2">
                 <!-- <div class="TapTitle  fw-bold text-black-50">
                     <h6>Add New Membre</h6>
                 </div> -->
                 <hr>
-                <div id="active" class=" Selecting" >
+                <div class="Emploi">
 
-                    <div class="d-flex flex-row flex-wrap justify-content-start">
-
-                        <div class="m-2 ScrollTable ScrollTable-FixWidth position-relative rounded-4 overflow-hidden ">
+                    <div class="d-flex flex-row flex-wrap  ">
+                        <div class="pe-5">
                             <div
-                                class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
-                                <b>Group Stagiaires</b>
-                            </div>
-                            <div class="Content d-flex bg-black  bg-opacity-25 flex-column justify-content-start">
-                                <div class="item-centent text-center  p-3 bg-black bg-opacity-25">
-                                    .....
+                                class="m-2 ScrollTable ScrollTable-FixWidth position-relative rounded-4 overflow-hidden ">
+                                <div
+                                    class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
+                                    <b>Group Stagiaires</b>
                                 </div>
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input id="active"
-                                    class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
+                                <div class="Content d-flex bg-black  bg-opacity-25 flex-column justify-content-start">
+                                    <div class="item-centent text-center  p-3 bg-black bg-opacity-25">
+                                        .....
+                                    </div>
+                                    <input
+                                        class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
+                                        type="button" value="DWS101">
+                                    <input id="active"
+                                        class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
+                                        type="button" value="DWS101">
+                                    <input
+                                        class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
+                                        type="button" value="DWS101">
+                                    <input
+                                        class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
+                                        type="button" value="DWS101">
+                                    <input
+                                        class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
+                                        type="button" value="DWS101">
+                                    <input
+                                        class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
+                                        type="button" value="DWS101">
 
 
 
 
 
-                            </div>
-                        </div>
-
-
-                        <div class="m-2 ScrollTable ScrollTable-FixWidth position-relative rounded-4 overflow-hidden ">
-                            <div
-                                class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
-                                <b>Stagiaire</b>
-                            </div>
-                            <div class="Content d-flex bg-black  bg-opacity-25 flex-column justify-content-start">
-                                <div class="item-centent text-center  p-3 bg-black bg-opacity-25">
-                                    .....
                                 </div>
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input id="active"
-                                    class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-
-
-
-
-
                             </div>
                         </div>
 
-
-
-                        <div class="m-2 ScrollTable ScrollTable-2 position-relative rounded-4 overflow-hidden ">
-                            <div
-                                class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
-                                <b>Liste des information</b>
-                            </div>
-                            <div class="Content p-4 d-flex bg-black  bg-opacity-25 flex-column justify-content-start">
-
-                                <table class="w-100 mt-5">
-                                    <tr>
-                                        <td>
-                                            <div class="form-label">Nom :</div>
-                                        </td>
-                                        <td>
-                                            <div class="form-label">Raddah </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-label">Prenom :</div>
-                                        </td>
-                                        <td>
-                                            <div class="form-label">Acharf </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-label">Group :</div>
-                                        </td>
-                                        <td>
-                                            <div class="form-label">DWFS202 </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <div class="d-grid gap-2 w-100">
-                                                <button type="button" name="" id="" class="btn btn-primary">Acceder aux
-                                                    tablaux</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-
-
-
-
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-                <div id="" class="  NoteTable" >
-                    
-                    
-                        <table class="table
+                        <div class=" pt-3 pe-5">
+                            <table class="table 
                         
                         table-bordered 
                         table-primary
                         align-middle">
-                            <thead>
-                                <tr class="bg-primary">
-                                    <th scope="col" class="bg-primary text-white">La matiere</th>
-                                    <th scope="col" class="bg-primary text-white">Control 1</th>
-                                    <th scope="col" class="bg-primary text-white">Control 2</th>
-                                    <th scope="col" class="bg-primary text-white">Control 3</th>
-                                    <th scope="col" class="bg-primary text-white">Control 4</th>
-                                    <th scope="col" class="bg-primary text-white">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 1</td>
-                                    <td></td>
-                                    <td id="active"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 3</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 4</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 5</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 6</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 7</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 8</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 9</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 10</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table class="table w-50
-                        table-bordered 
-                        table-primary
-                        align-middle">
-                            <thead style="opacity: 0; border:none;">
-                                <tr style="border:none;">
-                                    <th scope="col" class="bg-primary text-white">La matiere</th>
-                                    <th scope="col" class="bg-primary text-white">Control 1</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 1</td>
-                                    <td id="active"></td>
-                                    
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 2</td>
-                                    <td></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    
-                    
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th scope="col" class="bg-primary text-white text-center"></th>
+                                        <th scope="col" class="bg-primary text-white text-center">8:30-11:00</th>
+                                        <th scope="col" class="bg-primary text-white text-center">11:00-13:30</th>
+                                        <th scope="col" class="bg-primary text-white text-center">13:30-16:00</th>
+                                        <th scope="col" class="bg-primary text-white text-center">16:00-18:30</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="">
+                                        <td scope="row" class="bg-primary text-white text-center">Lundi</td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="">
+                                        <td scope="row" class="bg-primary text-white text-center">Mardi</td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td id="active">
+                                            <!-- <div class="iconEdit">
+                                                <div class="   bg-white rounded-circle border border-primary shadow">
+                                                    <img src="/imgs/editIcon.png"
+                                                        class="Icon"
+                                                        alt="">
+                                                </div>
+                                            </div> -->
+                                            <div class="cell">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td id="active">
+                                            <div class="  cell w-100 h-100">
+
+                                                <div
+                                                    class="  w-100 h-100   p-2 bg-white border border-primary rounded-2 text-center">
+                                                    <div class="SpecLible"><b> Specialite</b></div>
+                                                    <div class="CenterLible">(BENKASEM) Salle:TDI</div>
+                                                    <div class="TimeLible small text-black-50">De 8h30 a 11h00</div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="">
+                                        <td scope="row" class="bg-primary text-white text-center">Mercredi</td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="">
+                                        <td scope="row" class="bg-primary text-white text-center">Jeudi</td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="">
+                                        <td scope="row" class="bg-primary text-white text-center">Vendredi</td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="">
+                                        <td scope="row" class="bg-primary text-white text-center">Samedi</td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+                                        <td>
+                                            <div class="cell"></div>
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
 
                 </div>
             </div>

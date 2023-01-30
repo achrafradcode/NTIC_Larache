@@ -245,23 +245,23 @@
             <div class="d-flex flex-column h-100 align-items-center justify-content-md-center">
                 <div class=" text-center p-3 w-100 bg-success">
                     <img src="/imgs/ofppt_icon.png" class="img-fluid LoginIcon" alt="">
-                    <div class="text-light">NTIC LARACHE</div>
+                    <div class="text-light">ISTA LARACHE</div>
                     <p class="text-white-50">Administrateur</p>
                 </div>
                 <div class=" text-center pt-4 h-100 w-100 bg-primary">
                     <div class="d-flex flex-column align-items-start">
-                        <button id="active"
+                        <button 
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
                                 <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_Membres_Active.png"
+                                    <img src="/imgs/Dashboard_Membres.png"
                                         class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
                                         alt="">
                                 </div>
                                 <div class="col-8 p-0 position-relative">
                                     <div
                                         class=" w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
-                                        Membres
+                                       <a href="Dashboard_Inscription.html"> Membres</a>
                                     </div>
                                 </div>
                                 <div class="col-2 p-0 position-relative">
@@ -312,17 +312,17 @@
                                 </div>
                             </div>
                         </button>
-                        <button
+                        <button id="active"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
                                 <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_AnnoncesEtArticles.png"
+                                    <img src="/imgs/Dashboard_AnnoncesEtArticles_Active.png"
                                         class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
                                         alt="">
                                 </div>
                                 <div class="col-8 p-0 position-relative">
                                     <div
-                                        class="text-white w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
+                                        class=" w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
                                         Annonces Et Articles
                                     </div>
                                 </div>
@@ -350,7 +350,7 @@
                                 src="/imgs/three_points.png"></button>
                     </div>
                     <div class="d-grid gap-2 ms-4">
-                        <button type="button" name="" id="" class="btn btn-primary fw-semibold"><b> Add</b></button>
+                        <button type="button" name="" id="" class="btn btn-primary fw-semibold"><b> Aids</b></button>
                     </div>
                 </div>
             </div>
@@ -587,16 +587,151 @@
     <script>
         const config = {
            
-            cloudServices: {
-                // All predefined builds include the Easy Image feature.
-                // Provide correct configuration values to use it.
-                tokenUrl: 'https://95183.cke-cs.com/token/dev/0hTrhEDat0kEcu9jkZQfrQ7bLx09I7eZuEpa?limit=10',
-                // For other image upload methods see the guide - https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html.
+            
+                
+            // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+            toolbar: {
+                items: [
+                    
+                    
+                    'heading', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'outdent', 'indent', '|',
+                    'undo', 'redo',
+                    '-',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                    'alignment', '|',
+                    'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                    'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                    'textPartLanguage', '|',
+                    'sourceEditing'
+                ],
+                shouldNotGroupWhenFull: true
             },
+            // Changing the language of the interface requires loading the language file using the <script> tag.
+            // language: 'es',
+            list: {
+                properties: {
+                    styles: true,
+                    startIndex: true,
+                    reversed: true
+                }
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                ]
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+            placeholder: 'ici!',
+            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+            fontFamily: {
+                options: [
+                    'default',
+                    'Arial, Helvetica, sans-serif',
+                    'Courier New, Courier, monospace',
+                    'Georgia, serif',
+                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                    'Tahoma, Geneva, sans-serif',
+                    'Times New Roman, Times, serif',
+                    'Trebuchet MS, Helvetica, sans-serif',
+                    'Verdana, Geneva, sans-serif'
+                ],
+                supportAllValues: true
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+            fontSize: {
+                options: [ 10, 12, 14, 'default', 18, 20, 22 ],
+                supportAllValues: true
+            },
+            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+            htmlSupport: {
+                allow: [
+                    {
+                        name: /.*/,
+                        attributes: true,
+                        classes: true,
+                        styles: true
+                    }
+                ]
+            },
+            // Be careful with enabling previews
+            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+            htmlEmbed: {
+                showPreviews: true
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+            link: {
+                decorators: {
+                    addTargetToExternalLinks: true,
+                    defaultProtocol: 'https://',
+                    toggleDownloadable: {
+                        mode: 'manual',
+                        label: 'Downloadable',
+                        attributes: {
+                            download: 'file'
+                        }
+                    }
+                }
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+            mention: {
+                feeds: [
+                    {
+                        marker: '@',
+                        feed: [
+                            '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
+                            '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
+                            '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
+                            '@sugar', '@sweet', '@topping', '@wafer'
+                        ],
+                        minimumCharacters: 1
+                    }
+                ]
+            },
+            // The "super-build" contains more premium features that require additional configuration, disable them below.
+            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+            removePlugins: [
+                // These two are commercial, but you can try them out without registering to a trial.
+                // 'ExportPdf',
+                // 'ExportWord',
+                'CKBox',
+                'CKFinder',
+                'EasyImage',
+                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+                // Storing images as Base64 is usually a very bad idea.
+                // Replace it on production website with other solutions:
+                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+                // 'Base64UploadAdapter',
+                'RealTimeCollaborativeComments',
+                'RealTimeCollaborativeTrackChanges',
+                'RealTimeCollaborativeRevisionHistory',
+                'PresenceList',
+                'Comments',
+                'TrackChanges',
+                'TrackChangesData',
+                'RevisionHistory',
+                'Pagination',
+                'WProofreader',
+                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+                // from a local file system (file://) - load this site via HTTP server if you enable MathType
+                'MathType'
+            ]
+        
         };
         
         InlineEditor
-            .create( document.querySelector( '#mytextarea' ) )
+            .create( document.querySelector( '#mytextarea' ) ,config)
             .then( editor => {
                 window.editor = editor;
             } )
