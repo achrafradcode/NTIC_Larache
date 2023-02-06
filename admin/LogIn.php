@@ -1,3 +1,27 @@
+<?php
+require_once("../inc/init.inc.php");
+
+if (isset($_POST["username"]) && isset($_POST["password"])) {
+    try {
+        $stmt = executeRequete("SELECT * FROM membre WHERE nom_personnel = :username AND password = :password");
+        $stmt->bindParam(":username", $_POST["username"]);
+        $stmt->bindParam(":password", $_POST["password"]);
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 1) {
+            session_start();
+            $_SESSION["logged_in"] = true;
+            $_SESSION["username"] = $_POST["username"];
+            $_SESSION["currentPath"] = "../admin/Dashboard.php";
+            header("Location: ../admin/Dashboard.php");
+        } else {
+            $error = "Invalid username or password.";
+        }
+    } catch (PDOException $e) {
+        die("Error querying database: " . $e->getMessage());
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -126,7 +150,7 @@
                                     <div class="container-sm mb-5">
                                         <a href="#">Mot de passe oublié ?</a>
                                     </div>
-                                    <a href="Dashboard.html"><input name="S_LOGIN" id="S_LOGIN" class="btn btn-primary w-100" type="button" value="CONNEXION"></a>
+                                    <a href="Dashboard.html"><input name="S_LOGIN" id="S_LOGIN" class="btn btn-primary w-100" type="submit" value="CONNEXION"></a>
                                 </form>
                             </div>
                         </div>

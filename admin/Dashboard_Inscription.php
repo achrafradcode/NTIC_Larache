@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -220,103 +220,10 @@
 
 
     <div class="row m-0 h-100">
-        <div class="col-2 p-0">
-            <div class="d-flex flex-column h-100 align-items-center justify-content-md-center">
-                <div class=" text-center p-3 w-100 bg-success">
-                    <img src="/imgs/ofppt_icon.png" class="img-fluid LoginIcon" alt="">
-                    <div class="text-light">ISTA LARACHE</div>
-                    <p class="text-white-50">Administrateur</p>
-                </div>
-                <div class=" text-center pt-4 h-100 w-100 bg-primary">
-                    <div class="d-flex flex-column align-items-start">
-                        <button id="active"
-                            class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
-                            <div class="row">
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_Membres_Active.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
-                                        alt="">
-                                </div>
-                                <div class="col-8 p-0 position-relative">
-                                    <div
-                                        class=" w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
-                                        Membres
-                                    </div>
-                                </div>
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_ActiveMenuItem.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon"
-                                        alt="">
-                                </div>
-                            </div>
-                        </button>
-                        <button 
-                            class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
-                            <div class="row">
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_EmploiDuTemp.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
-                                        alt="">
-                                </div>
-                                <div class="col-8 p-0 position-relative">
-                                    <div class="w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
-                                        Emploi
-                                        du temp</div>
-                                </div>
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_ActiveMenuItem.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon"
-                                        alt="">
-                                </div>
-                            </div>
-                        </button>
-                        <button
-                            class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
-                            <div class="row">
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_TablauDesNotes.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
-                                        alt="">
-                                </div>
-                                <div class="col-8 p-0 position-relative">
-                                    <div
-                                        class="text-white w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
-                                        Tablau des Notes
-                                    </div>
-                                </div>
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_ActiveMenuItem.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon"
-                                        alt="">
-                                </div>
-                            </div>
-                        </button>
-                        <button
-                            class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
-                            <div class="row">
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_AnnoncesEtArticles.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
-                                        alt="">
-                                </div>
-                                <div class="col-8 p-0 position-relative">
-                                    <div
-                                        class="text-white w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
-                                        Annonces Et Articles
-                                    </div>
-                                </div>
-                                <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_ActiveMenuItem.png"
-                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon"
-                                        alt="">
-                                </div>
-                            </div>
-                        </button>
+        
+        <!--Side Menu-->
+        <?php require_once("../admin/inc/sidemenu.inc.php")?>
 
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col-10 ps-5 pt-2 pe-5">
             <!--HEADER-->
             <div class="Header  mt-2 ms-3 me-3">
