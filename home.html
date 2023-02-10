@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Ista Larache</title>
+   <link rel="icon" href="pictuer/l.png" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+   <!-- swiper css link  -->
+   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+   <!-- header section starts  -->
+
+   <header class="header">
+
+      <a href="#" class="logo"> <img src="pictuer/l.png" alt="ss"> </a>
+
+      <nav class="navbar">
+         <div id="close-navbar" class="fas fa-times"></div>
+         <a href="home.html" class="text-decoration-none text-black-50">Accueil</a>
+         <a href="about.html" class="text-decoration-none">Propos </a>
+         <a href="courses.html" class="text-decoration-none">Filières</a>
+         <a href="contact.html" class="text-decoration-none">contact</a>
+         <div class="btn-group">
+            <button type="button" style="margin: 0px;padding: 5px 10px;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               Emploi de temps
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+          </div>
+      </nav>
+
+      <div class="icons">
+         <div id="account-btn" class="fas fa-user"></div>
+         <div id="menu-btn" class="fas fa-bars"></div>
+      </div>
+
+      <section class="news">
+         <div class="container">
+            <div class="news-item">
+               Le tronc commun Gestion des Entreprises
+               donne au stagiaire toutes les informations
+               et compétences nécessaires pour découvrir
+               le monde des metiers
+               <a href="#"><img src="pictuer/right-arrow.png" width="40" height="40"></a>
+            </div>
+            
+         </div>
+         <div class="news-item-icon">
+            <img src="pictuer/l.png" alt="ss">
+
+         </div>
+      </section>
+      <script>
+         $(".news").find(".news-item").hide();
+         var itemsNews = $(".news").find(".news-item").toArray();
+         console.log(itemsNews);
+         var index = 0;
+         function repeart() {
+            var i = index % itemsNews.length;
+            $(".news-item-icon").animate({
+               left: ["50%", "linear"]
+            }, 1000, function () {
+               $(".news-item-icon").animate({ transform: 1 },
+                  {
+                     duration: 500, easing: 'linear',
+                     step: function (now, fx) {
+                        $(this).css('transform', 'translate(-50%,-50%) scale(' + (1+now) + ')')
+                     }
+                     , complete: function () {
+                        $(".news-item-icon").animate({ transform: 0 },
+                           {
+                              duration: 500, easing: 'linear',
+                              step: function (now, fx) {
+                                 $(this).css('transform', 'translate(-50%,-50%) scale(' + (1+now) + ')')
+                              }
+                              , complete: function () {
+
+                                 $(".news-item-icon").animate({
+                                    left: ["120%", "linear"]
+                                 }, 1000, function () {
+
+                                    $(itemsNews[i]).fadeIn(1000, function () {
+                                       $(itemsNews[i]).delay(10000).fadeOut(1000, function () {
+                                          index++;
+                                          repeart();
+                                       });
+                                    });
+                                 });
+
+                              }
+                           })
+                     }
+                  })
+
+
+            });
+         }
+
+         repeart();
+
+      </script>
+   </header>
+
+   <!-- account form section starts  -->
+
+   <div class="account-form">
+
+      <div id="close-form" class="fas fa-times"></div>
+
+      <div class="buttons">
+         <span class="btn active login-btn">connexion</span>
+         <span class="btn register-btn">enregistrer</span>
+      </div>
+
+      <form class="login-form active" action="">
+         <h3>Connecte-toi maintenant</h3>
+         <input type="email" placeholder="enter your email" class="box">
+         <input type="password" placeholder="enter your password" class="box">
+         <div class="flex">
+            <input type="checkbox" name="" id="remember-me">
+            <label for="remember-me">souviens-toi de moi</label>
+            <a href="#">Mot de passe oublié?</a>
+         </div>
+         <input type="submit" value="login now" class="btn">
+      </form>
+
+      <form class="register-form" action="">
+         <h3>S'inscrire maintenant</h3>
+         <input type="email" placeholder="enter your email" class="box">
+         <input type="password" placeholder="enter your password" class="box">
+         <input type="password" placeholder="confirm your password" class="box">
+         <input type="submit" value="register now" class="btn">
+      </form>
+
+   </div>
+
+   <!-- account form section ends -->
+
+   <!-- header section ends -->
+
+   <!-- home section starts  -->
+
+   <section class="home">
+
+      <div class="swiper home-slider">
+
+         <div class="swiper-wrapper">
+
+            <section class="swiper-slide slide"
+               style="background: url(pictuer/bg1.JPG) no-repeat,linear-gradient(90deg, rgb(2 0 36 / 45%) 0%, rgb(0 212 255 / 0%) 100%);background-blend-mode: multiply;">
+               <div class="content">
+                  <h3>Ista Larache</h3>
+                  <!-- <p>Institut Spécialisé de Technologie Appliquée</p> -->
+                  <a href="#" class="btn">Commencer</a>
+               </div>
+               <!-- <div class="option-group">
+                  
+
+                     <label for="cars">Choose un group:</label>
+                     <select id="group">
+                           <option value="volvo">TDI 101</option>
+                           <option value="saab">TDI 102</option>
+                           <option value="opel">DWFS 201</option>
+                           <option value="audi">DWFS 202</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                           <option value="audi">TDI 101</option>
+                        </select>
+            </div> -->
+            </section>
+
+            <section class="swiper-slide slide"
+               style="background: url(pictuer/bg2.JPG) no-repeat,linear-gradient(90deg, rgb(2 0 36 / 45%) 0%, rgb(0 212 255 / 0%) 100%);background-blend-mode: multiply;">
+               <div class="content">
+                  <h3>Ista Larache</h3>
+                  <!-- <p>Institut Spécialisé de Technologie Appliquée</p> -->
+                  <a href="#" class="btn">Commencer</a>
+               </div>
+            </section>
+
+            <section class="swiper-slide slide"
+               style="background: url(pictuer/bg.jpeg) no-repeat,linear-gradient(90deg, rgb(2 0 36 / 45%) 0%, rgb(0 212 255 / 0%) 100%);background-blend-mode: multiply;">
+               <div class="content">
+                  <h3>Ista Larache</h3>
+                  <!-- <p>Institut Spécialisé de Technologie Appliquée</p> -->
+                  <a href="#" class="btn">Commencer</a>
+               </div>
+            </section>
+
+         </div>
+
+         <div class="swiper-pagination"></div>
+
+      </div>
+
+   </section>
+
+   <!-- home section ends -->
+
+   <!-- subjects section starts  -->
+
+   <section class="subjects">
+
+      <h1 class="heading">Filières techniques</h1>
+
+      <div class="box-container">
+
+         <div class="box">
+            <img src="pictuer/EL.png" alt="">
+            <h3>électromécanicien</h3>
+            <p>12 modules</p>
+         </div>
+
+         <div class="box">
+            <img src="pictuer/AL.png" alt="">
+            <h3>aluminium</h3>
+            <p>12 modules</p>
+         </div>
+
+         <div class="box">
+            <img src="pictuer/KH.png" alt="">
+            <h3>Couture et broderie</h3>
+            <p>12 modules</p>
+         </div>
+
+         <div class="box">
+            <img class="hoverC inv" src="pictuer/MK.png" alt="">
+            <h3>mecanique</h3>
+            <p>12 modules</p>
+         </div>
+
+         <div class="box">
+            <img src="pictuer/M1.png" alt="" style="
+         background-color: white;
+         border: solid 1px #0066cc;
+     ">
+            <h3>comptabilite</h3>
+            <p>12 modules</p>
+         </div>
+
+
+
+      </div>
+
+   </section>
+
+   <!-- subjects section ends -->
+
+   <!-- home courses slider section starts  -->
+
+   <section class="home-courses">
+
+      <h1 class="heading"> Liste des Formations professionnelles </h1>
+
+      <div class="swiper home-courses-slider">
+
+         <div class="swiper-wrapper">
+
+            <div class="swiper-slide slide">
+               <div class="image">
+                  <img src="pictuer/Mar1.png" alt="">
+                  <h3>E- commerce</h3>
+               </div>
+               <div class="content">
+                  <h3>E- commerce</h3>
+                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, ratione?</p>
+                  <a href="#" class="btn">read more</a>
+               </div>
+            </div>
+
+            <div class="swiper-slide slide">
+               <div class="image">
+                  <img src="pictuer/D2.png" alt="">
+                  <h3>development digital</h3>
+               </div>
+               <div class="content">
+                  <h3>development digital</h3>
+                  <p>Le tronc commun en Développement Digital est une étape
+                     importante pour acquérir les bases necessaires
+                     de l'étude, la conception, la constructio...</p>
+                  <a href="#" class="btn">read more</a>
+               </div>
+            </div>
+
+            <div class="swiper-slide slide">
+               <div class="image">
+                  <img src="pictuer/Gestion.png" alt="">
+                  <h3>Gestion des Entreprises</h3>
+               </div>
+               <div class="content">
+                  <h3>Gestion des Entreprises</h3>
+                  <p>Le tronc commun Gestion des Entreprises
+                     donne au stagiaire toutes les informations
+                     et compétences nécessaires pour découvrir
+                     le monde des metiers</p>
+                  <a href="#" class="btn">read more</a>
+               </div>
+            </div>
+         </div>
+
+      </div>
+
+   </section>
+
+   <!-- home courses slider section ends -->
+
+
+
+
+
+
+
+
+
+   <!-- footer section starts  -->
+
+   <section class="footer">
+
+      <div class="box-container">
+
+         <div class="box">
+            <a href="#" class="logo"> <img src="pictuer/l.png" alt="ss"> </a>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, voluptatem.</p>
+            <div class="share">
+               <a href="#" class="fab fa-facebook-f"></a>
+               <a href="#" class="fab fa-twitter"></a>
+               <a href="#" class="fab fa-instagram"></a>
+               <a href="#" class="fab fa-linkedin"></a>
+            </div>
+         </div>
+
+         <div class="box">
+            <h3>Liens rapides</h3>
+            <a href="home.html" class="link">Accueil</a>
+            <a href="about.html" class="link">props</a>
+            <a href="courses.html" class="link">Institut</a>
+            <a href="#" class="link">Filières</a>
+            <a href="contact.html" class="link">contact</a>
+         </div>
+
+         <div class="box">
+            <h3>Liens utiles</h3>
+            <a href="#" class="link">centre d'aide</a>
+            <a href="#" class="link">poser des questions</a>
+            <a href="#" class="link">envoyer des commentaires</a>
+            <a href="#" class="link">politique privée</a>
+            <a href="#" class="link">conditions d'utilisation</a>
+         </div>
+
+         <div class="box">
+            <h3>les résulte</h3>
+            <p>Entrez le code de la carte nationale</p>
+            <form action="">
+               <input type="text" name="" placeholder="enter cin" id="" class="cin">
+               <input type="submit" value="Valider" class="btn">
+            </form>
+         </div>
+
+      </div>
+
+
+
+   </section>
+
+   <!-- footer section ends -->
+
+
+
+
+
+
+
+   <!-- swiper js link  -->
+   <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+   <!-- custom js file link  -->
+   <script src="js/script.js"></script>
+   <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+  integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+  integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+</script>
+
+</body>
+
+</html>

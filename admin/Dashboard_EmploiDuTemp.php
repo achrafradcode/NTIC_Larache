@@ -392,7 +392,7 @@
             <!--HEADER-->
             <div class="Header  mt-2 ms-3 me-3">
                 <div class="PageTitle float-start fw-bolder">
-                    <h2><b>Tableau des Notes</b></h2>
+                    <h2><b>Emploi De Temps</b></h2>
                 </div>
                 <div class="MenuTaps d-flex flex-row float-end">
                     <div class="d-grid gap-2">
