@@ -172,6 +172,7 @@
         <!--Side Menu-->
         
         <?php require_once("../admin/inc/sidemenu.inc.php")?>
+        
 
         <div class="col-10 ps-5 pt-2 pe-5">
             <!--HEADER-->

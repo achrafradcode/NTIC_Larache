@@ -18,36 +18,76 @@ if (isset($_POST["function_name"])) {
         $_SESSION["currentPath"] = "../admin/Dashboard_AnnoncesEtArticles.php";
         echo "{\"menu\":\"AnnoncesEtArticles_Menu\",\"url\":\"../admin/Dashboard_AnnoncesEtArticles.php\"}";
     }
+    if ($_POST["function_name"] == "executeRequete") {
+        $stmt = executeRequete($_POST["requet"]);
+        $stmt->execute();
+        $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode($array);
+    }
 }
-    function parsePathToTag($path){
+    function parsePathToTag($url){
+        $path = substr($url,strrpos($url,"/"));
         switch ($path) {
-            case "../admin/Dashboard_Inscription.php":
+            case "/Dashboard_Inscription.php":
                 # code...
                 return "Membres_Menu";
                 break;
-            case "../admin/Dashboard_EmploiDuTemp.php":
+            case "/Dashboard_EmploiDuTemp.php":
                 # code...
                 return "EmploiDuTemp_Menu";
                 break;
-            case "../admin/Dashboard_TablauDesNote.php":
+            case "/Dashboard_TablauDesNote.php":
                 # code...
                 return "TablauDesNotes_Menu";
                 break;
-            case "../admin/Dashboard_AnnoncesEtArticles.php":
+            case "/Dashboard_AnnoncesEtArticles.php":
                 # code...
                 return "AnnoncesEtArticles_Menu";
                 break;
             
             default:
                 # code...
-                return "Membres_Menu";
+                return "";
                 break;
         }
+    }
+    function randomPassword() {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 8; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass); //turn the array into a string
+    }
+    function getCurrentURL(){
+        // Program to display complete URL
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') 
+        $link = "https";
+        else $link = "http";
+
+        // Here append the common URL
+        // characters.
+        $link .= "://";
+
+        // Append the host(domain name,
+        // ip) to the URL.
+        $link .= $_SERVER['HTTP_HOST'];
+
+        // Append the requested resource
+        // location to the URL
+        $link .= $_SERVER['PHP_SELF'];
+
+        // Display the link
+        return $link;
     }
 
     function executeRequete($req)
     {
-        global $pdo;
+        require_once("init.inc.php");
+        
         
         try {
             $stmt = $pdo->prepare($req);

@@ -1,6 +1,6 @@
 <?php
-require_once("../inc/init.inc.php");
-
+require_once("../inc/functions.inc.php");
+$error = "";
 if (isset($_POST["username"]) && isset($_POST["password"])) {
     try {
         $stmt = executeRequete("SELECT * FROM membre WHERE nom_personnel = :username AND password = :password");
@@ -30,7 +30,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="../inc/js/functions.inc.js"></script>
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -96,10 +97,116 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             
 
         }
+        #toasts {
+        min-height: 0;
+        position: fixed;
+        right: 20px;
+        top: 20px;
+        width: 400px;
+        }
+
+        #toasts .toast {
+        background: #d6d8d9;
+        border-radius: 3px;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, .1);
+        color: rgba(255,255,255, 1);
+        cursor: default;
+        margin-bottom: 20px;
+        opacity: 0;
+        position: relative;
+        padding: 20px;
+        transform: translateY(15%);
+        transition: opacity .5s ease-in-out, transform .5s ease-in-out;
+        width: 100%;
+        will-change: opacity, transform;
+        z-index: 1100;
+        } 
+
+        #toasts .toast.success {
+        background: #26d68a;
+        }
+
+        #toasts .toast.warning {
+        background: #ffa533;
+        }
+
+        #toasts .toast.info {
+        background: #2cbcff;
+        }
+
+        #toasts .toast.error {
+        background: #f44336;
+        }
+
+        #toasts .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        #toasts .toast.hide {
+        height: 0;
+        margin: 0;
+        opacity: 0;
+        overflow: hidden;
+        padding: 0 30px;
+        transition: all .5s ease-in-out;
+        }
+
+        #toasts .toast .close {
+        cursor: pointer;
+        font-size: 24px;
+        height: 16px;
+        margin-top: -10px;
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        width: 16px;
+        }
+        
+.custom-toast {
+  display: flex;
+  align-items: center;
+}
+
+.custom-toast img {
+  background-size: 50px 50px;
+  height: 50px;
+  width: 50px;
+}
+
+.custom-toast p {
+  font-size: 14px;
+  padding: 10px;
+}
     </style>
 </head>
 
 <body>
+        <div class="position-absolute" id="toasts">
+                        <!-- <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                Hello, world! This is a toast message.
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>-->
+                    </div> 
+    <script>
+        var msg = "<?php echo $error?>";
+        console.log(msg);
+        console.log(msg=="");
+        if(msg != ""){
+
+            showToast({
+                type:"error",
+                autoDismiss: true,
+                message:msg
+            });
+        }
+        
+    </script>
   
   <main>
     <div class="background">
