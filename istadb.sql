@@ -12,6 +12,17 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
+CREATE TABLE voitures (
+          idVoiture INT PRIMARY KEY,
+          nomVoiture VARCHAR(50),
+          idPerson INT ,
+          
+)
+
+
+
+
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -185,6 +196,13 @@ INSERT INTO `membre` (`IdMembres`, `password`, `type_d'adhésion`, `nom_personne
 --
 -- Structure de la table `message`
 --
+
+deptno INT ,
+CONSTRAINT fk_deptno FOREIGN KEY (deptno) 
+                      REFERENCES departement(deptno)
+
+
+
 
 CREATE TABLE `message` (
   `IdMembres` int(11) NOT NULL,
