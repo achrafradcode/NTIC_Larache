@@ -559,6 +559,42 @@
 
                         </div>
                     </div>
+                    <!-- Modal GroupDeStagiairesModal -->
+                    <div class="modal fade" id="GroupDeStagiairesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Nouvel Group</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                    <label for="" class="form-label">Groups De Stagiaires</label>
+                                    <select class="form-select form-select-lg" name="GroupDeStagiaires" id="">
+                                            <option value="0">DWFS-101</option>
+                                            <option value="1">DWFS-102</option>
+                                            <option value="2">DWFS-201</option>
+                                            <option value="3">DWFS-202</option>
+                                    </select>
+                                    <label for="" class="form-label">E-mail</label>
+                                    <input type="text"
+                                    class="form-control" name="text" id="GInput" aria-describedby="helpId" placeholder="">
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" id="GInsert" class="btn btn-info">Ajouter</button>
+                                        <button type="button" id="GDelete" class="btn btn-danger">Supprimer</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" id="GSave" class="btn btn-primary">Save changes</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-6">
                             <div class="w-100">
@@ -567,12 +603,54 @@
                                     <label for="" class="form-label">Group de stagiaires</label>
                                     <select class="form-select form-select-lg" name="GroupDeStagiaires" id="">
                                         <option selected>Select Group</option>
+                                        <option value="-1">Crée une Nouvel Group</option>
                                         <option value="0">DWFS-101</option>
                                         <option value="1">DWFS-102</option>
                                         <option value="2">DWFS-201</option>
                                         <option value="3">DWFS-202</option>
                                     </select>
                                 </div>
+                                <script>
+                                    var $md = $("#GroupDeStagiairesModal");
+                                    var $select = $md.find("select");
+                                    var $S = $(".TapContent").find('select[name="GroupDeStagiaires"]');
+                                    $S.find("option").on("click",function(){
+                                        if($(this).val()=="-1"){
+                                            $md.modal("show");
+                                            $select.empty();
+                                            $S.children().each(function (index,elem) { 
+                                                if(index < 2){
+                                                    return;
+                                                }
+                                                var $newS = $("<option>");
+                                                if(index==2){
+                                                    $newS.prop("selected",true);
+                                                }
+                                                $newS.text($(elem).text());
+                                                $newS.val($(elem).val());
+                                                $select.append($newS);
+                                            });
+                                            window.selector = $S[0];
+                                            
+                                        }
+                                    });
+                                    var $input = $md.find("#GInput");
+                                    $md.find("#GInsert").on("click",function(){
+                                        var $newS = $("<option>");
+                                        $newS.val($input.val());
+                                        $newS.text($input.val());
+                                        $select.append($newS);
+                                        $S.children().prop("selected",false);
+                                        $newS.prop("selected",true);
+                                    });
+                                    $md.find("#GDelete").on("click",function(){
+                                        var valSelect = $select.val();
+                                        $select.find('option[value="'+valSelect+'"]').remove();
+                                    });
+                                    $md.find("#GSave").on("click",function(){
+                                        
+                                    });
+                                </script>
                                 <div class="mb-3 " style="display: none;">
                                     <label for="" class="form-label">Secteur professionnel</label>
                                     <select class="form-select form-select-lg" name="SecteurProfessionnel" id="">
