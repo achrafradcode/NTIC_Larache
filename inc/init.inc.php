@@ -1,6 +1,7 @@
 <?php
     //--------- BDD
     try {
+        global $pdo;
         $pdo = new PDO("mysql:host=localhost;dbname=istadb", "root", "");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
@@ -9,15 +10,15 @@
     // $mysqli->set_charset("utf8");
     
     //--------- SESSION
-    session_start();
-    
-    //--------- CHEMIN
-    define("ADMIN","/admin/");
-    
-    //--------- VARIABLES
     
     
-    //--------- AUTRES INCLUSIONS
-    require_once("functions.inc.php");
+    // //--------- CHEMIN
+    // define("ADMIN","/admin/");
+    
+    // //--------- VARIABLES
+    
+    
+    // //--------- AUTRES INCLUSIONS
+    // require_once("functions.inc.php");
 
 ?>

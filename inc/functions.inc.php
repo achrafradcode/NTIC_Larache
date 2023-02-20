@@ -2,6 +2,10 @@
 error_reporting(E_ERROR | E_PARSE);
 if (isset($_POST["function_name"])) {
     
+    if ($_POST["function_name"] == "Tableau_de_bord") {
+        $_SESSION["currentPath"] = "../admin/Dashboard.php";
+        echo "{\"menu\":\"Tableau_de_bord\",\"url\":\"../admin/Dashboard.php\"}";
+    }
     if ($_POST["function_name"] == "Membres_Menu") {
         $_SESSION["currentPath"] = "../admin/Dashboard_Inscription.php";
         echo "{\"menu\":\"Membres_Menu\",\"url\":\"../admin/Dashboard_Inscription.php\"}";
@@ -18,12 +22,43 @@ if (isset($_POST["function_name"])) {
         $_SESSION["currentPath"] = "../admin/Dashboard_AnnoncesEtArticles.php";
         echo "{\"menu\":\"AnnoncesEtArticles_Menu\",\"url\":\"../admin/Dashboard_AnnoncesEtArticles.php\"}";
     }
+    if ($_POST["function_name"] == "Annonces_Menu") {
+        $_SESSION["currentPath"] = "../admin/Dashboard_Annonces.php";
+        echo "{\"menu\":\"Annonces_Menu\",\"url\":\"../admin/Dashboard_Annonces.php\"}";
+    }
+    if ($_POST["function_name"] == "disconnect") {
+        session_start();
+        $_SESSION["logged_in"] = false;
+    }
     if ($_POST["function_name"] == "executeRequete") {
         $stmt = executeRequete($_POST["requet"]);
         $stmt->execute();
         $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         echo json_encode($array);
+    }
+    if ($_POST["function_name"] == "executeRequeteResponse") {
+        $sql = $_POST["requet"];
+        $msgSuccess = $_POST["msgSuccess"];
+        $msgFaild = $_POST["msgFaild"];
+        try {
+            $stmt = executeRequete($sql);
+            
+            
+            // $pdo->beginTransaction();
+            
+            // $pdo->commit();
+            $stmt->execute();
+            
+            $result["success"] = ["msg"=>"successfully","msgDet"=>$msgSuccess];
+            echo "success";
+        }catch (Exception $e){
+            // $pdo->rollback();
+            echo "error";
+            $result["error"] = ["msg"=>"error ??","msgDet"=>$msgFaild];
+            
+            die("Error querying database: " . $e->getMessage());
+        }
     }
 }
     function parsePathToTag($url){
@@ -44,6 +79,10 @@ if (isset($_POST["function_name"])) {
             case "/Dashboard_AnnoncesEtArticles.php":
                 # code...
                 return "AnnoncesEtArticles_Menu";
+                break;
+            case "/Dashboard.php":
+                # code...
+                return "Tableau_de_bord";
                 break;
             
             default:
@@ -86,7 +125,7 @@ if (isset($_POST["function_name"])) {
 
     function executeRequete($req)
     {
-        require_once("init.inc.php");
+        require("init.inc.php");
         
         
         try {

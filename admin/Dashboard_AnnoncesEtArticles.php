@@ -1,8 +1,14 @@
+<?php
+    session_start();
+    if(!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false){
+        header("Location: ../admin/LogIn.php");
+    }
+?>
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>Login</title>
+    <title>ISTA Larache - Articles</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -249,12 +255,32 @@
             <!--HEADER-->
             <div class="Header  mt-2 ms-3 me-3">
                 <div class="PageTitle float-start fw-bolder">
-                    <h2><b>Add Annonces Et Articles</b></h2>
+                    <h2><b>Ajouter Articles</b></h2>
                 </div>
                 <div class="MenuTaps d-flex flex-row float-end">
                     <div class="d-grid gap-2">
-                        <button type="button" name="" id="" class="btn btn-info "><img
-                                src="/imgs/three_points.png"></button>
+                        <!-- <button type="button" name="" id="" class="btn btn-info "></button> -->
+                        <!-- Example single danger button -->
+                        <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/imgs/three_points.png">
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="p-1"><a class="dropdown-item btn btn-danger  rounded" id="Btn_Deconnect" href="#">Déconnecter</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Separated link</a></li> -->
+                        </ul>
+                    </div>
+                    <script>
+                        $("#Btn_Deconnect").on("click",()=>{
+                            $.post("../inc/functions.inc.php", { function_name: "disconnect"}, function(d) {
+                                location.reload();
+                            });
+                        });
+                    </script>
+
                     </div>
                     <div class="d-grid gap-2 ms-4">
                         <button type="button" name="" id="" class="btn btn-primary fw-semibold"><b> Aids</b></button>
@@ -290,7 +316,7 @@
                             </td>
                             <td colspan="2">
                                 <input type="text"
-                                class="form-control w-100" name="" id="" aria-describedby="helpId" placeholder="">
+                                class="form-control w-100" disbaled value="<?php echo $_SESSION["username"];?>" name="" id="" aria-describedby="helpId" placeholder="">
                             </td>
                         </tr>
                         <tr>
@@ -316,7 +342,7 @@
                           <input type="reset" name="" id="" class="ps-4 pe-4 btn btn-primary" value="Reset"/>
                         </div>
                         <div class="d-grid gap-2 pe-3">
-                            <input type="submit" name="" id="" class="ps-4 pe-4 btn btn-primary" value="Submit"/>
+                            <input type="submit" name="" id="" class="ps-4 pe-4 btn btn-primary" value="Ajouter"/>
                         </div>
                     </div>
                 </div>
@@ -324,12 +350,10 @@
             <div class="contentPage  mt-5 ms-3 me-3">
                 <!--Logs-->
                 <div class="TapPanel  ">
-                    <div class="d-flex flex-column">
-                        <div class=" TapTitle float-start fw-bold text-black-50">
-                        <h4>Annonces Et Articles</h4>
-                        </div>
-                        <hr> 
+                    <div class="TapTitle float-start fw-bold text-black-50">
+                      <h4>Annonces</h4>
                     </div>
+                    <hr> 
                     <div class="table-responsive-md">
                         <table class="table table-striped
                       table-hover	
@@ -342,27 +366,149 @@
                                     <th>Id</th>
                                     <th>Titre de article</th>
                                     <th>Date de publication</th>
-                                    <th>Nom de l'editeur</th>
+                                    <th>Id de l'editeur</th>
+                                    
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
+                                <?php
+                                    
+                                    $stmt = executeRequete("SELECT * FROM `articles_d'actualité`;");
+                                    $stmt->execute();
+                                    $index = 0;
+
+                                    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+                                        $index = $index + 1;
+                                ?>
                                 <tr class="table-light">
-                                    <td scope="row">1</td>
-                                    <td>Boutbgha</td>
-                                    <td>Mohamed</td>
-                                    <td>Mohamed@gmail.com</td>
+                                    <td scope="row"><?php echo $index;?></td>
+                                    <td><?php echo $row["titre_Annonces"];?></td>
+                                    <td><?php echo $row['date_de_publication'];?></td>
+                                    <td><?php echo $row["Membre_IdMembres"];?></td>
                                     <td>
-                                        <div class="d-flex flex-row justify-content-end ActionMembresContainer">
-                                            <div class="d-grid gap-2 m-1 ">
-                                              <button type="button" name="" id="" class="btn p-1 btn-primary "><img src="/imgs/Remove_TrashIcon.png" class="img-fluid " alt=""></button>
+                                            <div class="d-flex flex-row justify-content-end ActionMembresContainer">
+                                                <div class="d-grid gap-2 m-1 ">
+                                                <button type="button" name="" id="SeePass" class="btn p-1 btn-primary ">C</button>
+                                                </div>
+                                                <div class="d-grid gap-2 m-1 ">
+                                                    <button type="button" name="" id="Remove" class="btn p-1 btn-primary "><img src="/imgs/Remove_TrashIcon.png" class="img-fluid " alt=""></button>
+                                                </div>
+                                                <div class="d-grid gap-2 m-1">
+                                                    <button type="button" name="" id="Modifier" class="btn p-1 btn-primary "><img src="/imgs/Edit_Icon.png" class="img-fluid  " alt=""></button>
+                                                </div>
                                             </div>
-                                            <div class="d-grid gap-2 m-1">
-                                              <button type="button" name="" id="" class="btn p-1 btn-primary "><img src="/imgs/Edit_Icon.png" class="img-fluid  " alt=""></button>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
+                                <?php } ?>
+                                <script type="text/javascript">
+                                    
+                                                
+                                    $(".TapPanel").find('button[id="Modifier"]').on("click",fetchUser);
+                                    $(".TapPanel").find('button[id="Remove"]').on("click",deleteUser);
+                                    $(".TapPanel").find('button[id="SeePass"]').on("click",seePassUser);
+                                    $(".DeleteConfirmation").find('button[id="DeleteConfirmationOk"]').on("click",confirmDelete);
+
+                                    function deleteUser(){
+                                        window.selected = {
+                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
+                                            "titre_de_l'actualité":$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
+                                            'date_de_publication':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
+                                            'Membre_IdMembres':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
+                                        };
+                                        
+                                        window.container = $(this).parent().parent().parent().parent()[0];
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+window.selected.nom+"';" }, function(d) {
+                                            // Handle the response here
+                                            console.log(data);
+                                            var data = JSON.parse(d);
+                                            window.selected = data;
+                                            console.log(window.selected);
+                                            parseSelectionData();
+                                            $(".DeleteConfirmation").modal('show');
+                                            $(".DeleteConfirmation").find(".UserName").text(window.selected[0].nom_personnel);
+                                            
+                                        });
+                                    }
+                                    function seePassUser(){
+                                        window.selected = {
+                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
+                                            'nom':$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
+                                            'prenom':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
+                                            'sexe':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text(),
+                                            'email':$(this).parent().parent().parent().parent().find("td:nth-child(5)").text(),
+                                            'type_dadhésion':$(this).parent().parent().parent().parent().find("td:nth-child(6)").text()
+                                        };
+                                        
+                                        window.container = $(this).parent().parent().parent().parent()[0];
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+window.selected.nom+"';" }, function(d) {
+                                            // Handle the response here
+                                            console.log(data);
+                                            var data = JSON.parse(d);
+                                            window.selected = data;
+                                            console.log(window.selected);
+                                            parseSelectionData();
+                                            // $(".yesOrNoConfirmation").modal('show');
+                                            // $(".DeleteConfirmation").find(".UserName").text(window.selected[0].nom_personnel);
+                                            confirmChanges(null,"Mot De Pass","Voila le Mot De Pass de Cette Compte est :<strong> ["+window.selected[0].password+"]</strong><br>Voulez-Vous l'envoyer dans un e-mail?",()=>{
+                                                showToast({
+                                                    type:"success",
+                                                    autoDismiss: true,
+                                                    message:"l'email envoyer avec succès !"
+                                                });
+                                            });
+                                        });
+                                    }
+                                    function confirmDelete(){
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",msgSuccess:"Utilisateur supprimé avec succès",msgFaild:"Une erreur s'est produite",requet:"DELETE from membre where IdMembres='"+window.selected[0].IdMembres+"';" }, function(d) {
+                                            // Handle the response here
+                                            $(".DeleteConfirmation").modal('hide');
+                                            
+                                            window.container.remove();
+                                            
+                                            // setTimeout(location.reload(),1000);
+                                            if(d=="error"){
+                                                showToast({
+                                                    type:"error",
+                                                    autoDismiss: true,
+                                                    message:"Une erreur s'est produite !"
+                                                });
+                                            }else{
+                                                showToast({
+                                                    type:"success",
+                                                    autoDismiss: true,
+                                                    message:"Utilisateur supprimé avec succès !"
+                                                });
+
+                                            }
+                                        });
+                                    }
+
+                                    function fetchUser(){
+                                        window.selected = {
+                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
+                                            'nom':$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
+                                            'prenom':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
+                                            'sexe':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text(),
+                                            'email':$(this).parent().parent().parent().parent().find("td:nth-child(5)").text(),
+                                            'type_dadhésion':$(this).parent().parent().parent().parent().find("td:nth-child(6)").text()
+                                            
+                                        };
+
+                                        $(".PopupBackground").show();
+
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+window.selected.nom+"';" }, function(d) {
+                                            // Handle the response here
+                                            console.log(data);
+                                            var data = JSON.parse(d);
+                                            window.selected = data;
+                                            console.log(window.selected);
+                                            parseSelectionData();
+                                            
+                                        });
+                                    }
+                                    
+                                </script>
                                 
 
                             </tbody>

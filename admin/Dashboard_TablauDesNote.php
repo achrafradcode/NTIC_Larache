@@ -1,8 +1,14 @@
+<?php
+    session_start();
+    if(!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false){
+        header("Location: ../admin/LogIn.php");
+    }
+?>
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>Login</title>
+    <title>ISTA Larache - Tablau Des Notes</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -309,8 +315,28 @@
                 </div>
                 <div class="MenuTaps d-flex flex-row float-end">
                     <div class="d-grid gap-2">
-                        <button type="button" name="" id="" class="btn btn-info "><img
-                                src="/imgs/three_points.png"></button>
+                        <!-- <button type="button" name="" id="" class="btn btn-info "></button> -->
+                        <!-- Example single danger button -->
+                        <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/imgs/three_points.png">
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="p-1"><a class="dropdown-item btn btn-danger  rounded" id="Btn_Deconnect" href="#">Déconnecter</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Separated link</a></li> -->
+                        </ul>
+                    </div>
+                    <script>
+                        $("#Btn_Deconnect").on("click",()=>{
+                            $.post("../inc/functions.inc.php", { function_name: "disconnect"}, function(d) {
+                                location.reload();
+                            });
+                        });
+                    </script>
+
                     </div>
                     <div class="d-grid gap-2 ms-4">
                         <button type="button" name="" id="" class="btn btn-primary fw-semibold"><b> Aids</b></button>

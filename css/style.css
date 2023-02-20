@@ -12,6 +12,7 @@
   transition: all .2s linear;
 }
 
+
 img {
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -140,7 +141,7 @@ section {
 }
 
 .btn:hover {
-  background: #0354B4;
+  background: #0354B4 !important;
   color: #fff;
 }
 
@@ -494,7 +495,7 @@ section {
 }
 
 .home-courses .slide .image img {
-  
+  height: 300px;
   margin-bottom: 1.5rem;
 }
 

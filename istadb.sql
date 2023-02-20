@@ -12,15 +12,9 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-CREATE TABLE voitures (
-          idVoiture INT PRIMARY KEY,
-          nomVoiture VARCHAR(50),
-          idPerson INT ,
-          
-)
 
-
-
+CREATE database istadb;
+use istadb; 
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -115,7 +109,7 @@ CREATE TABLE `champ_horaire` (
   `IdChampHoraire` int(11) NOT NULL,
   `nom_de_la_matière` varchar(45) DEFAULT NULL,
   `type_de_séance` varchar(45) DEFAULT NULL,
-  `Groupe_Stagiaires_code_groupe_Groupe` int(11) NOT NULL,
+  `Groupe_Stagiaires_code_groupe_Groupe` varchar(11) NOT NULL,
   `Salle_pédagogiquez_IdSalle` int(11) NOT NULL,
   `Membre_IdMembres` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -139,7 +133,7 @@ CREATE TABLE `directeur` (
 
 CREATE TABLE `enseigner` (
   `Membre_IdMembres` int(11) NOT NULL,
-  `Groupe_Stagiaires_code_groupe_Groupe` int(11) NOT NULL
+  `Groupe_Stagiaires_code_groupe_Groupe` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -159,7 +153,7 @@ CREATE TABLE `fichier` (
 --
 
 CREATE TABLE `groupe_stagiaires` (
-  `code_groupe_Groupe` int(11) NOT NULL,
+  `code_groupe_Groupe` varchar(11) NOT NULL,
   `symbole_de_groupe` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -170,10 +164,11 @@ CREATE TABLE `groupe_stagiaires` (
 --
 
 CREATE TABLE `membre` (
-  `IdMembres` int(11) NOT NULL,
+  `IdMembres` int(11) PRIMARY KEY AUTO_INCREMENT,
   `password` varchar(255) NOT NULL,
   `type_d'adhésion` varchar(45) DEFAULT NULL,
   `nom_personnel` varchar(45) DEFAULT NULL,
+  `prenom` varchar(45) DEFAULT NULL,
   `date_de_naissance` varchar(45) DEFAULT NULL,
   `date_d'inscription` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
@@ -181,15 +176,16 @@ CREATE TABLE `membre` (
   `numéro_de_téléphone` varchar(45) DEFAULT NULL,
   `nationalité` varchar(45) DEFAULT NULL,
   `sexe` varchar(45) DEFAULT NULL,
-  `numéro_de_carte` varchar(45) DEFAULT NULL
+  `numéro_de_carte` varchar(45) DEFAULT NULL,
+  `CodePostal` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `membre`
 --
 
-INSERT INTO `membre` (`IdMembres`, `password`, `type_d'adhésion`, `nom_personnel`, `date_de_naissance`, `date_d'inscription`, `email`, `adresse`, `numéro_de_téléphone`, `nationalité`, `sexe`, `numéro_de_carte`) VALUES
-(0, 'ADMIN', '-1', 'ADMIN', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `membre` (`IdMembres`, `password`, `type_d'adhésion`, `nom_personnel`, `date_de_naissance`, `date_d'inscription`, `email`, `adresse`, `numéro_de_téléphone`, `nationalité`, `sexe`, `numéro_de_carte`,`CodePostal`) VALUES
+(-1, 'ADMIN', '-1', 'ADMIN', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,NULL);
 
 -- --------------------------------------------------------
 
@@ -197,9 +193,7 @@ INSERT INTO `membre` (`IdMembres`, `password`, `type_d'adhésion`, `nom_personne
 -- Structure de la table `message`
 --
 
-deptno INT ,
-CONSTRAINT fk_deptno FOREIGN KEY (deptno) 
-                      REFERENCES departement(deptno)
+
 
 
 

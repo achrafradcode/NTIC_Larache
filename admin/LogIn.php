@@ -1,6 +1,10 @@
 <?php
 require_once("../inc/functions.inc.php");
 $error = "";
+session_start();
+if(isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] == true){
+    header("Location: ../admin/Dashboard.php");
+}
 if (isset($_POST["username"]) && isset($_POST["password"])) {
     try {
         $stmt = executeRequete("SELECT * FROM membre WHERE nom_personnel = :username AND password = :password");
@@ -10,7 +14,10 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
         if ($stmt->rowCount() == 1) {
             session_start();
+            $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
             $_SESSION["logged_in"] = true;
+            $_SESSION["userinfo"] = json_encode($array);
             $_SESSION["username"] = $_POST["username"];
             $_SESSION["currentPath"] = "../admin/Dashboard.php";
             header("Location: ../admin/Dashboard.php");
@@ -26,7 +33,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 <html lang="en">
 
 <head>
-  <title>Login</title>
+  <title>ISTA Larache - Login</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -257,7 +264,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                                     <div class="container-sm mb-5">
                                         <a href="#">Mot de passe oublié ?</a>
                                     </div>
-                                    <a href="Dashboard.html"><input name="S_LOGIN" id="S_LOGIN" class="btn btn-primary w-100" type="submit" value="CONNEXION"></a>
+                                    <input name="S_LOGIN" id="S_LOGIN" class="btn btn-primary w-100" type="submit" value="CONNEXION">
+                                    <input href="/home.php" class="btn btn-info text-black mt-4 w-100" style="background-color: aliceblue;" value="Page Principale" onclick="location.replace('/home.php')">
                                 </form>
                             </div>
                         </div>

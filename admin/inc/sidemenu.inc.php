@@ -1,13 +1,35 @@
 <?php require_once("../inc/functions.inc.php"); ?>
+<script src="https://code.iconify.design/iconify-icon/1.0.5/iconify-icon.min.js"></script>
 <div class="col-2 p-0">
             <div class="d-flex flex-column h-100 align-items-center justify-content-md-center">
                 <div class=" text-center p-3 w-100 bg-success">
-                    <a href="/admin/Dashboard.php"><img src="/imgs/ofppt_icon.png" class="img-fluid LoginIcon" alt=""></a>
+                    <a href="/home.php"><img src="/imgs/ofppt_icon.png" class="img-fluid LoginIcon" alt=""></a>
                     <div class="text-light">ISTA LARACHE</div>
                     <p class="text-white-50">Administrateur</p>
                 </div>
                 <div class=" text-center pt-4 h-100 w-100 bg-primary">
                     <div class="menuItem d-flex  flex-column align-items-start">
+                        <button menu="Tableau_de_bord"
+                            class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
+                            <div class="row">
+                                <div class="col-2 p-0 position-relative">
+                                    <img src="/imgs/Dashboard_Membres.png"
+                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
+                                        alt="">
+                                </div>
+                                <div class="col-8 p-0 position-relative">
+                                    <div
+                                        class=" w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
+                                        Tableau de Bord
+                                    </div>
+                                </div>
+                                <div class="col-2 p-0 position-relative">
+                                    <img src="/imgs/Dashboard_ActiveMenuItem.png"
+                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon"
+                                        alt="">
+                                </div>
+                            </div>
+                        </button>
                         <button menu="Membres_Menu"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
@@ -81,7 +103,28 @@
                                 <div class="col-8 p-0 position-relative">
                                     <div
                                         class=" w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
-                                        Annonces Et Articles
+                                        Articles
+                                    </div>
+                                </div>
+                                <div class="col-2 p-0 position-relative">
+                                    <img src="/imgs/Dashboard_ActiveMenuItem.png"
+                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon"
+                                        alt="">
+                                </div>
+                            </div>
+                        </button>
+                        <button menu="Annonces_Menu"
+                            class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
+                            <div class="row">
+                                <div class="col-2 p-0 position-relative">
+                                    <img src="/imgs/Dashboard_AnnoncesEtArticles.png"
+                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
+                                        alt="">
+                                </div>
+                                <div class="col-8 p-0 position-relative">
+                                    <div
+                                        class=" w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
+                                        Annonces 
                                     </div>
                                 </div>
                                 <div class="col-2 p-0 position-relative">
@@ -102,11 +145,15 @@
                                         }
                                         e.setAttribute("src",src);
                                     });
-                                    var $tar = $('button[menu="<?php echo parsePathToTag(getCurrentURL());?>"]');
-                                    $tar.attr("id","active");
-                                    var attr = $tar.find("img").first().attr("src");
-                                    attr = attr.split(".").join("_Active.");
-                                    $tar.find("img").first().attr("src",attr);
+                                    var tarText = "<?php echo parsePathToTag(getCurrentURL());?>";
+                                    if(tarText!=""){
+
+                                        var $tar = $('button[menu="'+tarText+'"]');
+                                        $tar.attr("id","active");
+                                        var attr = $tar.find("img").first().attr("src");
+                                        attr = attr.split(".").join("_Active.");
+                                        $tar.find("img").first().attr("src",attr);
+                                    }
                                         
                             $(".menuItem").find("button").on("click",function(){
                                 $(".menuItem").find("button").attr("id","");

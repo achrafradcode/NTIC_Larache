@@ -2,7 +2,12 @@
     require_once("../inc/functions.inc.php");
     $result = [];
 
-    if(isset($_POST["NewUser"])){
+    
+    session_start();
+    if(!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false){
+        header("Location: ../admin/LogIn.php");
+    }
+    if(isset($_POST["TypeDahiasion"])){
         $TypeDahiasion = $_POST["TypeDahiasion"];
         $Prenom = $_POST["Prenom"];
         $Nom = $_POST["Nom"];
@@ -18,19 +23,20 @@
         $SecteurProfessionnel = $_POST["SecteurProfessionnel"];
         $DataDinscription = $_POST["DataDinscription"];
         $password = randomPassword();
-        $data = [ [`$password`, 
-        `$TypeDahiasion`, 
-        `$Nom`, 
-        `$Prenom`, 
-        `$DateDeNaissance`, 
-        `$DataDinscription`, 
-        `$Email`, 
-        `$Adresse`, 
-        `$Telephone`, 
-        `$Nationalite`, 
-        `$Sexe`, 
-        `$CarteNationel`, 
-        `$CodePostal`] ];
+        $data = [ ["$password", 
+        "$TypeDahiasion", 
+        "$Nom", 
+        "$Prenom", 
+        "$DateDeNaissance", 
+        "$DataDinscription", 
+        "$Email", 
+        "$Adresse", 
+        "$Telephone", 
+        "$Nationalite", 
+        "$Sexe", 
+        "$CarteNationel", 
+        "$CodePostal"]];
+        
 
         $sql = "INSERT INTO membre (`password`, 
                                     `type_d'adhésion`, 
@@ -70,6 +76,7 @@
             }
             $pdo->commit();
             $result["success"] = ["msg"=>"successfully","msgDet"=>"utilisateur ajouter !"];
+            
         }catch (Exception $e){
             $pdo->rollback();
             $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support ."];
@@ -82,7 +89,7 @@
 <html lang="en">
 
 <head>
-    <title>Login</title>
+    <title>ISTA Larache - Inscription</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -381,8 +388,102 @@
 </head>
 
 <body>
+    <!-- Modal YesOrNo -->
+<div class="YesOrNoConfirmation modal fade " id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modelbody">
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Non</button>
+        <button type="button" id="ConfirmationOk" class="btn btn-danger">Oui</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function confirmChanges(model,title,contenu,callback){
+        if(model != null)$(model).modal('hide');
+        $(".YesOrNoConfirmation").unbind();
+        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').unbind();
+        $(".YesOrNoConfirmation").on("hide.bs.modal",()=>{
+            if(model != null)$(model).modal('show');
+        });
+        $(".YesOrNoConfirmation").modal('show');
+        $(".YesOrNoConfirmation").find('#exampleModalLabel').text(title);
+        if(contenu != ""){
+            $(".YesOrNoConfirmation").find('#modelbody').show();
+            $(".YesOrNoConfirmation").find('#modelbody').html(contenu);
+        }else{
+            $(".YesOrNoConfirmation").find('#modelbody').hide();
+        }
+        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').on("click",()=>{
+            $(".YesOrNoConfirmation").modal('hide');
+            callback();
+        });
+    }
+</script>
+     <!-- Vertically centered modal -->
+    <!-- Modal -->
+<div class="DeleteConfirmation modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Voulez-vous vraiment supprimer cet utilisateur ?<strong> [<span class="UserName"></span>]</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" 
+         data-bs-dismiss="modal">Close</button>
+        <button type="button" id="DeleteConfirmationOk"  class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal GroupDeStagiairesModal -->
+<div class="modal fade" id="GroupDeStagiairesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Nouvel Group</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                    <label for="" class="form-label">Groups De Stagiaires</label>
+                                    <select class="form-select form-select-lg"  id="Groups">
+                                            <option value="0">DWFS-101</option>
+                                            <option value="1">DWFS-102</option>
+                                            <option value="2">DWFS-201</option>
+                                            <option value="3">DWFS-202</option>
+                                    </select>
+                                    <label  for="" class="form-label">Group libele</label>
+                                    <input type="text"
+                                    class="form-control"  id="GInput" aria-describedby="helpId" placeholder="" >
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" id="GInsert" class="btn btn-info">Ajouter</button>
+                                        <button type="button" id="GDelete" class="btn btn-danger">Supprimer</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" id="GSave" class="btn btn-primary">Save changes</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>    
 
-    <div class="position-absolute  w-50 start-50 translate-middle p-0 m-0 " >
+    <div class="position-absolute  w-50 start-50 translate-middle p-0 m-0 " style="top: 50px;">
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
             <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -432,8 +533,28 @@
                 </div>
                 <div class="MenuTaps d-flex flex-row float-end">
                     <div class="d-grid gap-2">
-                        <button type="button" name="" id="" class="btn btn-info "><img
-                                src="/imgs/three_points.png"></button>
+                        <!-- <button type="button" name="" id="" class="btn btn-info "></button> -->
+                        <!-- Example single danger button -->
+                        <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/imgs/three_points.png">
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="p-1"><a class="dropdown-item btn btn-danger  rounded" id="Btn_Deconnect" href="#">Déconnecter</a></li>
+                            <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Separated link</a></li> -->
+                        </ul>
+                    </div>
+                    <script>
+                        $("#Btn_Deconnect").on("click",()=>{
+                            $.post("../inc/functions.inc.php", { function_name: "disconnect"}, function(d) {
+                                location.reload();
+                            });
+                        });
+                    </script>
+
                     </div>
                     <div class="d-grid gap-2 ms-4">
                         <button type="button" name="" id="" class="btn btn-primary fw-semibold"><b> Aids</b></button>
@@ -453,10 +574,10 @@
                             </div>
                         </div> -->
                     </div>
-                    <h6>Add New Membre</h6>
+                    <h6>Ajouter un nouveau membre</h6>
                 </div>
                 <hr>
-                <form method="post">
+                <form method="post" id="formUser">
                 <div class="TapContent m-3 ">
                     <div class="row">
                         <div class="col-6">
@@ -465,14 +586,60 @@
                                 <div class="mb-3">
                                     <label for="" class="form-label">Type d'ahiasion</label>
                                     <select class="form-select form-select-lg" name="TypeDahiasion" id="">
-                                        <option value="" selected>Select one</option>
-                                        <option value="1">Stagiaire</option>
-                                        <option value="2">Formateur</option>
+                                        <option value="0" >Selectioner</option>
+                                        <option value="1" selected>Stagiaire</option>
+                                        <option value="2">Employées</option>
                                         
                                     </select>
+                                    <script>
+                                        
+                                        window.Typedahiasion = 0;
+                                        $(".TapContent").find('select[name="TypeDahiasion"]').on("change",()=>{
+                                            console.log($(".TapContent").find('select[name="TypeDahiasion"]').find("option:selected").val());
+                                            if($(".TapContent").find('select[name="TypeDahiasion"]').find(":selected").val()=="1"){
+                                                $(".TapContent").find(".SP_Field").hide();
+                                                $(".TapContent").find(".GS_Field").show();
+                                                window.Typedahiasion = 1;
+                                            }else if($(".TapContent").find('select[name="TypeDahiasion"]').find(":selected").val()=="2"){
+                                                $(".TapContent").find(".GS_Field").hide();
+                                                $(".TapContent").find(".SP_Field").show();
+                                                window.Typedahiasion = 2;
+                                            }else{
+                                                window.Typedahiasion = 0;
+                                                $(".TapContent").find(".GS_Field").hide();
+                                                $(".TapContent").find(".SP_Field").hide();
+                                                
+                                            }
+                                        });
+                                        $(window).on("load",()=>{
+                                            $("#resetUser").on("click",()=>{
+                                                
+                                                $("#formUser")[0].reset();
+                                                $(".TapContent").find('select[name="TypeDahiasion"]').find("option").prop("selected",false);
+                                                $(".TapContent").find('select[name="TypeDahiasion"]').find('option[value='+window.Typedahiasion+']').prop("selected",true);
+                                                
+                                            });
+                                            
+                                            $(".TapContent").find(".GS_Field").hide();
+                                            if($(".TapContent").find('select[name="TypeDahiasion"]').find(":selected").val()=="1"){
+                                                $(".TapContent").find(".SP_Field").hide();
+                                                $(".TapContent").find(".GS_Field").show();
+                                                window.Typedahiasion = 1;
+                                            }else if($(".TapContent").find('select[name="TypeDahiasion"]').find(":selected").val()=="2"){
+                                                $(".TapContent").find(".GS_Field").hide();
+                                                $(".TapContent").find(".SP_Field").show();
+                                                window.Typedahiasion = 2;
+                                            }else{
+                                                window.Typedahiasion = 0;
+                                                $(".TapContent").find(".GS_Field").hide();
+                                                $(".TapContent").find(".SP_Field").hide();
+                                                
+                                            }
+                                        });
+                                    </script>
                                 </div>
                             </div>
-                            <div class="w-100 row">
+                            <div class="w-100 row GS_Field SP_Field">
                                 
                                 <div class="mb-3 col-6">
                                     <label for="" class="form-label">Prenom</label>
@@ -485,7 +652,7 @@
                                     class="form-control" name="Nom" id="" aria-describedby="helpId" placeholder="">
                                 </div>
                             </div>
-                            <div class="w-100 row">
+                            <div class="w-100 row GS_Field SP_Field">
 
                                 <div class="mb-3 col-6">
                                     <label for="" class="form-label">Adresse</label>
@@ -500,16 +667,16 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <div class="w-100">
+                            <div class="w-100 GS_Field SP_Field">
     
                                 <div class="mb-3">
                                     <label for="" class="form-label">Nationalite</label>
                                     <select class="form-select form-select-lg countries" name="Nationalite" id="">
-                                    <option value="">Select Country</option>
+                                    <option value="">Selectioner Payé</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="w-100">
+                            <div class="w-100 GS_Field SP_Field">
     
                                 <div class="mb-3">
                                     <label for="" class="form-label">Telephone</label>
@@ -517,12 +684,12 @@
                                     class="form-control" name="Telephone" id="" aria-describedby="helpId" placeholder="">
                                 </div>
                             </div>
-                            <div class="w-100">
+                            <div class="w-100 GS_Field SP_Field">
     
                                 <div class="mb-3">
                                     <label for="" class="form-label">Sexe</label>
                                     <select class="form-select form-select-lg" name="Sexe" id="">
-                                        <option selected>Select one</option>
+                                        <option selected>Selectioner</option>
                                         <option value="H">Homme</option>
                                         <option value="F">Femme</option>
                                     </select>
@@ -532,7 +699,7 @@
                         </div>
                         
                         <div class="col-3">
-                            <div class="w-100">
+                            <div class="w-100 GS_Field SP_Field">
     
                                 <div class="mb-3">
                                     <label for="" class="form-label">Date de naissance</label>
@@ -540,7 +707,7 @@
                                     class="form-control" name="DateDeNaissance" id="" aria-describedby="helpId" placeholder="">
                                 </div>
                             </div>
-                            <div class="w-100">
+                            <div class="w-100 GS_Field SP_Field">
     
                                 <div class="mb-3">
                                     <label for="" class="form-label">Carte Nationel</label>
@@ -548,7 +715,7 @@
                                     class="form-control" name="CarteNationel" id="" aria-describedby="helpId" placeholder="">
                                 </div>
                             </div>
-                            <div class="w-100">
+                            <div class="w-100 GS_Field SP_Field">
     
                                 <div class="mb-3">
                                     <label for="" class="form-label">E-mail</label>
@@ -559,60 +726,35 @@
 
                         </div>
                     </div>
-                    <!-- Modal GroupDeStagiairesModal -->
-                    <div class="modal fade" id="GroupDeStagiairesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Nouvel Group</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                    <label for="" class="form-label">Groups De Stagiaires</label>
-                                    <select class="form-select form-select-lg" name="GroupDeStagiaires" id="">
-                                            <option value="0">DWFS-101</option>
-                                            <option value="1">DWFS-102</option>
-                                            <option value="2">DWFS-201</option>
-                                            <option value="3">DWFS-202</option>
-                                    </select>
-                                    <label for="" class="form-label">E-mail</label>
-                                    <input type="text"
-                                    class="form-control" name="text" id="GInput" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                    <div class="col-6">
-                                        <button type="button" id="GInsert" class="btn btn-info">Ajouter</button>
-                                        <button type="button" id="GDelete" class="btn btn-danger">Supprimer</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" id="GSave" class="btn btn-primary">Save changes</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <div class="row">
                         <div class="col-6">
                             <div class="w-100">
 
-                                <div class="mb-3">
+                                <div class="mb-3 GS_Field" >
                                     <label for="" class="form-label">Group de stagiaires</label>
                                     <select class="form-select form-select-lg" name="GroupDeStagiaires" id="">
-                                        <option selected>Select Group</option>
-                                        <option value="-1">Crée une Nouvel Group</option>
-                                        <option value="0">DWFS-101</option>
-                                        <option value="1">DWFS-102</option>
-                                        <option value="2">DWFS-201</option>
-                                        <option value="3">DWFS-202</option>
+                                        <option selected>Selectioner</option>
+                                        <option value="-1">Crées une Nouvel Group</option>
+                                        <?php
+                                    
+                                            $stmt = executeRequete("SELECT * FROM groupe_stagiaires;");
+                                            $stmt->execute();
+                                            $index = 0;
+
+                                            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+                                                $index = $index + 1;
+                                        ?>
+                                        <option value="<?php echo $row['code_groupe_Groupe']?>"><?php echo $row['code_groupe_Groupe']?></option>
+
+                                        <?php }?>
+                                        
                                     </select>
                                 </div>
                                 <script>
                                     var $md = $("#GroupDeStagiairesModal");
-                                    var $select = $md.find("select");
+                                    var $select = $md.find("#Groups");
                                     var $S = $(".TapContent").find('select[name="GroupDeStagiaires"]');
                                     $S.find("option").on("click",function(){
                                         if($(this).val()=="-1"){
@@ -636,22 +778,113 @@
                                     });
                                     var $input = $md.find("#GInput");
                                     $md.find("#GInsert").on("click",function(){
-                                        var $newS = $("<option>");
-                                        $newS.val($input.val());
-                                        $newS.text($input.val());
-                                        $select.append($newS);
-                                        $S.children().prop("selected",false);
-                                        $newS.prop("selected",true);
+                                        var flag = true;
+                                        $select.children().each(function(i,e){
+                                            if($input.val() == $(e).val()){
+                                                flag = false;
+                                            }
+                                        });
+                                        if(flag){
+
+                                            var $newS = $("<option>");
+                                            $newS.val($input.val());
+                                            $newS.text($input.val());
+                                            $select.append($newS);
+                                            $S.children().prop("selected",false);
+                                            $newS.prop("selected",true);
+                                        }else{
+                                            showToast({
+                                                type:"error",
+                                                autoDismiss: true,
+                                                message:"Le Groub exist deja !"
+                                            });
+                                        }
+                                        $input.val("");
                                     });
                                     $md.find("#GDelete").on("click",function(){
                                         var valSelect = $select.val();
                                         $select.find('option[value="'+valSelect+'"]').remove();
                                     });
                                     $md.find("#GSave").on("click",function(){
-                                        
+                                        confirmChanges($md[0],"Voulez-vous vraiment enregistrer cette changment ?","",()=>{
+                                            var listValues = $md.find("#Groups").children().toArray().map(function(val,index){
+                                                return '("'+val.value+'")';
+                                            });
+                                            var lstSt = listValues.join(",");
+                                            console.log(lstSt);
+                                            var requet = 'DELETE IGNORE FROM `groupe_stagiaires`;INSERT IGNORE INTO `groupe_stagiaires` VALUES '+lstSt+';';
+                                            $.post("../inc/functions.inc.php", { function_name: "executeRequeteResponse",msgSuccess:"Utilisateur supprimé avec succès",msgFaild:"Une erreur s'est produite",requet:""+requet }, function(d) {
+                                                // setTimeout(location.reload(),1000);
+                                                console.log(d);
+                                                if(d=="error"){
+                                                    showToast({
+                                                        type:"error",
+                                                        autoDismiss: true,
+                                                        message:"Une erreur s'est produite !"
+                                                    });
+                                                }else{
+                                                    $S.empty();
+                                                    var $newS = $("<option>");
+                                                    $newS.text("Selectioner");
+                                                    $newS.val("");
+                                                    var $newS2 = $("<option>");
+                                                    $newS2.text("Crées une Nouvel Group");
+                                                    $newS2.on("click",function(){
+                                                        
+                                                        $md.modal("show");
+                                                        $select.empty();
+                                                        $S.children().each(function (index,elem) { 
+                                                            if(index < 2){
+                                                                return;
+                                                            }
+                                                            var $newS = $("<option>");
+                                                            if(index==2){
+                                                                $newS.prop("selected",true);
+                                                            }
+                                                            $newS.text($(elem).text());
+                                                            $newS.val($(elem).val());
+                                                            $select.append($newS);
+                                                        });
+                                                        
+                                                        
+                                                    });
+                                                    $newS2.prop("selected",true);
+                                                    $newS2.val("-1");
+                                                    $S.append($newS);
+                                                    $S.append($newS2);
+                                                    $md.find("#Groups").children().each(function (index2,elem2) { 
+                                                        
+                                                        var $newS3 = $("<option>");
+                                                        if(index2==0){
+                                                            $newS3.prop("selected",true);
+                                                        }
+                                                        $newS3.text($(elem2).text());
+                                                        $newS3.val($(elem2).val());
+                                                        $S.append($newS3);
+                                                    });
+                                                    // $md.modal("hide");
+                                                    
+                                                    showToast({
+                                                        type:"success",
+                                                        autoDismiss: true,
+                                                        message:"Enrigister avec succès !"
+                                                    });
+                                                }
+                                            });
+
+                                                // Handle the response here
+
+                                                
+                                        });
                                     });
+                                    
+
+                                    
+                                    
+                                        
+                                    
                                 </script>
-                                <div class="mb-3 " style="display: none;">
+                                <div class="mb-3 SP_Field" style="display: none;">
                                     <label for="" class="form-label">Secteur professionnel</label>
                                     <select class="form-select form-select-lg" name="SecteurProfessionnel" id="">
                                         <option selected>Select Secteur</option>
@@ -667,7 +900,7 @@
                         <div class="col-6">
                             <div class="w-100">
     
-                                <div class="mb-3">
+                                <div class="mb-3 GS_Field SP_Field">
                                     <label for="" class="form-label">Data d'inscription</label>
                                     <input type="date"
                                     class="form-control" name="DataDinscription" id="" aria-describedby="helpId" placeholder="">
@@ -678,15 +911,15 @@
                         </div>
                         
                     </div>
-                    <div class="w-100">
-                    <div class="d-flex flex-row justify-content-end">
-                        <div class="me-3">
-                            <input name="" id="" class="btn btn-primary" type="reset" value="Reset">
+                    <div class="w-100 GS_Field SP_Field">
+                        <div class="d-flex flex-row justify-content-end">
+                            <div class="me-3">
+                                <input  id="resetUser" class="btn btn-primary" type="button" value="Reset">
+                            </div>
+                            <div class="me-3">
+                                <input name="NewUser" id="ajoutUser" class="btn btn-primary" type="button" value="Ajouter">
+                            </div>
                         </div>
-                        <div class="me-3">
-                            <input name="NewUser" id="ajoutUser" class="btn btn-primary" type="button" value="Ajouter">
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <script>
@@ -724,13 +957,34 @@
 
                     $(".TapPanel").find("#ajoutUser").on("click",function () {
                         
-                        var inputsFilled = $(".TapPanel").find("input").filter(function () {
-                            return $.trim($(this).val()).length == 0
+                        var inputsFilled = $(".TapPanel").find("input,select").filter(function () {
+                            var l = $.trim($(this).val());
+                            if(window.Typedahiasion == 1){
+                                if($(this).attr("name")=="SecteurProfessionnel"){
+                                    console.log($(this).attr("name")+":"+l +" IGNORE");
+                                    return false;   
+                                }
+                            }else if(window.Typedahiasion == 2){
+                                if($(this).attr("name")=="GroupDeStagiaires"){
+                                    console.log($(this).attr("name")+":"+l +" IGNORE");
+                                    return false;   
+                                }
+
+                            }
+                            console.log($(this).attr("name")+":"+l + " :: "+ (l.length == 0));
+                            return l.length == 0;
                         }).length == 0;
+                        console.log(inputsFilled);
                         
                         if(inputsFilled){
-                            // $(".TapPanel").find("form")[0].submit();
-                            // $(".TapPanel").find("form")[0].reset();
+                            $(".TapPanel").find("form").submit();
+                            // $(".TapPanel").find("#ajoutUser").prop("disabled",true);
+                           
+                            // showToast({
+                            //     type:"success",
+                            //     autoDismiss: true,
+                            //     message:"Le Utilisateur a ete Ajouter avec success !!"
+                            // });
                         }else{
                             showToast({
                                 type:"error",
@@ -784,16 +1038,42 @@
                                     <td><?php echo $row['prenom'];?></td>
                                     <td><?php echo $row["sexe"];?></td>
                                     <td><?php echo $row["email"];?></td>
-                                    <td><?php echo $row["type_d'adhésion"];?></td>
+                                    <td><?php
+                                        if($row["type_d'adhésion"] == "-1"){
+                                            echo '<span style="color:green;">Admin</span>';
+                                            
+                                        }else if($row["type_d'adhésion"] == "1"){
+                                            echo '<span>Stagiaire</span>';
+                                            
+                                        }else if($row["type_d'adhésion"] == "2"){
+                                            echo '<span style="color:blue;">Employée</span>';
+
+                                        }else if($row["type_d'adhésion"] == "3"){
+                                            echo '<span style="color:grey;">rédacteur</span>';
+                                            
+                                        }else{
+                                            echo '<span style="color:red;">unidentifent</span>';
+
+                                        }
+                                    ?></td>
                                     <td>
-                                        <div class="d-flex flex-row justify-content-end ActionMembresContainer">
-                                            <div class="d-grid gap-2 m-1 ">
-                                              <button type="button" name="" id="Remove" class="btn p-1 btn-primary "><img src="/imgs/Remove_TrashIcon.png" class="img-fluid " alt=""></button>
+                                            <div class="d-flex flex-row justify-content-end ActionMembresContainer">
+                                                <div class="d-grid gap-2 m-1 ">
+                                                    <?php if($row["type_d'adhésion"] == "-1" || $row["type_d'adhésion"] == "2" || $row["type_d'adhésion"] == "3"){ ?>
+                                                        <button type="button" name="" id="SeePass" class="btn p-1 btn-primary ">P</button>
+                                                    <?php } ?>
+                                                </div>
+                                                <?php if($row["type_d'adhésion"] == "-1") {
+
+                                                }else{?>
+                                                    <div class="d-grid gap-2 m-1 ">
+                                                    <button type="button" name="" id="Remove" class="btn p-1 btn-primary "><img src="/imgs/Remove_TrashIcon.png" class="img-fluid " alt=""></button>
+                                                    </div>
+                                                    <div class="d-grid gap-2 m-1">
+                                                    <button type="button" name="" id="Modifier" class="btn p-1 btn-primary "><img src="/imgs/Edit_Icon.png" class="img-fluid  " alt=""></button>
+                                                    </div>
+                                                <?php }?>
                                             </div>
-                                            <div class="d-grid gap-2 m-1">
-                                              <button type="button" name="" id="Modifier" class="btn p-1 btn-primary "><img src="/imgs/Edit_Icon.png" class="img-fluid  " alt=""></button>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -801,7 +1081,86 @@
                                     
                                                 
                                     $(".TapPanel").find('button[id="Modifier"]').on("click",fetchUser);
-                                    
+                                    $(".TapPanel").find('button[id="Remove"]').on("click",deleteUser);
+                                    $(".TapPanel").find('button[id="SeePass"]').on("click",seePassUser);
+                                    $(".DeleteConfirmation").find('button[id="DeleteConfirmationOk"]').on("click",confirmDelete);
+
+                                    function deleteUser(){
+                                        window.selected = {
+                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
+                                            'nom':$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
+                                            'prenom':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
+                                            'sexe':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text(),
+                                            'email':$(this).parent().parent().parent().parent().find("td:nth-child(5)").text(),
+                                            'type_dadhésion':$(this).parent().parent().parent().parent().find("td:nth-child(6)").text()
+                                        };
+                                        
+                                        window.container = $(this).parent().parent().parent().parent()[0];
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+window.selected.nom+"';" }, function(d) {
+                                            // Handle the response here
+                                            console.log(data);
+                                            var data = JSON.parse(d);
+                                            window.selected = data;
+                                            console.log(window.selected);
+                                            parseSelectionData();
+                                            $(".DeleteConfirmation").modal('show');
+                                            $(".DeleteConfirmation").find(".UserName").text(window.selected[0].nom_personnel);
+                                            
+                                        });
+                                    }
+                                    function seePassUser(){
+                                        window.selected = {
+                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
+                                            'nom':$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
+                                            'prenom':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
+                                            'sexe':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text(),
+                                            'email':$(this).parent().parent().parent().parent().find("td:nth-child(5)").text(),
+                                            'type_dadhésion':$(this).parent().parent().parent().parent().find("td:nth-child(6)").text()
+                                        };
+                                        
+                                        window.container = $(this).parent().parent().parent().parent()[0];
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+window.selected.nom+"';" }, function(d) {
+                                            // Handle the response here
+                                            console.log(data);
+                                            var data = JSON.parse(d);
+                                            window.selected = data;
+                                            console.log(window.selected);
+                                            parseSelectionData();
+                                            // $(".yesOrNoConfirmation").modal('show');
+                                            // $(".DeleteConfirmation").find(".UserName").text(window.selected[0].nom_personnel);
+                                            confirmChanges(null,"Mot De Pass","Mot De Pass :<strong> ["+window.selected[0].password+"]</strong><br>Voulez-Vous l'envoyer dans un e-mail?",()=>{
+                                                showToast({
+                                                    type:"success",
+                                                    autoDismiss: true,
+                                                    message:"l'email envoyer avec succès !"
+                                                });
+                                            });
+                                        });
+                                    }
+                                    function confirmDelete(){
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",msgSuccess:"Utilisateur supprimé avec succès",msgFaild:"Une erreur s'est produite",requet:"DELETE from membre where IdMembres='"+window.selected[0].IdMembres+"';" }, function(d) {
+                                            // Handle the response here
+                                            $(".DeleteConfirmation").modal('hide');
+                                            
+                                            window.container.remove();
+                                            
+                                            // setTimeout(location.reload(),1000);
+                                            if(d=="error"){
+                                                showToast({
+                                                    type:"error",
+                                                    autoDismiss: true,
+                                                    message:"Une erreur s'est produite !"
+                                                });
+                                            }else{
+                                                showToast({
+                                                    type:"success",
+                                                    autoDismiss: true,
+                                                    message:"Utilisateur supprimé avec succès !"
+                                                });
+
+                                            }
+                                        });
+                                    }
 
                                     function fetchUser(){
                                         window.selected = {
