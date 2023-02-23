@@ -502,36 +502,7 @@ session_start();
 
    <!-- account form section starts  -->
 
-   <div class="account-form">
-
-      <div id="close-form" class="fas fa-times"></div>
-
-      <div class="buttons">
-         <span class="btn active login-btn">connexion</span>
-         <span class="btn register-btn">enregistrer</span>
-      </div>
-
-      <form class="login-form active" action="">
-         <h3>Connecte-toi maintenant</h3>
-         <input type="email" placeholder="enter your email" class="box">
-         <input type="password" placeholder="enter your password" class="box">
-         <div class="flex">
-            <input type="checkbox" name="" id="remember-me">
-            <label for="remember-me">souviens-toi de moi</label>
-            <a href="#">Mot de passe oublié?</a>
-         </div>
-         <input type="submit" value="login now" class="btn">
-      </form>
-
-      <form class="register-form" action="">
-         <h3>S'inscrire maintenant</h3>
-         <input type="email" placeholder="enter your email" class="box">
-         <input type="password" placeholder="enter your password" class="box">
-         <input type="password" placeholder="confirm your password" class="box">
-         <input type="submit" value="register now" class="btn">
-      </form>
-
-   </div>
+   
 
    <!-- account form section ends -->
 

@@ -6,20 +6,21 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>ISTA Larache - Propos</title>
-   <link rel="icon" href="pictuer/l.png"/>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-   integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTA larache</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
    <!-- swiper css link  -->
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
    <style>
@@ -145,11 +146,9 @@ session_start();
         }
    </style>
 
-
 </head>
 <body>
-   
-<!-- header section starts  -->
+    <!-- header section starts  -->
 
 <!-- header section starts  -->
    <!-- Modal -->
@@ -494,151 +493,50 @@ session_start();
 
       </script>
    </header>
+ <section class="heading-link" style="background:  linear-gradient(rgba(0, 0, 0, 0.596), rgba(47, 142, 206, 0.514)), url(pictuer/group_stageir.jpg); background-position: center; background-size: cover; height: 300px;">
+    <h3 style="padding-top: 100px;">Gestion des Entreprises</h3>
+   
+ </section>
+    <section class="info">
+        <div class="cl">
+            <h1>Technicien Spécialisé en Gestion des Entreprises</h1>
+            <h3>Description de la Formation</h3>
+            <p>Le Technicien Spécialisé en Gestion d’Entreprise possède un niveau de pratique des techniques de gestion et plus particulièrement, en marketing et en finance, pour lui permettre d’occuper une fonction de gestionnaire opérationnel. Selon la taille de l’entreprise, il intégrera une équipe ou assumera tout ou partie d’une fonction.
+                Dans les PME, il est le collaborateur direct du chef d’entreprise. Il lui apporte soutien et conseil sur les volets financiers, commerciaux, juridiques, ressources humaines et logistiques</p>
+        </div>
+        <div class="pic" >
+            <div class="img1">
+                <img src="pictuer/group_staagrei1.jpg" alt="photo">
+                <img src="pictuer/group_stageir.jpg" alt="photo">
+                <img src="pictuer/group_stagaire.jpg" alt="photo">
+            </div>
+        </div>
+        <div class="cl" style="padding-top: 10px;">
+            <h3>Conditions d'Accès</h3>
+            <ul class="condition">
+                <li>Age maximum : 23 ans pour les bacheliers et 26 ans pour les licenciés</li>
+                <li>Niveau Scolaire :Baccalauréat toutes séries</li>
+                <li>Aptitude physique à l’exercice du métier : Aucune contre indication</li>
+                <li>Mode de sélection des candidats à la formation :</li>
+                        <ol>
+                            <li>Remplissage du dossier d’orientation ;</li>
+                            <li>Réussite aux entretiens après présélection.</li>
+                           
+                        </ol>
+            </ul>
 
-<!-- account form section starts  -->
+            <h3 style="padding-top: 15px;">Durée de la Formation</h3>
+            <p>La durée de formation est étalée sur deux années. Le mode de formation est résidentiel ou alternée</p>
+            <h3 style="padding-top: 15px;">Evaluation de la Formation</h3>
+            <p>La formation dispensée est modulaire et les évaluations sont organisées sous forme de:</p>
+              <ul>
+                <li>Contrôles continus ;</li>
+                <li>Examens de fin de module ;</li>
+                <li>Examen de passage ;</li>
+                <li>Examen de fin de formation</li>
+              </ul>
+        </div>
 
-
-
-<!-- account form section ends -->
-
-<!-- header section ends -->
-
-<section class="heading-link" style="padding-top:100px;background-image: url(pictuer/about2.png) ,linear-gradient(90deg, rgb(2 0 36 / 45%) 0%, rgb(0 212 255 / 45%) 100%);background-blend-mode: multiply;">
-   <h3>À propos de nous</h3>
-   <p> <a href="home.php" >Accueil</a> / propos </p>
-</section>
-
-<!-- about section starts  -->
-
-<section class="about">
-
-   <div class="image">
-      <img src="pictuer/of.jpg" alt="">
-   </div>
-
-   <div class="content">
-      <h3 class="about-title">Beinveun dans ista larache</h3>
-      <p>ISTA Larache offers a wide range of technical courses
-         including automotive engineering, construction and architecture,
-         business and entrepreneurship, electronics and electrical engineering,
-         information technology, and manufacturing. The institution also offers a variety of applied research, development and innovation projects in several areas. Moreover,
-         students can pursue postgraduate studies in engineering and management.
-         </p>
-      <div class="icons-container">
-         <div class="icons">
-            <img src="pictuer/teacher.png" alt="">
-            <h3>30+</h3>
-            <span>formateur</span>
-         </div>
-         <div class="icons">
-            <img src="pictuer/stagiare.png" alt="">
-            <h3>1000+</h3>
-            <span>stagiare</span>
-         </div>
-         <div class="icons">
-            <img src="pictuer/salle.png" alt="">
-            <h3>20+</h3>
-            <span>salle</span>
-         </div>
-      </div>
-   </div>
-
-</section>
-<section class="prop">
-   <div class="prop1">
-      <h2>à propos de nous</h2>
-      <p>L'Institut Spécialisé de Technologie Appliquée Larache (ISTA Larache) est un établissement <br> d'enseignement supérieur privé au Maroc.
-         ISTA Larache dispense des formations techniques <br> de courte et longue durée dans différents domaines. C'est l'une des principales 
-         institutions de la région,<br> offrant une éducation de qualité et des opportunités de développement professionnel.<br><br><br>
-         ISTA Larache accorde une grande importance à offrir à ses apprentis une formation technique de haut niveau, <br> des activités innovantes de recherche et développement, ainsi que des opportunités de développement professionnel. <br> La Fondation s'engage à fournir des programmes éducatifs et de développement professionnel de haute qualité adaptés aux besoins de ses stagiaires</p>
-         <p></p>
-      <img src="pictuer/about1.jpg" alt="">
-   </div>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- footer section starts  -->
-
-<section class="footer">
-
-   <div class="box-container">
-
-      <div class="box">
-         <a href="#" class="logo">  <img src="pictuer/l.png" alt="ss"> </a>
-         <p>Institut Spécialisé de Technologie Appliquée</p>
-         <div class="share">
-            <a href="#" class="fab fa-facebook-f"></a>
-            <a href="#" class="fab fa-twitter"></a>
-            <a href="#" class="fab fa-instagram"></a>
-            <a href="#" class="fab fa-linkedin"></a>
-         </div>
-      </div>
-
-      <div class="box">
-         <h3>Liens rapides</h3>
-         <a href="home.php" class="link">Accueil</a>
-         <a href="about.php" class="link">props</a>
-         <a href="courses.php"class="link">Institut</a>
-         <a href="#" class="link">Filières</a>
-         <a href="courses.php" class="link">contact</a>
-      </div>
-
-      <div class="box">
-         <h3>Liens utiles</h3>
-         <a href="#" class="link">centre d'aide</a>
-         <a href="#" class="link">poser des questions</a>
-         <a href="#" class="link">envoyer des commentaires</a>
-         <a href="#" class="link">politique privée</a>
-         <a href="#" class="link">conditions d'utilisation</a>
-      </div>
-
-      <div class="box">
-         <h3>les résulte</h3>
-         <p>Entrez le code de la carte nationale</p>
-         <form action="">
-            <input type="text" name="" placeholder="enter cin" id="" class="cin">
-            <input type="submit" value="Valider" class="btn">
-         </form>
-      </div>
-
-   </div>
-
-
-
-</section>
-
-<!-- footer section ends -->
-
-
-
-
-
-
-<!-- swiper js link  -->
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-  integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-  integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-</script>
-<!-- custom js file link  -->
-<script src="js/script.js"></script>
-
+    </section>
 </body>
 </html>

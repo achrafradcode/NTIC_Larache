@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -496,36 +494,7 @@ session_start();
 
 <!-- account form section starts  -->
 
-<div class="account-form">
 
-   <div id="close-form" class="fas fa-times"></div>
-
-   <div class="buttons">
-      <span class="btn active login-btn">login</span>
-      <span class="btn register-btn">register</span>
-   </div>
-
-   <form class="login-form active" action="">
-      <h3>login now</h3>
-      <input type="email" placeholder="enter your email" class="box">
-      <input type="password" placeholder="enter your password" class="box">
-      <div class="flex">
-         <input type="checkbox" name="" id="remember-me">
-         <label for="remember-me">remember me</label>
-         <a href="#">forgot password?</a>
-      </div>
-      <input type="submit" value="login now" class="btn">
-   </form>
-
-   <form class="register-form" action="">
-      <h3>register now</h3>
-      <input type="email" placeholder="enter your email" class="box">
-      <input type="password" placeholder="enter your password" class="box">
-      <input type="password" placeholder="confirm your password" class="box">
-      <input type="submit" value="register now" class="btn">
-   </form>
-
-</div>
 
 <!-- account form section ends -->
 
@@ -579,13 +548,16 @@ session_start();
          <img src="pictuer/icon_c.png" alt="">
       </div>
 
+      
+         
       <form action="">
          <h3>Envoie-nous un message</h3>
-         <input type="text" placeholder="nom" class="box">
+         <input type="text" placeholder="nom" class="box" >
          <input type="email" placeholder="email" class="box">
-         <input type="tel" placeholder="telephone" class="box">
-         <textarea name="" class="box" placeholder="message" id="" cols="30" rows="10"></textarea>
+         <input type="tel" placeholder="telephone" class="box" >
+         <textarea name="" class="box" placeholder="message" cols="30" rows="10"></textarea>
          <input type="submit" value="envoyer le message" class="btn">
+         
       </form>
 
    </div>
