@@ -1,6 +1,67 @@
 <?php
 session_start();
+<<<<<<< Updated upstream
+=======
+
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $database = "istadb";
+ 
+ // Create connection  
+ $connection = new mysqli($servername, $username, $password, $database);
+
+$nom = "";
+$telephone = "";
+$email = "";
+$message = "";
+
+$errorMessage = "";
+$successMessage = "";
+
+if ( $_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nom = $_POST['nom'];
+    $telephone = $_POST['telephone'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
+
+    do {
+        if (  empty($nom) || empty($telephone) || empty($email) || empty($message)){
+            $errorMessage = "All the dields are required";
+            break;
+        }
+        
+
+        //Add new contact to database
+
+        $sql = "INSERT INTO contact (nom, telephone, email, message) ".
+                "VALUES ( '$nom', '$telephone', '$email', '$message')";
+
+        $result = $connection->query($sql);
+
+        if (!$result) {
+            $errorMessage = "Invalid query: " . $connection->error;
+            break;
+        }
+
+        $nom = "";
+        $telephone = "";
+        $email = "";
+        $message = "";
+
+        $successMessage = "Message is success ";
+
+        
+    } while (false);
+}
+
+
+
+
+>>>>>>> Stashed changes
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +77,9 @@ session_start();
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
    <!-- swiper css link  -->
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
@@ -542,12 +606,40 @@ session_start();
 
    </div>
 
+        <!--code php pour le messager succse or error-->
+
+      <?php     
+         if (!empty($errorMessage) ){
+            echo "
+            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong> $errorMessage </strong>
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>
+            "; 
+         }
+         ?>
+
+            <?php
+            if (!empty($successMessage) ){
+                echo "
+                <div class='row mb-3'>
+                <div class='offset-sm-3 col-sm-6'>
+                <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                    <strong> $successMessage </strong>
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+                </div>
+                </div>
+                "; 
+             }
+            ?>
    <div class="row">
 
       <div class="image">
          <img src="pictuer/icon_c.png" alt="">
       </div>
 
+<<<<<<< Updated upstream
       
          
       <form action="">
@@ -559,6 +651,22 @@ session_start();
          <input type="submit" value="envoyer le message" class="btn">
          
       </form>
+=======
+         
+      <form method="post">
+      <h1>Envoyer le message</h1>
+        <div class="contaner" style="">
+         <input type="text" placeholder="nom" class="box" name="nom" value="<?php echo $nom; ?>" >
+         <input type="tel" placeholder="telephone" class="box" name="telephone" value="<?php echo $telephone; ?>">
+         <input type="email" placeholder="email" class="box" name="email" value="<?php echo $email; ?>">
+         <input type="text" placeholer="message" class="box" name="message" value="<?php echo $message; ?>">
+           
+         <input type="submit" value="envoyer le message" class="btn">
+         </div>
+
+        
+        </form>
+>>>>>>> Stashed changes
 
    </div>
 

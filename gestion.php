@@ -508,7 +508,11 @@ session_start();
             <div class="img1">
                 <img src="pictuer/group_staagrei1.jpg" alt="photo">
                 <img src="pictuer/group_stageir.jpg" alt="photo">
+<<<<<<< Updated upstream
                 <img src="pictuer/group_stagaire.jpg" alt="photo">
+=======
+                <img src="pictuer/group_stagaire.jpeg" alt="photo">
+>>>>>>> Stashed changes
             </div>
         </div>
         <div class="cl" style="padding-top: 10px;">

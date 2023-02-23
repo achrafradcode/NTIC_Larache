@@ -566,7 +566,7 @@ session_start();
          <div class="content">
             <h3>	Technicien Spécialisé en Gestion des Entreprises</h3>
             <p>Présenté par l'OFPPT au Maroc dans le secteur de l'administration, de la gestion et du commerce.</p>
-            <a href="developement.php" class="btn">Lire la suite</a>
+            <a href="gestion.php" class="btn">Lire la suite</a>
             <div class="icons">
                <span> <i class="fas fa-book"></i> 16 modules </span>
                
