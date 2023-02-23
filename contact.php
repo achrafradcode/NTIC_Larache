@@ -1,7 +1,5 @@
 <?php
 session_start();
-<<<<<<< Updated upstream
-=======
 
  $servername = "localhost";
  $username = "root";
@@ -58,7 +56,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
->>>>>>> Stashed changes
 ?>
 
 
@@ -639,19 +636,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST') {
          <img src="pictuer/icon_c.png" alt="">
       </div>
 
-<<<<<<< Updated upstream
-      
-         
-      <form action="">
-         <h3>Envoie-nous un message</h3>
-         <input type="text" placeholder="nom" class="box" >
-         <input type="email" placeholder="email" class="box">
-         <input type="tel" placeholder="telephone" class="box" >
-         <textarea name="" class="box" placeholder="message" cols="30" rows="10"></textarea>
-         <input type="submit" value="envoyer le message" class="btn">
-         
-      </form>
-=======
          
       <form method="post">
       <h1>Envoyer le message</h1>
@@ -666,7 +650,6 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST') {
 
         
         </form>
->>>>>>> Stashed changes
 
    </div>
 
