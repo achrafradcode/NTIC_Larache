@@ -13,7 +13,7 @@
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
                                 <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_Membres.png"
+                                    <img src="/imgs/dashbaord.png"
                                         class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
                                         alt="">
                                 </div>
@@ -138,7 +138,7 @@
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
                                 <div class="col-2 p-0 position-relative">
-                                    <img src="/imgs/Dashboard_AnnoncesEtArticles.png"
+                                    <img src="/imgs/boit_email.png"
                                         class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
                                         alt="">
                                 </div>

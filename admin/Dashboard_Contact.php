@@ -608,7 +608,6 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th></th>
                             </tr>
                             
                         
@@ -637,24 +636,20 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="" class="form-label">Date de publication</label>
+                                    <label for="" class="form-label">Répondre à</label>
                                 </td>
                                 <td colspan="2">
                                     <div class="row">
-                                        <div class="col-6    p-0 m-0">
-                                            <input type="date"
-                                            class="form-control rounded-start rounded-0 m-0 " disabled name="old_Date_de_publication" id="old_Date_de_publication" aria-describedby="helpId" placeholder="">
-                                        </div>
-                                        <div class="col-6    p-0 m-0">
-                                            <input type="date"
-                                            class="form-control rounded-end rounded-0  m-0 " name="Date_de_publication" id="Date_de_publication" aria-describedby="helpId" placeholder="">
+                                        <div class="   p-0 m-0">
+                                            <input type="email"
+                                            class="form-control rounded-start rounded-0 m-0 " disabled name="toEmail" id="toEmail" aria-describedby="helpId" placeholder="">
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="" class="form-label">Contenu</label>
+                                    <label for="" class="form-label">Répondre</label>
                                 </td>
                                 <td colspan="2">
                                     <!-- <input type="text"
@@ -677,7 +672,7 @@
                 <input name="" id="quit" class="btn btn-info" type="button" value="Quiter">
                 <input name="" id="r" class="btn btn-primary" type="button" value="Reset">
                 <input name="idArticle" id="idArticle" style="display:none;" type="text" value="">
-                <input name="Enregistrer" id="Enregistrer" class="btn btn-success" type="button" value="Enregistrer">
+                <input name="Enregistrer" id="Enregistrer" class="btn btn-success" type="button" value="Envoyer">
             </div>
     </div>
   </div>

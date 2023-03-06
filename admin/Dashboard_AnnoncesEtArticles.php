@@ -1051,7 +1051,7 @@
                 console.log(d);
                 var data = JSON.parse(d);
                 $PopupBackground.find("#upload_image_file").val(window.selected[0]['url']);
-                $PopupBackground.find("#upload_dropZone").first()[0].style.backgroundImage = "url('"+ decodeURIComponent(data[0]['url'])+"')";
+                $PopupBackground.find("#upload_dropZone").first()[0].style.backgroundImage = 'url("/inc/'+ decodeURIComponent(data[0]['url'])+'")';
                 
                 
             });

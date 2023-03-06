@@ -19,12 +19,13 @@ if(!empty($_FILES)){
         // $insert = $db->query("INSERT INTO files (file_name, uploaded_on) VALUES ('".$fileName."', NOW())"); 
         try {   
             $uploadFilePath = urlencode($uploadFilePath);
+            $encodeFilePath = urlencode($uploadDir.$fileName);
             $stmt = executeRequete("INSERT IGNORE INTO `photo`( `url`) VALUES
-                                                    ('$uploadFilePath')");
+                                                    ('$encodeFilePath')");
                             
             $stmt->execute();
             ob_clean();
-            echo '{"status":"ok","url":"'.$uploadFilePath.'"}';
+            echo '{"status":"ok","url":"'.$encodeFilePath.'"}';
         }catch (Exception $e){
             // $pdo->rollback();
             echo "error";
