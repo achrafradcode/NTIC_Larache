@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 28 fév. 2023 à 00:54
+-- Généré le : lun. 06 mars 2023 à 02:33
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -64,9 +64,10 @@ CREATE TABLE `annonces_has_photo` (
 CREATE TABLE `articles_d'actualité` (
   `IdArticle` int(11) NOT NULL,
   `titre_de_l'actualité` varchar(45) DEFAULT NULL,
-  `contenu` varchar(45) DEFAULT NULL,
+  `Description` varchar(255) NOT NULL,
+  `contenu` text DEFAULT NULL,
   `date_de_publication` varchar(45) DEFAULT NULL,
-  `nom_de_l'éditeur` varchar(45) DEFAULT NULL,
+  `IdPhoto` int(45) DEFAULT NULL,
   `Membre_IdMembres` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -148,7 +149,8 @@ CREATE TABLE `enseigner` (
 --
 
 CREATE TABLE `fichier` (
-  `idFichier` int(11) NOT NULL
+  `idFichier` int(11) NOT NULL,
+  `url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -243,7 +245,9 @@ CREATE TABLE `photo` (
 --
 
 INSERT INTO `photo` (`IdPhoto`, `url`) VALUES
-(0, 'G%3A%5COFPPT%5CPFE%5CNTIC_Larache%5Cinc%5Cuploads%2FAL.png');
+(10, 'G%3A%5COFPPT%5CPFE%5CNTIC_Larache%5Cinc%5Cuploads%2F1601++++420663031.jpg'),
+(14, 'G%3A%5COFPPT%5CPFE%5CNTIC_Larache%5Cinc%5Cuploads%2FAL.png'),
+(15, 'G%3A%5COFPPT%5CPFE%5CNTIC_Larache%5Cinc%5Cuploads%2FAluminium.jpg');
 
 -- --------------------------------------------------------
 
@@ -411,27 +415,107 @@ ALTER TABLE `unité_de_formation`
 --
 
 --
+-- AUTO_INCREMENT pour la table `annonces`
+--
+ALTER TABLE `annonces`
+  MODIFY `idAnnonces` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `annonces_has_photo`
+--
+ALTER TABLE `annonces_has_photo`
+  MODIFY `Annonces_idAnnonces` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `articles_d'actualité`
+--
+ALTER TABLE `articles_d'actualité`
+  MODIFY `IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT pour la table `attaché`
+--
+ALTER TABLE `attaché`
+  MODIFY `Articles_d'actualité_IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `authentification`
+--
+ALTER TABLE `authentification`
+  MODIFY `idAuthentification` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `avoir`
+--
+ALTER TABLE `avoir`
+  MODIFY `Articles_d'actualité_IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `champ_horaire`
+--
+ALTER TABLE `champ_horaire`
+  MODIFY `IdChampHoraire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `directeur`
+--
+ALTER TABLE `directeur`
+  MODIFY `idDirecteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `enseigner`
+--
+ALTER TABLE `enseigner`
+  MODIFY `Membre_IdMembres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `fichier`
+--
+ALTER TABLE `fichier`
+  MODIFY `idFichier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT pour la table `membre`
 --
+ALTER TABLE `membre`
+  MODIFY `IdMembres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
-ALTER TABLE annonces MODIFY `idAnnonces` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE annonces_has_photo MODIFY `Annonces_idAnnonces` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE `articles_d'actualité` MODIFY `IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE attaché MODIFY `Articles_d'actualité_IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE authentification MODIFY `idAuthentification` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE avoir MODIFY `Articles_d'actualité_IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE champ_horaire MODIFY `IdChampHoraire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE directeur MODIFY `idDirecteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE enseigner MODIFY `Membre_IdMembres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE fichier MODIFY `idFichier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT pour la table `message`
+--
+ALTER TABLE `message`
+  MODIFY `IdMembres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
-ALTER TABLE membre MODIFY `IdMembres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE message MODIFY `IdMembres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE note MODIFY `idNote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE photo MODIFY `IdPhoto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE salle_pédagogiquez MODIFY `IdSalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE tableau_des_points MODIFY `IdTableau_tableau` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-ALTER TABLE unité_de_formation MODIFY `IdFormation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT pour la table `note`
+--
+ALTER TABLE `note`
+  MODIFY `idNote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `photo`
+--
+ALTER TABLE `photo`
+  MODIFY `IdPhoto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT pour la table `salle_pédagogiquez`
+--
+ALTER TABLE `salle_pédagogiquez`
+  MODIFY `IdSalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `tableau_des_points`
+--
+ALTER TABLE `tableau_des_points`
+  MODIFY `IdTableau_tableau` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `unité_de_formation`
+--
+ALTER TABLE `unité_de_formation`
+  MODIFY `IdFormation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- Contraintes pour les tables déchargées
 --

@@ -2,6 +2,86 @@
     session_start();
     if(!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false){
         header("Location: ../admin/LogIn.php");
+    }else{
+        require_once("../inc/functions.inc.php");
+        if(isset($_POST["titre_Annonces"])){
+            try {
+                $titre_Annonces = $_POST["titre_Annonces"];
+                $Membre_IdMembres = $_POST["Membre_IdMembres"];
+                $stmt2 = executeRequete("SELECT * FROM annonces;");
+                $stmt2->execute();
+                $index = $stmt2->rowCount()+1;
+                
+                $data = [ [
+                    "$titre_Annonces",  
+                "$Membre_IdMembres"]];
+                
+        
+                $sql = "INSERT INTO annonces (`idAnnonces`, 
+                                            `titre_Annonces` ,
+                                            `date_de_publication` ,
+                                            `Membre_IdMembres`) 
+                                            VALUES 
+                                            (LAST_INSERT_ID(), 
+                                            ?,
+                                            curdate(),
+                                            ?)";
+                $stmt = executeRequete($sql);
+        
+                
+                $pdo->beginTransaction();
+                foreach ($data as $row)
+                {
+                    $stmt->execute($row);
+                }
+                $pdo->commit();
+                $result["success"] = ["msg"=>"successfully","msgDet"=>"Annonce ajouter !"];
+                
+            }catch (Exception $e){
+                $pdo->rollback();
+                $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support .[".$e->getMessage()."]"];
+                // die("Error querying database: " . $e->getMessage());
+            }
+        }
+        if(isset($_POST["idArticle"])){
+            try {
+                $idArticle = $_POST["idArticle"];
+                $titre_Annonces = $_POST["Contenu"];
+                $Date_de_publication = $_POST["Date_de_publication"];
+                $Membre_IdMembres = $_POST["Membre_IdMembres"];
+                
+                
+                $data = [ [
+                    "$titre_Annonces",  
+                    "$Membre_IdMembres",
+                    "$Date_de_publication",
+                    $idArticle
+                ]];
+                
+        
+                $sql = "UPDATE annonces SET 
+                                            titre_Annonces=? ,
+                                            Membre_IdMembres=? ,
+                                            date_de_publication=?
+                                            WHERE 
+                                            idAnnonces=?";
+                $stmt = executeRequete($sql);
+        
+                
+                $pdo->beginTransaction();
+                foreach ($data as $row)
+                {
+                    $stmt->execute($row);
+                }
+                $pdo->commit();
+                $result["success"] = ["msg"=>"successfully","msgDet"=>"Annonce a été enregistrer !"];
+                
+            }catch (Exception $e){
+                $pdo->rollback();
+                $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support .[".$e->getMessage()."]"];
+                // die("Error querying database: " . $e->getMessage());
+            }
+        }
     }
 ?>
 <!doctype html>
@@ -14,7 +94,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/inline/ckeditor.js"></script>
-
+    <script src="../inc/js/functions.inc.js"></script>
+    <link rel="stylesheet" href="../inc/css/admin_style.css">
 
     
     
@@ -226,6 +307,18 @@
             background-color:rgba(0, 0, 0, 0.55);
             
         }
+        #wrapText{
+            white-space: nowrap;
+         overflow: hidden;
+         display: block;
+         text-overflow: ellipsis;
+         max-width: 200px;
+         
+         
+         
+         
+         
+        }
         .ck-editor {
                 /* editing area */
                 width: 100%;
@@ -244,6 +337,43 @@
 </head>
 
 <body>
+<div class="position-absolute  w-50 start-50 translate-middle p-0 m-0 " style="top: 50px;">
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </symbol>
+            </svg>
+            <?php
+                foreach($result as $key => $value){
+                    if($key == "success"){       
+            ?>
+                <div class="alert alert-success  alert-dismissible fade show" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                    <strong><?php echo $value["msg"]?></strong> <?php echo $value["msgDet"]?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>                              
+                <?php
+                    }
+                    if($key == "error"){
+                ?>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <strong><?php echo $value["msg"]?></strong> <?php echo $value["msgDet"]?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                    }
+                ?>
+            <?php
+                }
+            ?>
+    </div>
  <!-- Modal YesOrNo -->
  <div class="YesOrNoConfirmation modal fade " id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -293,7 +423,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Voulez-vous vraiment supprimer cet Annonce ?<strong> [<span class="UserName"></span>]</strong>
+        Voulez-vous vraiment supprimer cet Annonce ?<strong> numero : [<span class="UserName"></span>]</strong>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" 
@@ -303,41 +433,7 @@
     </div>
   </div>
 </div>
-<!-- Modal GroupDeStagiairesModal -->
-<div class="modal fade" id="GroupDeStagiairesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Nouvel Group</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                    <label for="" class="form-label">Groups De Stagiaires</label>
-                                    <select class="form-select form-select-lg"  id="Groups">
-                                            <option value="0">DWFS-101</option>
-                                            <option value="1">DWFS-102</option>
-                                            <option value="2">DWFS-201</option>
-                                            <option value="3">DWFS-202</option>
-                                    </select>
-                                    <label  for="" class="form-label">Group libele</label>
-                                    <input type="text"
-                                    class="form-control"  id="GInput" aria-describedby="helpId" placeholder="" >
-                                    </div>
-                                    <div class="col-6">
-                                        <button type="button" id="GInsert" class="btn btn-info">Ajouter</button>
-                                        <button type="button" id="GDelete" class="btn btn-danger">Supprimer</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" id="GSave" class="btn btn-primary">Save changes</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>    
+
 
     <div class="row m-0 h-100">
         
@@ -382,69 +478,126 @@
             </div>
             <!--QUICK TAPS-->
             <div class="TapPanel d-flex flex-column mt-2 ms-3 me-3">
-                <!-- <div class="TapTitle  fw-bold text-black-50">
-                    <h6>Add New Membre</h6>
-                </div> -->
-                <hr>
-                <div class="TapContent m-3 ">
-                    
-                    <table class="w-100">
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <!-- <tr>
-                            <td class="w-25">
-                                <label for="" class="form-label">Titre de annonce</label>
-                            </td>
-                            <td colspan="2">
-                                <input type="text"
-                                class="form-control w-100" name="" id="" aria-describedby="helpId" placeholder="">
-                            </td>
-                        </tr> -->
-                        <tr>
-                            <td>
-                                <label for="" class="form-label">Nom de l'editeur</label>
-                            </td>
-                            <td colspan="2">
-                                <input type="text"
-                                class="form-control w-100" disbaled value="<?php echo $_SESSION["username"];?>" name="" id="" aria-describedby="helpId" placeholder="">
-                            </td>
-                        </tr>
-                        <tr>
-                            
-                            <td colspan="3" >
-                                <textarea type="text"
-                                class="form-control w-100" name="" id="" aria-describedby="helpId" placeholder=""> </textarea>
-                                
-                                <!-- <div class="form-control" name="" id="mytextarea" rows="3"></div>  -->
-                                <!-- <div id="mytextarea"></div> -->
-                            </td>
-                        </tr>
-                    </table>
-                            
-                            
-                            
-                    
+                <form id="form" method="POST">
+                    <div class="position-absolute" id="toasts">
+                            <!-- <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                    Hello, world! This is a toast message.
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div> -->
+                        </div>
+                    <!-- <div class="TapTitle  fw-bold text-black-50">
+                        <h6>Add New Membre</h6>
+                    </div> -->
+                    <hr>
+                    <div class="TapContent m-3 ">
                         
-                    
-                    
-                    <div class="w-100 mt-4 d-flex flex-row justify-content-end">
-                        <div class="d-grid gap-2 pe-3">
-                          <input type="reset" name="" id="" class="ps-4 pe-4 btn btn-primary" value="Reset"/>
+                        <table class="w-100">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <!-- <tr>
+                                <td class="w-25">
+                                    <label for="" class="form-label">Titre de annonce</label>
+                                </td>
+                                <td colspan="2">
+                                    <input type="text"
+                                    class="form-control w-100" name="" id="" aria-describedby="helpId" placeholder="">
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <td>
+                                    <label for="" class="form-label">Nom de l'editeur</label>
+                                </td>
+                                <td colspan="2">
+                                    <!-- <input type="text"
+                                    class="form-control w-100" disbaled value="<?php echo $_SESSION["username"];?>" name="" id="" aria-describedby="helpId" placeholder=""> -->
+                                    <select class="form-select form-select-lg" name="Membre_IdMembres"  id="GroupsUser">
+                                    <?php
+                                        
+                                        $stmt = executeRequete("SELECT * FROM membre;");
+                                        $stmt->execute();
+                                        $index = 0;
+
+                                        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+                                            $index = $index + 1;
+                                    ?>
+                                        <option value="<?php echo $row["IdMembres"];?>"><?php echo $row["nom_personnel"];?></option>
+                                        <?php } ?>
+                                        
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                
+                                <td colspan="3" >
+                                    <textarea type="text"
+                                    class="form-control w-100" name="titre_Annonces" id="" aria-describedby="helpId" placeholder=""> </textarea>
+                                    
+                                    <!-- <div class="form-control" name="" id="mytextarea" rows="3"></div>  -->
+                                    <!-- <div id="mytextarea"></div> -->
+                                </td>
+                            </tr>
+                        </table>
+                                
+                                
+                                
+                        
+                            
+                        
+                        
+                        <div class="w-100 mt-4 d-flex flex-row justify-content-end">
+                            <div class="d-grid gap-2 pe-3">
+                            <input type="reset" name="" id="" class="ps-4 pe-4 btn btn-primary" value="Reset"/>
+                            </div>
+                            <div class="d-grid gap-2 pe-3">
+                                <input type="button" name="" id="ajoutUser" class="ps-4 pe-4 btn btn-primary" value="Ajouter"/>
+                            </div>
                         </div>
-                        <div class="d-grid gap-2 pe-3">
-                            <input type="submit" name="" id="" class="ps-4 pe-4 btn btn-primary" value="Ajouter"/>
-                        </div>
+
+                        <script>
+                            $(".TapPanel").find("#ajoutUser").on("click",function () {
+                            
+                                var inputsFilled = $(".TapPanel").find("input,select,textarea").filter(function () {
+                                    var l = $.trim($(this).val());
+                                    
+                                    console.log($(this).attr("name")+":"+l + " :: "+ (l.length == 0));
+                                    return l.length == 0;
+                                }).length == 0;
+                                console.log(inputsFilled);
+                                
+                                if(inputsFilled){
+                                    $(".TapPanel").find("#form").submit();
+                                    // $(".TapPanel").find("#ajoutUser").prop("disabled",true);
+                                
+                                    // showToast({
+                                    //     type:"success",
+                                    //     autoDismiss: true,
+                                    //     message:"Le Utilisateur a ete Ajouter avec success !!"
+                                    // });
+                                }else{
+                                    showToast({
+                                        type:"error",
+                                        autoDismiss: true,
+                                        message:"Verify que tout les chemains corrects !!"
+                                    });
+                                    
+                                }
+                            });
+                        </script>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="contentPage  mt-5 ms-3 me-3">
                 <!--Logs-->
                 <div class="TapPanel  ">
                     <div class="TapTitle float-start fw-bold text-black-50">
-                      <h4>Annonces Et Articles</h4>
+                      <h4>Annonces</h4>
                     </div>
                     <hr> 
                     <div class="table-responsive-md">
@@ -459,7 +612,7 @@
                                     <th>Id</th>
                                     <th>Titre de Annonce</th>
                                     <th>Date de publication</th>
-                                    <th>Id de l'editeur</th>
+                                    <th>l'editeur</th>
                                     
                                     <th></th>
                                 </tr>
@@ -476,14 +629,17 @@
                                 ?>
                                 <tr class="table-light">
                                     <td scope="row"><?php echo $index;?></td>
-                                    <td><?php echo $row["titre_Annonces"];?></td>
+                                    <td><span id="wrapText"><?php echo $row["titre_Annonces"];?></span> </td>
                                     <td><?php echo $row['date_de_publication'];?></td>
-                                    <td><?php echo $row["Membre_IdMembres"];?></td>
+                                    <td><?php 
+                                        $index = $row["Membre_IdMembres"];
+                                        $stmt = executeRequete("SELECT * FROM membre WHERE IdMembres=$index");
+                                        $stmt->execute();
+                                        echo $stmt->fetchAll(PDO::FETCH_ASSOC)[0]["nom_personnel"];
+                                    ?></td>
                                     <td>
                                             <div class="d-flex flex-row justify-content-end ActionMembresContainer">
-                                                <div class="d-grid gap-2 m-1 ">
-                                                <button type="button" name="" id="SeePass" class="btn p-1 btn-primary ">C</button>
-                                                </div>
+                                                
                                                 <div class="d-grid gap-2 m-1 ">
                                                     <button type="button" name="" id="Remove" class="btn p-1 btn-primary "><img src="/imgs/Remove_TrashIcon.png" class="img-fluid " alt=""></button>
                                                 </div>
@@ -497,17 +653,37 @@
                                 <script type="text/javascript">
                                     
                                                 
-                                    // $(".TapPanel").find('button[id="Modifier"]').on("click",fetchUser);
-                                    $(".TapPanel").find('button[id="Remove"]').on("click",deleteUser);
-                                    // $(".TapPanel").find('button[id="SeePass"]').on("click",seePassUser);
-                                    $(".DeleteConfirmation").find('button[id="DeleteConfirmationOk"]').on("click",confirmDelete);
-
-                                    function deleteUser(){
+                                    $(".TapPanel").find('button[id="Modifier"]').on("click",fetchUser);
+                                    function fetchUser(){
                                         window.selected = {
                                             'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
                                             "titre_de_l'actualité":$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
                                             'date_de_publication':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
-                                            'Membre_IdMembres':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
+                                            'nom_personnel':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
+                                        };
+
+                                        $(".PopupBackground").modal("show");
+
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from annonces where titre_Annonces='"+window.selected["titre_de_l'actualité"]+"';" }, function(d) {
+                                            // Handle the response here
+                                            console.log(data);
+                                            var data = JSON.parse(d);
+                                            window.selected = data;
+                                            console.log(window.selected);
+                                            parseSelectionData();
+                                            
+                                        });
+                                    }
+                                    $(".TapPanel").find('button[id="Remove"]').on("click",deleteAnnonces);
+                                    // $(".TapPanel").find('button[id="SeePass"]').on("click",seePassUser);
+                                    $(".DeleteConfirmation").find('button[id="DeleteConfirmationOk"]').on("click",confirmDelete);
+
+                                    function deleteAnnonces(){
+                                        window.selected = {
+                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
+                                            "titre_de_l'actualité":$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
+                                            'date_de_publication':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
+                                            'nom_personnel':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
                                         };
                                         
                                         window.container = $(this).parent().parent().parent().parent()[0];
@@ -515,43 +691,16 @@
                                             // Handle the response here
                                             console.log(data);
                                             var data = JSON.parse(d);
+                                            var index = window.selected.index; 
                                             window.selected = data;
                                             console.log(window.selected);
                                             
                                             $(".DeleteConfirmation").modal('show');
-                                            $(".DeleteConfirmation").find(".UserName").text(window.selected[0]["titre_de_l'actualité"]);
+                                            $(".DeleteConfirmation").find(".UserName").text(index);
                                             
                                         });
                                     }
-                                    function seePassUser(){
-                                        window.selected = {
-                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
-                                            'nom':$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
-                                            'prenom':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
-                                            'sexe':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text(),
-                                            'email':$(this).parent().parent().parent().parent().find("td:nth-child(5)").text(),
-                                            'type_dadhésion':$(this).parent().parent().parent().parent().find("td:nth-child(6)").text()
-                                        };
-                                        
-                                        window.container = $(this).parent().parent().parent().parent()[0];
-                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+window.selected.nom+"';" }, function(d) {
-                                            // Handle the response here
-                                            console.log(data);
-                                            var data = JSON.parse(d);
-                                            window.selected = data;
-                                            console.log(window.selected);
-                                            
-                                            // $(".yesOrNoConfirmation").modal('show');
-                                            // $(".DeleteConfirmation").find(".UserName").text(window.selected[0].nom_personnel);
-                                            confirmChanges(null,"Mot De Pass","Voila le Mot De Pass de Cette Compte est :<strong> ["+window.selected[0].password+"]</strong><br>Voulez-Vous l'envoyer dans un e-mail?",()=>{
-                                                showToast({
-                                                    type:"success",
-                                                    autoDismiss: true,
-                                                    message:"l'email envoyer avec succès !"
-                                                });
-                                            });
-                                        });
-                                    }
+                                    
                                     function confirmDelete(){
                                         $.post("../inc/functions.inc.php", { function_name: "executeRequete",msgSuccess:"Annonce supprimé avec succès",msgFaild:"Une erreur s'est produite",requet:"DELETE from annonces where idAnnonces='"+window.selected[0].idAnnonces +"';" }, function(d) {
                                             // Handle the response here
@@ -577,29 +726,7 @@
                                         });
                                     }
 
-                                    function fetchUser(){
-                                        window.selected = {
-                                            'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
-                                            'nom':$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
-                                            'prenom':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
-                                            'sexe':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text(),
-                                            'email':$(this).parent().parent().parent().parent().find("td:nth-child(5)").text(),
-                                            'type_dadhésion':$(this).parent().parent().parent().parent().find("td:nth-child(6)").text()
-                                            
-                                        };
-
-                                        $(".PopupBackground").show();
-
-                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+window.selected.nom+"';" }, function(d) {
-                                            // Handle the response here
-                                            console.log(data);
-                                            var data = JSON.parse(d);
-                                            window.selected = data;
-                                            console.log(window.selected);
-                                            parseSelectionData();
-                                            
-                                        });
-                                    }
+                                    
                                     
                                 </script>
                                 
@@ -616,422 +743,168 @@
 
         </div>
     </div>
-    <div style="display: none;" class="position-absolute  w-100 h-100 top-50 start-50 translate-middle p-0 m-0 PopupBackground" >
-        <div class="container-lg  position-absolute shadow-1  top-50 start-50 translate-middle overflow-hidden bg-white rounded-4 p-0">
-            <div class="d-flex flex-column justify-content-start p-0">
-                <div class="col-2 w-100 ps-5 p-4 m-0 text-white bg-primary shadow-sm   ">
-                    <h3> <b>Membre Edit</b></h3>
-                </div>
-                <div class="col-10 pt-5 ps-4 pe-4 pb-5 w-100">
-                    <table class="w-100">
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td class="w-25">
-                                <label for="" class="form-label">Id</label>
-                            </td>
-                            <td colspan="2">
-                                <div class="row">
-                                    <div class="col-6    p-0 m-0">
-                                        <input type="text"
-                                        class="form-control m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                    <!-- <div class="col-6    p-0 m-0">
-                                        <input type="text"
-                                        class="form-control rounded-end rounded-0  m-0 " name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div> -->
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="w-25">
-                                <label for="" class="form-label">Titre de article</label>
-                            </td>
-                            <td colspan="2">
-                                <div class="row">
-                                    <div class="col-6    p-0 m-0">
-                                        <input type="text"
-                                        class="form-control rounded-start rounded-0 m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                    <div class="col-6    p-0 m-0">
-                                        <input type="text"
-                                        class="form-control rounded-end rounded-0  m-0 " name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="" class="form-label">Nom de l'editeur</label>
-                            </td>
-                            <td colspan="2">
-                                <div class="row">
-                                    <div class="col-6    p-0 m-0">
-                                        <input type="text"
-                                        class="form-control rounded-start rounded-0 m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                    <div class="col-6    p-0 m-0">
-                                        <input type="text"
-                                        class="form-control rounded-end rounded-0  m-0 " name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="" class="form-label">Date de publication</label>
-                            </td>
-                            <td colspan="2">
-                                <div class="row">
-                                    <div class="col-6    p-0 m-0">
-                                        <input type="date"
-                                        class="form-control rounded-start rounded-0 m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                    <div class="col-6    p-0 m-0">
-                                        <input type="date"
-                                        class="form-control rounded-end rounded-0  m-0 " name="" id="" aria-describedby="helpId" placeholder="">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="" class="form-label">Contenu</label>
-                            </td>
-                            <td colspan="2">
-                                <!-- <input type="text"
-                                class="form-control w-100" name="" id="" aria-describedby="helpId" placeholder=""> -->
-                                <div class="row">
-                                    <textarea class="form-control" name="" id="mytextarea" rows="3"></textarea>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+    <!-- Modal YesOrNo -->
+ <div class="PopupBackground modal fade " id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     <form id="form" method="POST">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title col-2 w-100 ps-3 p-4 m-0 text-white    " id="exampleModalLabel"><b>Annonce Edit</b></h5>
+        
+      </div>
+      <div class="modal-body" id="modelbody">
+                <div class="d-flex flex-column justify-content-start p-0">
                     
-                    
+                    <div class="col-10 pt-5 ps-4 pe-4 pb-5 w-100">
+                        <table class="w-100">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            
+                        
+                            <tr>
+                                <td>
+                                    <label for="" class="form-label">Nom de l'editeur</label>
+                                </td>
+                                <td colspan="2">
+                                    <div class="row">
+                                        <select class="form-select form-select-lg" name="Membre_IdMembres"  id="GroupsUser">
+                                        <?php
+                                            
+                                            $stmt = executeRequete("SELECT * FROM membre;");
+                                            $stmt->execute();
+                                            $index = 0;
 
-                    <div class="mt-5 d-flex flex-row justify-content-end">
-                        <div class="me-3">
-                            <input name="" id="" class="btn btn-primary" type="reset" value="Reset">
-                        </div>
-                        <div class="me-3">
-                            <input name="" id="" class="btn btn-primary" type="submit" value="Enregistrer">
-                        </div>
+                                            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+                                                $index = $index + 1;
+                                        ?>
+                                            <option value="<?php echo $row["IdMembres"];?>"><?php echo $row["nom_personnel"];?></option>
+                                            <?php } ?>
+                                            
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="" class="form-label">Date de publication</label>
+                                </td>
+                                <td colspan="2">
+                                    <div class="row">
+                                        <div class="col-6    p-0 m-0">
+                                            <input type="date"
+                                            class="form-control rounded-start rounded-0 m-0 " disabled name="old_Date_de_publication" id="old_Date_de_publication" aria-describedby="helpId" placeholder="">
+                                        </div>
+                                        <div class="col-6    p-0 m-0">
+                                            <input type="date"
+                                            class="form-control rounded-end rounded-0  m-0 " name="Date_de_publication" id="Date_de_publication" aria-describedby="helpId" placeholder="">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="" class="form-label">Contenu</label>
+                                </td>
+                                <td colspan="2">
+                                    <!-- <input type="text"
+                                    class="form-control w-100" name="" id="" aria-describedby="helpId" placeholder=""> -->
+                                    <div class="row">
+                                        <textarea class="form-control" name="Contenu" id="Contenu" rows="3"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        
+
+                        
+                        
                     </div>
-                    
                 </div>
+            </div> 
+            <div class="modal-footer">
+                <input name="" id="quit" class="btn btn-info" type="button" value="Quiter">
+                <input name="" id="r" class="btn btn-primary" type="button" value="Reset">
+                <input name="idArticle" id="idArticle" style="display:none;" type="text" value="">
+                <input name="Enregistrer" id="Enregistrer" class="btn btn-success" type="button" value="Enregistrer">
             </div>
+    </div>
+  </div>
+            </form>
+</div>
+    <script type="text/javascript">
+                    
+                                
+    
+        $(".PopupBackground").find("#r").on("click",()=>{
+            parseSelectionData();
+        });
+        $(".PopupBackground").find("#Enregistrer").on("click",()=>{
+            var inputsFilled = $(".PopupBackground").find("input,select").filter(function () {
+                var l = $.trim($(this).val());
+                if(l.length == 0 && $(this).attr("name")=="Date_de_publication"){
+                    console.log($(this).attr("name")+":"+l +" IGNORE");
+                    $(this).val($(".PopupBackground").find("#old_Date_de_publication").val());
+                    
+                }else if( $(this).attr("name")=="old_Date_de_publication"){
+                    return false;
+                }
+                l = $.trim($(this).val());
+                
+                console.log($(this).attr("name")+":"+l + " :: "+ (l.length == 0));
+                return l.length == 0;
+            }).length == 0;
+            console.log(inputsFilled);
+            
+            if(inputsFilled){
+                $(".PopupBackground").find("#form").submit();
+                // $(".TapPanel").find("#ajoutUser").prop("disabled",true);
+            
+                // showToast({
+                //     type:"success",
+                //     autoDismiss: true,
+                //     message:"Le Utilisateur a ete Ajouter avec success !!"
+                // });
+            }else{
+                showToast({
+                    type:"error",
+                    autoDismiss: true,
+                    message:"Verify que tout les chemains corrects !!"
+                });
+                
+            }
+        });
+        $(".PopupBackground").find("#quit").on("click",function(){
+            $(".PopupBackground").modal("hide");
+        });
+        function parseSelectionData(){
+            $PopupBackground = $(".PopupBackground");
+            console.log($PopupBackground.find("#form")[0]);
+            $PopupBackground.find("#form")[0].reset();
+    
+            $PopupBackground.find("#idArticle").val(window.selected[0]['idAnnonces']);
+            $PopupBackground.find("#Contenu").val(window.selected[0]['titre_Annonces']);
+            $PopupBackground.find("#old_Date_de_publication").val(window.selected[0]['date_de_publication']);
+            $PopupBackground.find("#old_NomDelediteur").val(window.selected[0]["Membre_IdMembres"]);
+            
+            
+    
+            // $PopupBackground.find("#GroundStagiaires").val(window.selected[0].nom_personnel);
+            // $PopupBackground.find("#SecteurProfessionnel").val(window.selected[0].nom_personnel);
+
+        }
+    </script>
+    <!-- <div style="display: none;" class="position-absolute  w-100 h-100 top-50 start-50 translate-middle p-0 m-0 PopupBackground" >
+        <div class="container-lg  position-absolute shadow-1  top-50 start-50 translate-middle overflow-hidden bg-white rounded-4 p-0">
+            
 
         </div>
-    </div>
+    </div> -->
 
-    
-    <script>
-        const config = {
-           
-            
-                
-            // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
-            toolbar: {
-                items: [
-                    
-                    
-                    'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
-                    'bulletedList', 'numberedList', 'todoList', '|',
-                    'outdent', 'indent', '|',
-                    'undo', 'redo',
-                    '-',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                    'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
-                    'specialCharacters', 'horizontalLine', 'pageBreak', '|',
-                    'textPartLanguage', '|',
-                    'sourceEditing'
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            // Changing the language of the interface requires loading the language file using the <script> tag.
-            // language: 'es',
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                ]
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-            placeholder: 'ici!',
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-            fontSize: {
-                options: [ 10, 12, 14, 'default', 18, 20, 22 ],
-                supportAllValues: true
-            },
-            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-            htmlSupport: {
-                allow: [
-                    {
-                        name: /.*/,
-                        attributes: true,
-                        classes: true,
-                        styles: true
-                    }
-                ]
-            },
-            // Be careful with enabling previews
-            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-            htmlEmbed: {
-                showPreviews: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-            mention: {
-                feeds: [
-                    {
-                        marker: '@',
-                        feed: [
-                            '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
-                            '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
-                            '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
-                            '@sugar', '@sweet', '@topping', '@wafer'
-                        ],
-                        minimumCharacters: 1
-                    }
-                ]
-            },
-            // The "super-build" contains more premium features that require additional configuration, disable them below.
-            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-            removePlugins: [
-                // These two are commercial, but you can try them out without registering to a trial.
-                // 'ExportPdf',
-                // 'ExportWord',
-                'CKBox',
-                'CKFinder',
-                'EasyImage',
-                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                // Storing images as Base64 is usually a very bad idea.
-                // Replace it on production website with other solutions:
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                // 'Base64UploadAdapter',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-                'MathType'
-            ]
-        
-        };
-        
-        InlineEditor
-            .create( document.querySelector( '#mytextarea' ) ,config)
-            .then( editor => {
-                window.editor = editor;
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
-    
-    
-
-    <!-- <script>
-        // This sample still does not showcase all CKEditor 5 features (!)
-        // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
-        CKEDITOR.ClassicEditor.create(document.getElementById("mytextarea"), {
-            // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
-            toolbar: {
-                items: [
-                    
-                    
-                    'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
-                    'bulletedList', 'numberedList', 'todoList', '|',
-                    'outdent', 'indent', '|',
-                    'undo', 'redo',
-                    '-',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                    'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
-                    'specialCharacters', 'horizontalLine', 'pageBreak', '|',
-                    'textPartLanguage', '|',
-                    'sourceEditing'
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            // Changing the language of the interface requires loading the language file using the <script> tag.
-            // language: 'es',
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                ]
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-            placeholder: 'ici!',
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-            fontSize: {
-                options: [ 10, 12, 14, 'default', 18, 20, 22 ],
-                supportAllValues: true
-            },
-            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-            htmlSupport: {
-                allow: [
-                    {
-                        name: /.*/,
-                        attributes: true,
-                        classes: true,
-                        styles: true
-                    }
-                ]
-            },
-            // Be careful with enabling previews
-            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-            htmlEmbed: {
-                showPreviews: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-            mention: {
-                feeds: [
-                    {
-                        marker: '@',
-                        feed: [
-                            '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
-                            '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
-                            '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
-                            '@sugar', '@sweet', '@topping', '@wafer'
-                        ],
-                        minimumCharacters: 1
-                    }
-                ]
-            },
-            // The "super-build" contains more premium features that require additional configuration, disable them below.
-            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-            removePlugins: [
-                // These two are commercial, but you can try them out without registering to a trial.
-                // 'ExportPdf',
-                // 'ExportWord',
-                'CKBox',
-                'CKFinder',
-                'EasyImage',
-                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                // Storing images as Base64 is usually a very bad idea.
-                // Replace it on production website with other solutions:
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                // 'Base64UploadAdapter',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-                'MathType'
-            ]
-        });
-    </script> -->
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

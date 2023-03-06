@@ -37,12 +37,19 @@ html::-webkit-scrollbar-thumb {
   background: #0354B4;
 }
 
+
+
 .news .container{
   width: 100%;
   height: 100%;
   overflow:hidden;
 }
+.news:hover{
+  background-color: #ff7f50c5;
+
+}
 .news{
+  cursor: pointer;
   position: absolute;
   bottom: -30px;
   width: 100%;
