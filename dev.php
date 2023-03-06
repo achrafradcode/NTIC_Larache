@@ -346,6 +346,7 @@ session_start();
          <div id="close-navbar" class="fas fa-times"></div>
          <a href="home.php" class="text-decoration-none text-black-50">Accueil</a>
          <a href="about.php" class="text-decoration-none">Propos </a>
+         <a href="articles.php" class="text-decoration-none">Articles </a>
          <a href="courses.php" class="text-decoration-none">Filières</a>
          <a href="contact.php" class="text-decoration-none">contact</a>
          <div class="dropdown">

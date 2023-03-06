@@ -348,9 +348,10 @@ session_start();
 
       <nav class="navbar">
          <div id="close-navbar" class="fas fa-times"></div>
-         <a href="home.php" class="text-decoration-none text-black-50">Accueil</a>
+         <a href="home.php" class="text-decoration-none ">Accueil</a>
          <a href="about.php" class="text-decoration-none">Propos </a>
-         <a href="courses.php" class="text-decoration-none">Filières</a>
+         <a href="articles.php" class="text-decoration-none">Articles </a>
+         <a href="courses.php" class="text-decoration-none text-black-50">Filières</a>
          <a href="contact.php" class="text-decoration-none">contact</a>
          <div class="dropdown">
             <button style="margin: 0px;padding: 5px 10px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

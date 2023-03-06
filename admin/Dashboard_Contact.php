@@ -419,11 +419,11 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Supprimer Annonce</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer message</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Voulez-vous vraiment supprimer cet Annonce ?<strong> numero : [<span class="UserName"></span>]</strong>
+        Voulez-vous vraiment supprimer cet message ?<strong> numero : [<span class="UserName"></span>]</strong>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" 
@@ -461,9 +461,10 @@
                                 <!-- <caption>Table Name</caption> -->
                                 <tr>
                                     <th>Id</th>
-                                    <th>Titre de Annonce</th>
-                                    <th>Date de publication</th>
-                                    <th>l'editeur</th>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Message</th>
+                                    <th></th>
                                     
                                     <th></th>
                                 </tr>
@@ -471,7 +472,7 @@
                             <tbody class="table-group-divider">
                                 <?php
                                     
-                                    $stmt = executeRequete("SELECT * FROM annonces;");
+                                    $stmt = executeRequete("SELECT * FROM message;");
                                     $stmt->execute();
                                     $index = 0;
 
@@ -480,14 +481,9 @@
                                 ?>
                                 <tr class="table-light">
                                     <td scope="row"><?php echo $index;?></td>
-                                    <td><span id="wrapText"><?php echo $row["titre_Annonces"];?></span> </td>
-                                    <td><?php echo $row['date_de_publication'];?></td>
-                                    <td><?php 
-                                        $index = $row["Membre_IdMembres"];
-                                        $stmt = executeRequete("SELECT * FROM membre WHERE IdMembres=$index");
-                                        $stmt->execute();
-                                        echo $stmt->fetchAll(PDO::FETCH_ASSOC)[0]["nom_personnel"];
-                                    ?></td>
+                                    <td><span id="wrapText"><?php echo $row["nom"];?></span> </td>
+                                    <td><?php echo $row['mail'];?></td>
+                                    <td colspan="2"><?php echo $row['contenu'];?></td>
                                     <td>
                                             <div class="d-flex flex-row justify-content-end ActionMembresContainer">
                                                 
@@ -510,12 +506,12 @@
                                             'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
                                             "titre_de_l'actualité":$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
                                             'date_de_publication':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
-                                            'nom_personnel':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
+                                            'contenu':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
                                         };
 
                                         $(".PopupBackground").modal("show");
 
-                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from annonces where titre_Annonces='"+window.selected["titre_de_l'actualité"]+"';" }, function(d) {
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from message where contenu='"+window.selected["contenu"]+"';" }, function(d) {
                                             // Handle the response here
                                             console.log(data);
                                             var data = JSON.parse(d);
@@ -534,11 +530,11 @@
                                             'index':$(this).parent().parent().parent().parent().find("td:nth-child(1)").text(),
                                             "titre_de_l'actualité":$(this).parent().parent().parent().parent().find("td:nth-child(2)").text(),
                                             'date_de_publication':$(this).parent().parent().parent().parent().find("td:nth-child(3)").text(),
-                                            'nom_personnel':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
+                                            'contenu':$(this).parent().parent().parent().parent().find("td:nth-child(4)").text()
                                         };
                                         
                                         window.container = $(this).parent().parent().parent().parent()[0];
-                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from annonces where titre_Annonces='"+window.selected["titre_de_l'actualité"]+"';" }, function(d) {
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from message where contenu='"+window.selected["contenu"]+"';" }, function(d) {
                                             // Handle the response here
                                             console.log(data);
                                             var data = JSON.parse(d);
@@ -553,7 +549,7 @@
                                     }
                                     
                                     function confirmDelete(){
-                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",msgSuccess:"Annonce supprimé avec succès",msgFaild:"Une erreur s'est produite",requet:"DELETE from annonces where idAnnonces='"+window.selected[0].idAnnonces +"';" }, function(d) {
+                                        $.post("../inc/functions.inc.php", { function_name: "executeRequete",msgSuccess:"Message supprimé avec succès",msgFaild:"Une erreur s'est produite",requet:"DELETE from message where IdMessage='"+window.selected[0].IdMessage +"';" }, function(d) {
                                             // Handle the response here
                                             $(".DeleteConfirmation").modal('hide');
                                             
