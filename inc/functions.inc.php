@@ -1,5 +1,5 @@
 <?php
-//error_reporting(E_ERROR | E_PARSE);
+error_reporting(E_ERROR | E_PARSE);
 if (isset($_POST["function_name"])) {
     
     if ($_POST["function_name"] == "Tableau_de_bord") {
@@ -25,6 +25,10 @@ if (isset($_POST["function_name"])) {
     if ($_POST["function_name"] == "Annonces_Menu") {
         $_SESSION["currentPath"] = "../admin/Dashboard_Annonces.php";
         echo "{\"menu\":\"Annonces_Menu\",\"url\":\"../admin/Dashboard_Annonces.php\"}";
+    }
+    if ($_POST["function_name"] == "Contact_Menu") {
+        $_SESSION["currentPath"] = "../admin/Dashboard_Contact.php";
+        echo "{\"menu\":\"Contact_Menu\",\"url\":\"../admin/Dashboard_Contact.php\"}";
     }
     if ($_POST["function_name"] == "disconnect") {
         session_start();
@@ -87,6 +91,10 @@ if (isset($_POST["function_name"])) {
             case "/Dashboard_Annonces.php":
                 # code...
                 return "Annonces_Menu";
+                break;
+            case "/Dashboard_Contact.php":
+                # code...
+                return "Contact_Menu";
                 break;
             
             default:

@@ -134,6 +134,27 @@
                                 </div>
                             </div>
                         </button>
+                        <button menu="Contact_Menu"
+                            class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
+                            <div class="row">
+                                <div class="col-2 p-0 position-relative">
+                                    <img src="/imgs/Dashboard_AnnoncesEtArticles.png"
+                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon "
+                                        alt="">
+                                </div>
+                                <div class="col-8 p-0 position-relative">
+                                    <div
+                                        class=" w-100 fw-bold small position-absolute top-50 start-50 translate-middle">
+                                        Contact 
+                                    </div>
+                                </div>
+                                <div class="col-2 p-0 position-relative">
+                                    <img src="/imgs/Dashboard_ActiveMenuItem.png"
+                                        class="position-absolute start-50 top-50 translate-middle img-fluid MenuIcon"
+                                        alt="">
+                                </div>
+                            </div>
+                        </button>
                         <script type="text/javascript">
                             $(".menuItem").find("button").attr("id","");
                                     $(".menuItem").find("button").find("img").each(function(i,e){

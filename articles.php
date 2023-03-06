@@ -527,7 +527,7 @@ session_start();
             <p>Technicien Spécialisé en Développement Informatique proposé par l'OFPPT au Maroc dans le Secteur NTIC</p>
             <a href="developement.php" class="btn">Lire Plus</a>
             <div class="icons">
-               <span> <i class="fas fa-book"></i> 12 modules </span>
+               <span> <i class="fas fa-pencil-alt"></i> ADMIN </span>
               
             </div>
          </div>

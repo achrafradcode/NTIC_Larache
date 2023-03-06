@@ -654,16 +654,16 @@
                         <script>
                             $(".TapPanel").find("#ajoutUser").on("click",function () {
                             
+                                $("#htmlContent").val(window.editor.ui.view.editable.element.innerHTMLL);
                                 var inputsFilled = $(".TapPanel").find("input,select,textarea").filter(function () {
-                                    $("#htmlContent").val(window.editor.ui.view.editable.element.innerHTMLL);
                                     var l = $.trim($(this).val());
-                                    if($(this).attr("name")=="imageUpload"){
+                                    if($(this).attr("name")=="imageUpload" ||  !$(this).attr("name")){
                                         console.log($(this).attr("name")+":"+l +" IGNORE");
                                         return false;
                                     }
                                     if($(this).attr("name")=="content"){
-                                        console.log($(this).attr("name")+":"+l +" IGNORE :: "+(l.length <= 50));
-                                        return l.length <= 50;
+                                        console.log($(this).attr("name")+":"+l +" IGNORE :: "+(l.length >= 50));
+                                        return l.length >= 50;
                                     }
                                     
                                     console.log($(this).attr("name")+":"+l + " :: "+ (l.length == 0));
@@ -934,7 +934,7 @@
                                                 </div>
                                             </div>
                                             <label for="" class="form-label mt-3">Nom de l'editeur</label>
-                                            <td colspan="2">
+                                            
                                                 <div class="row">
                                                     <select class="form-select form-select-lg" name="Membre_IdMembres"  id="GroupsUser">
                                                     <?php
@@ -951,7 +951,7 @@
                                                         
                                                     </select>
                                                 </div>
-                                            </td>
+                                            
                                         </div>
                                 </td>
                             </tr>
@@ -1045,19 +1045,20 @@
             $PopupBackground.find("#form")[0].reset();
     
             $PopupBackground.find("#idArticle").val(window.selected[0]['IdArticle']);
-            $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from photo where IdPhoto='"+window.selected["IdPhoto"]+"';" }, function(d) {
+            console.log(window.selected[0]["IdPhoto"]);
+            $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from photo where IdPhoto="+window.selected[0]["IdPhoto"]+";" }, function(d) {
                 // Handle the response here
-                console.log(data);
+                console.log(d);
                 var data = JSON.parse(d);
                 $PopupBackground.find("#upload_image_file").val(window.selected[0]['url']);
-                $PopupBackground.find("#upload_dropZone").first()[0].style.backgroundImage = "url('"+reader.result+"')";
+                $PopupBackground.find("#upload_dropZone").first()[0].style.backgroundImage = "url('"+ decodeURIComponent(data[0]['url'])+"')";
                 
                 
             });
             $PopupBackground.find("#old_Titre_De_Article").val(window.selected[0]["titre_de_l'actualité"]);
             $PopupBackground.find("#old_Date_de_publication").val(window.selected[0]["date_de_publication"]);
-            // $PopupBackground.find("#old_Description_De_Article").val(window.selected[0]['date_de_publication']);
-            $PopupBackground.find("#old_NomDelediteur").val(window.selected[0]["Membre_IdMembres"]);
+            $PopupBackground.find("#old_Description_De_Article").val(window.selected[0]['Description']);
+            $PopupBackground.find("#Membre_IdMembres").val(window.selected[0]["Membre_IdMembres"]);
 
 
             window.editor2.ui.view.editable.element.innerHTML = window.selected[0]["contenu"];
