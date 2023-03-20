@@ -64,6 +64,30 @@ if (isset($_POST["function_name"])) {
             die("Error querying database: " . $e->getMessage());
         }
     }
+    if ($_POST["function_name"] == "executeRequeteResponse2") {
+        $sql = $_POST["requet"];
+        $msgSuccess = $_POST["msgSuccess"];
+        $msgFaild = $_POST["msgFaild"];
+        try {
+            $stmt = executeRequete($sql);
+            
+            
+            // $pdo->beginTransaction();
+            
+            // $pdo->commit();
+            $stmt->execute();
+            
+            $result["success"] = ["msg"=>"successfully","msgDet"=>$msgSuccess];
+            $lastid = $pdo->lastInsertId();
+            echo '{"state":"success","lastId":'.$lastid.'}';
+        }catch (Exception $e){
+            // $pdo->rollback();
+            echo '{"state":"error"}';
+            $result["error"] = ["msg"=>"error ??","msgDet"=>$msgFaild];
+            
+            die("Error querying database: " . $e->getMessage());
+        }
+    }
 }
     function parsePathToTag($url){
         $path = substr($url,strrpos($url,"/"));

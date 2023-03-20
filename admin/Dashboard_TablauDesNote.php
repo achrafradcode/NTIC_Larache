@@ -1,8 +1,8 @@
 <?php
-    session_start();
-    if(!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false){
-        header("Location: ../admin/LogIn.php");
-    }
+session_start();
+if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
+    header("Location: ../admin/LogIn.php");
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -11,12 +11,11 @@
     <title>ISTA Larache - Tablau Des Notes</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="../inc/js/functions.inc.js"></script>
     <link rel="stylesheet" href="../inc/css/admin_style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../inc/js/functions.inc.js"></script>
 
     <style>
         .background {
@@ -259,41 +258,57 @@
         }
 
         .table tr td:hover {
-            background-color : #2b7d2e1e;
+            background-color: #2b7d2e1e;
         }
+
         .table tr td[id="active"] {
             background-color: #0d5f1125 !important;
             box-shadow: inset 0px 0px 0px 2px #2b7d2e7e;
         }
+
         .table tr td[id="active"]:hover {
             background-color: #2b7d2e1e !important;
             box-shadow: inset 0px 0px 0px 3px #2b7d2e7e;
         }
-        
-        
-        .Selecting{
+
+        .table tr td#active[scope="row"] {
+            background-color: #0354B4 !important;
+
+            box-shadow: inset 0px 0px 0px 2px #2b7d2e7e;
+        }
+
+        .table tr td#active[scope="row"]:hover {
+            background-color: #0354B4 !important;
+            box-shadow: inset 0px 0px 0px 3px #2b7d2e7e;
+        }
+
+
+        .Selecting {
             transition-duration: all 0.1s;
             transition-duration: 0.2s;
             position: absolute;
             top: 100%;
             left: 0%;
-            
+
         }
-        #t:checked ~ .contentPage .Selecting{
+
+        #t:checked~.contentPage .Selecting {
             position: absolute;
             top: 100%;
             left: -120%;
-            
+
         }
-        .NoteTable{
+
+        .NoteTable {
             transition-duration: all 0.1s;
             transition-duration: 0.2s;
-            position: absolute;    
+            position: absolute;
             top: 100%;
             left: 120%;
         }
-        #t:checked ~ .contentPage .NoteTable{
-            position: absolute;    
+
+        #t:checked~.contentPage .NoteTable {
+            position: absolute;
             top: 100%;
             left: 0%;
         }
@@ -301,50 +316,50 @@
 </head>
 
 <body>
- <!-- Modal YesOrNo -->
- <div class="YesOrNoConfirmation modal fade " id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Supprimer utilisateur</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="modelbody">
-      </div> 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Non</button>
-        <button type="button" id="ConfirmationOk" class="btn btn-danger">Oui</button>
-      </div>
+    <!-- Modal YesOrNo -->
+    <div class="YesOrNoConfirmation modal fade " id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Supprimer utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modelbody">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+                    <button type="button" id="ConfirmationOk" class="btn btn-danger">Oui</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<script>
-    function confirmChanges(model,title,contenu,callback){
-        if(model != null)$(model).modal('hide');
-        $(".YesOrNoConfirmation").unbind();
-        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').unbind();
-        $(".YesOrNoConfirmation").on("hide.bs.modal",()=>{
-            if(model != null)$(model).modal('show');
-        });
-        $(".YesOrNoConfirmation").modal('show');
-        $(".YesOrNoConfirmation").find('#exampleModalLabel').text(title);
-        if(contenu != ""){
-            $(".YesOrNoConfirmation").find('#modelbody').show();
-            $(".YesOrNoConfirmation").find('#modelbody').html(contenu);
-        }else{
-            $(".YesOrNoConfirmation").find('#modelbody').hide();
+    <script>
+        function confirmChanges(model, title, contenu, callback) {
+            if (model != null) $(model).modal('hide');
+            $(".YesOrNoConfirmation").unbind();
+            $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').unbind();
+            $(".YesOrNoConfirmation").on("hide.bs.modal", () => {
+                if (model != null) $(model).modal('show');
+            });
+            $(".YesOrNoConfirmation").modal('show');
+            $(".YesOrNoConfirmation").find('#exampleModalLabel').text(title);
+            if (contenu != "") {
+                $(".YesOrNoConfirmation").find('#modelbody').show();
+                $(".YesOrNoConfirmation").find('#modelbody').html(contenu);
+            } else {
+                $(".YesOrNoConfirmation").find('#modelbody').hide();
+            }
+            $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').on("click", () => {
+                $(".YesOrNoConfirmation").modal('hide');
+                callback();
+            });
         }
-        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').on("click",()=>{
-            $(".YesOrNoConfirmation").modal('hide');
-            callback();
-        });
-    }
-</script>
+    </script>
 
     <div class="row m-0 h-100">
-        
+
         <!--Side Menu-->
-        <?php require_once("../admin/inc/sidemenu.inc.php")?>
+        <?php require_once("../admin/inc/sidemenu.inc.php") ?>
 
         <div class="col-10 overflow-hidden ps-5 pt-2 pe-5">
             <!--HEADER-->
@@ -357,24 +372,26 @@
                         <!-- <button type="button" name="" id="" class="btn btn-info "></button> -->
                         <!-- Example single danger button -->
                         <div class="btn-group">
-                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/imgs/three_points.png">
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li class="p-1"><a class="dropdown-item btn btn-danger  rounded" id="Btn_Deconnect" href="#">Déconnecter</a></li>
-                            <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/imgs/three_points.png">
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="p-1"><a class="dropdown-item btn btn-danger  rounded" id="Btn_Deconnect" href="#">Déconnecter</a></li>
+                                <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Separated link</a></li> -->
-                        </ul>
-                    </div>
-                    <script>
-                        $("#Btn_Deconnect").on("click",()=>{
-                            $.post("../inc/functions.inc.php", { function_name: "disconnect"}, function(d) {
-                                location.reload();
+                            </ul>
+                        </div>
+                        <script>
+                            $("#Btn_Deconnect").on("click", () => {
+                                $.post("../inc/functions.inc.php", {
+                                    function_name: "disconnect"
+                                }, function(d) {
+                                    location.reload();
+                                });
                             });
-                        });
-                    </script>
+                        </script>
 
                     </div>
                     <div class="d-grid gap-2 ms-4">
@@ -382,14 +399,14 @@
                     </div>
                 </div>
             </div>
-            <input  id="t" class="viewTablauxCheckbox btn btn-primary" type="checkbox" value="TestTransition" style="display: none;">
+            <input id="t" class="viewTablauxCheckbox btn btn-primary" type="checkbox" value="TestTransition" style="display: none;">
             <!--QUICK TAPS-->
             <div class="contentPage   position-relative d-flex flex-column mt-2 ms-1 me-2">
                 <!-- <div class="TapTitle  fw-bold text-black-50">
                     <h6>Add New Membre</h6>
                 </div> -->
                 <div class="position-absolute" id="toasts">
-                                <!-- <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <!-- <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
                                     <div class="d-flex">
                                         <div class="toast-body">
                                         Hello, world! This is a toast message.
@@ -397,15 +414,14 @@
                                         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                                     </div>
                                 </div> -->
-                            </div>
+                </div>
                 <hr>
-                <div id="active" class=" Selecting" >
+                <div id="active" class=" Selecting">
 
                     <div class="d-flex flex-row flex-wrap justify-content-start">
 
                         <div class="m-2 ScrollTable Tab1 ScrollTable-FixWidth position-relative rounded-4 overflow-hidden ">
-                            <div
-                                class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
+                            <div class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
                                 <b>Group Stagiaires</b>
                             </div>
                             <div class="Content d-flex bg-black  bg-opacity-25 flex-column justify-content-start">
@@ -413,19 +429,18 @@
                                     .....
                                 </div>
                                 <?php
-                                    
-                                    $stmt = executeRequete("SELECT * FROM groupe_stagiaires;");
-                                    $stmt->execute();
-                                    $index = 0;
 
-                                    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-                                        $index = $index + 1;
+                                $stmt = executeRequete("SELECT * FROM groupe_stagiaires;");
+                                $stmt->execute();
+                                $index = 0;
+
+                                foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                                    $index = $index + 1;
                                 ?>
-                                
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="<?php echo $row['code_groupe_Groupe']?>">
 
-                                <?php }?>
+                                    <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="<?php echo $row['code_groupe_Groupe'] ?>">
+
+                                <?php } ?>
                                 <!-- <input id="active"
                                     class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
                                     type="button" value="DWS101">
@@ -447,27 +462,19 @@
 
 
                         <div class="m-2 ScrollTable Tab2 ScrollTable-FixWidth position-relative rounded-4 overflow-hidden " style="display: none;">
-                            <div
-                                class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
+                            <div class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
                                 <b>Stagiaire</b>
                             </div>
                             <div class="Content d-flex bg-black  bg-opacity-25 flex-column justify-content-start">
                                 <div class="item-centent text-center  p-3 bg-black bg-opacity-25">
                                     .....
                                 </div>
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input id="active"
-                                    class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
+                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="DWS101">
+                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="DWS101">
+                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="DWS101">
+                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="DWS101">
+                                <input id="active" class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="DWS101">
+                                <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="DWS101">
 
 
 
@@ -479,8 +486,7 @@
 
 
                         <div class="m-2 ScrollTable Tab3 ScrollTable-2 position-relative rounded-4 overflow-hidden " style="display: none;">
-                            <div
-                                class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
+                            <div class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
                                 <b>Liste des information</b>
                             </div>
                             <div class="Content p-4 d-flex bg-black  bg-opacity-25 flex-column justify-content-start">
@@ -519,7 +525,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                
+
 
 
 
@@ -527,94 +533,111 @@
                             </div>
                         </div>
                         <script type="text/javascript">
-                                    
-                            $(".ScrollTable.Tab1").find("input").on("click",function(){
-                                $(".ScrollTable.Tab1").find("input").attr("id","");
-                                $(this).attr("id","active");
+                            $(".ScrollTable.Tab1").find("input").on("click", function() {
+                                $(".ScrollTable.Tab1").find("input").attr("id", "");
+                                $(this).attr("id", "active");
                                 var group_id = $(this).val();
-                                
+
                                 $(".ScrollTable.Tab3").hide();
-                                $(".ScrollTable.Tab2").find("input").each((index,Element)=>{Element.remove();});
-                                $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from enseigner where Groupe_Stagiaires_code_groupe_Groupe='"+group_id+"';" }, function(d) {
+                                $(".ScrollTable.Tab2").find("input").each((index, Element) => {
+                                    Element.remove();
+                                });
+                                $.post("../inc/functions.inc.php", {
+                                    function_name: "executeRequete",
+                                    requet: "SELECT * from enseigner where Groupe_Stagiaires_code_groupe_Groupe='" + group_id + "';"
+                                }, function(d) {
                                     // Handle the response here
                                     console.log(group_id);
                                     var data = JSON.parse(d);
                                     console.log(data);
-                                    $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where IdMembres in ("+data.map(item=>item['Membre_IdMembres']+"").join(",")+");" }, function(d) {
-                                        
+                                    $.post("../inc/functions.inc.php", {
+                                        function_name: "executeRequete",
+                                        requet: "SELECT * from membre where IdMembres in (" + data.map(item => item['Membre_IdMembres'] + "").join(",") + ");"
+                                    }, function(d) {
+
                                         var data = JSON.parse(d);
                                         window.selected = data;
                                         window.selected_group_id = group_id;
                                         console.log(window.selected);
                                         $(".ScrollTable.Tab2").show();
-                                        $(".ScrollTable.Tab2").find("input").each((index,Element)=>{Element.remove();});
+                                        $(".ScrollTable.Tab2").find("input").each((index, Element) => {
+                                            Element.remove();
+                                        });
                                         $(".ScrollTable.Tab3").hide();
                                         console.log(window.selected.length);
-                                        for(var i = 0 ; i < window.selected.length ; i++){
+                                        for (var i = 0; i < window.selected.length; i++) {
                                             var $input = $("<input>");
-                                            $input.attr("class","item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25");
+                                            $input.attr("class", "item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25");
                                             $input.val(window.selected[i]['nom_personnel']);
                                             $(".ScrollTable.Tab2").find(".Content").append($input);
                                         }
-                                        $(".ScrollTable.Tab2").find("input").on("click",function(e){
-                                            $(".ScrollTable.Tab2").find("input").attr("id","");
-                                            $(e.target).attr("id","active");
+                                        $(".ScrollTable.Tab2").find("input").on("click", function(e) {
+                                            $(".ScrollTable.Tab2").find("input").attr("id", "");
+                                            $(e.target).attr("id", "active");
                                             var user_id = $(e.target).val();
                                             console.log(user_id);
                                             $(".ScrollTable.Tab3").show();
                                             // $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+user_id+"';" }, function(d) {
-                                                // Handle the response here
-                                                // console.log(data);
-                                                // var data = JSON.parse(d);
-                                                window.selected2 = window.selected.find(item=>item['nom_personnel']==user_id);
-                                                console.log(window.selected2);
-                                                $(".ScrollTable.Tab3").find("#nom_personel").text(window.selected2['nom_personnel']);
-                                                $(".ScrollTable.Tab3").find("#prenom").text(window.selected2['nom_personnel']);
-                                                $(".ScrollTable.Tab3").find("#groupId").text(window.selected_group_id);
-                                                $(".ScrollTable.Tab3").find("button").unbind(onCLickAcceder);
-                                                $(".ScrollTable.Tab3").find("button").on("click",onCLickAcceder);
-                                                
-                                                // });
-                                            
+                                            // Handle the response here
+                                            // console.log(data);
+                                            // var data = JSON.parse(d);
+                                            window.selected2 = window.selected.find(item => item['nom_personnel'] == user_id);
+                                            console.log(window.selected2);
+                                            $(".ScrollTable.Tab3").find("#nom_personel").text(window.selected2['nom_personnel']);
+                                            $(".ScrollTable.Tab3").find("#prenom").text(window.selected2['nom_personnel']);
+                                            $(".ScrollTable.Tab3").find("#groupId").text(window.selected_group_id);
+                                            $(".ScrollTable.Tab3").find("button").unbind(onCLickAcceder);
+                                            $(".ScrollTable.Tab3").find("button").on("click", onCLickAcceder);
+
+                                            // });
+
                                         });
                                     });
-                                    
+
                                 });
 
                             });
 
                             var errorOccured = false;
                             var successOccured = false;
-                            setInterval(()=>{
-                                if(errorOccured){
+                            setInterval(() => {
+                                if (errorOccured) {
+                                    window.onFinish();
                                     showToast({
-                                        type:"error",
+                                        type: "error",
                                         autoDismiss: true,
-                                        message:"Une erreur s'est produite !"
+                                        message: "Une erreur s'est produite !"
                                     });
-                                }else if(successOccured){
-                                
+                                } else if (successOccured) {
+                                    window.onFinish();
                                     showToast({
-                                        type:"success",
+                                        type: "success",
                                         autoDismiss: true,
-                                        message:"Enregister avec succès !"
+                                        message: "Enregister avec succès !"
                                     });
                                 }
                                 successOccured = false;
                                 errorOccured = false;
-                            },1000);
-                            function onCLickAcceder(){
-                                $(".viewTablauxCheckbox").prop("checked",true);
-                                $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from tableau_des_points where Membre_IdMembres='"+window.selected2['IdMembres']+"';" }, function(d) {
+                            }, 1000);
+
+                            function onCLickAcceder() {
+                                $(".viewTablauxCheckbox").prop("checked", true);
+                                $.post("../inc/functions.inc.php", {
+                                    function_name: "executeRequete",
+                                    requet: "SELECT * from tableau_des_points where Membre_IdMembres='" + window.selected2['IdMembres'] + "';"
+                                }, function(d) {
                                     // Handle the response here
                                     // console.log(data);
                                     var data = JSON.parse(d);
                                     window.selected3 = data;
                                     console.log(window.selected3);
-                                    
-                                    
+
+
                                     // les unite des formations
-                                    $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from unité_de_formation where Tableau_des_points_IdTableau_tableau='"+data[0]['IdTableau_tableau']+"';" }, function(d) {
+                                    $.post("../inc/functions.inc.php", {
+                                        function_name: "executeRequete",
+                                        requet: "SELECT * from unité_de_formation where Tableau_des_points_IdTableau_tableau='" + data[0]['IdTableau_tableau'] + "';"
+                                    }, function(d) {
                                         // Handle the response here
                                         // console.log(data);
                                         var data = JSON.parse(d);
@@ -622,9 +645,9 @@
                                         console.log(window.unites_de_formation);
                                         // Apply
                                         // Reset
-                                        $(".NoteTable").find("td").attr("id","");
-                                        $(".NoteTable").find("#Apply").on("click",()=>{
-                                            confirmChanges(null,"Appliquer les modifications","Voulez-vous vraiment appliquer les modifications ?",()=>{
+                                        $(".NoteTable").find("td").attr("id", "");
+                                        $(".NoteTable").find("#Apply").on("click", () => {
+                                            confirmChanges(null, "Appliquer les modifications", "Voulez-vous vraiment appliquer les modifications ?", () => {
                                                 // $.post("../inc/functions.inc.php", { 
                                                 //     function_name: "executeRequete",
                                                 //     msgSuccess:"Utilisateur supprimé avec succès",
@@ -632,8 +655,8 @@
                                                 //     requet:"DELETE from membre where IdMembres='"+window.selected[0].IdMembres+"';" 
                                                 // }, function(d) {
                                                 //     // Handle the response here
-                                                    
-                                                    
+
+
                                                 //     // setTimeout(location.reload(),1000);
                                                 //     if(d=="error"){
                                                 //         showToast({
@@ -650,88 +673,374 @@
 
                                                 //     }
                                                 // });
-                                                
-                                                window.unites_de_formation.forEach((unite,index,arr)=>{
+                                                $(".NoteTable").find("#Apply").prop("disabled", true);
+
+                                                window.unites_de_formation.forEach((unite, index, arr) => {
                                                     // $(".NomModule_"+(index+1)).find("input").val(unite['nom_Unité_de_formation']);
-                                                    unite['nom_Unité_de_formation'] = $(".NomModule_"+(index+1)).find("input").val();
-                                                    unite.notes.forEach((note,index2,arr)=>{
-                                                        // $(".note_"+(index+1)+"_"+(index2+1)).find("input").val(note['nomber']);
-                                                        unite.notes[index2].nomber = $(".note_"+(index+1)+"_"+(index2+1)).find("input").val();
-                                                    });
-                                                    // $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
-                                                    $.post("../inc/functions.inc.php", { 
-                                                        function_name: "executeRequete",
-                                                        msgSuccess:"Message supprimé avec succès",
-                                                        msgFaild:"Une erreur s'est produite",
-                                                        requet:"UPDATE `unité_de_formation` SET `nom_Unité_de_formation`='"+unite['nom_Unité_de_formation']+"' WHERE `IdFormation`="+unite['IdFormation']+";" },
-                                                         function(d) {
-                                                            // Handle the response here
-                                                            // $(".DeleteConfirmation").modal('hide');
-                                                            
-                                                            console.log(d);
-                                                            // setTimeout(location.reload(),1000);
-                                                            if(d=="error"){
-                                                                errorOccured = true;
-                                                                
-                                                            }else{
-                                                                // window.container.remove();
-                                                                successOccured = true;
-                                                                
-    
+                                                    window.uniteID = unite['IdFormation'];
+                                                    var onfinish = () => {
+                                                        unite.notes.forEach((note, index, arr) => {
+                                                            if (note.isDeleted != undefined) {
+                                                                if (note.isDeleted) {
+                                                                    if (note.IdFormation != undefined) {
+
+                                                                        // $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
+                                                                        $.post("../inc/functions.inc.php", {
+                                                                                function_name: "executeRequeteResponse",
+                                                                                msgSuccess: "Message supprimé avec succès",
+                                                                                msgFaild: "Une erreur s'est produite",
+                                                                                requet: "DELETE FROM `note` WHERE `idNote`=" + note["idNote"] + ";"
+                                                                            },
+                                                                            function(d) {
+                                                                                // Handle the response here
+                                                                                // $(".DeleteConfirmation").modal('hide');
+
+                                                                                console.log(d);
+                                                                                // setTimeout(location.reload(),1000);
+                                                                                if (d == "error") {
+                                                                                    errorOccured = true;
+
+
+                                                                                } else {
+                                                                                    note.isChanged = false;
+                                                                                    // window.container.remove();
+                                                                                    successOccured = true;
+
+
+                                                                                }
+                                                                            });
+                                                                    }
+                                                                }
                                                             }
-                                                    });
+                                                            if (note.isChanged != undefined) {
+                                                                if (note.isChanged) {
+
+                                                                    if (note.idNote != undefined) {
+
+                                                                        // $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
+                                                                        $.post("../inc/functions.inc.php", {
+                                                                                function_name: "executeRequeteResponse",
+                                                                                msgSuccess: "Message supprimé avec succès",
+                                                                                msgFaild: "Une erreur s'est produite",
+                                                                                requet: "UPDATE `note` SET `nomber`='" + note['nomber'] + "' WHERE `idNote`=" + note['idNote'] + ";"
+                                                                            },
+                                                                            function(d) {
+                                                                                // Handle the response here
+                                                                                // $(".DeleteConfirmation").modal('hide');
+
+                                                                                console.log(d);
+                                                                                // setTimeout(location.reload(),1000);
+                                                                                if (d == "error") {
+                                                                                    errorOccured = true;
+
+
+                                                                                } else {
+                                                                                    note.isChanged = false;
+                                                                                    // window.container.remove();
+                                                                                    successOccured = true;
+
+
+                                                                                }
+                                                                            });
+                                                                    } else {
+                                                                        console.log(window.uniteID);
+                                                                        $.post("../inc/functions.inc.php", {
+                                                                                function_name: "executeRequeteResponse",
+                                                                                msgSuccess: "Message supprimé avec succès",
+                                                                                msgFaild: "Une erreur s'est produite",
+                                                                                requet: "INSERT INTO `note`( `nomber`, `index`, `Unité_de_formation_IdFormation`) VALUES ('" + note['nomber'] + "','" + note['index'] + "','" + window.uniteID + "');"
+                                                                            },
+                                                                            function(d) {
+                                                                                // Handle the response here
+                                                                                // $(".DeleteConfirmation").modal('hide');
+
+                                                                                console.log(d);
+                                                                                // setTimeout(location.reload(),1000);
+                                                                                if (d == "error") {
+                                                                                    errorOccured = true;
+
+                                                                                } else {
+                                                                                    note.isChanged = false;
+                                                                                    // window.container.remove();
+                                                                                    successOccured = true;
+
+
+                                                                                }
+                                                                            });
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        })
+                                                    }
+                                                    if (unite.isDeleted != undefined) {
+                                                        if (unite.isDeleted) {
+                                                            if (unite.IdFormation != undefined) {
+
+                                                                // $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
+                                                                $.post("../inc/functions.inc.php", {
+                                                                        function_name: "executeRequeteResponse",
+                                                                        msgSuccess: "Message supprimé avec succès",
+                                                                        msgFaild: "Une erreur s'est produite",
+                                                                        requet: "DELETE FROM `unité_de_formation` WHERE `IdFormation`=" + unite["IdFormation"] + ";"
+                                                                    },
+                                                                    function(d) {
+                                                                        // Handle the response here
+                                                                        // $(".DeleteConfirmation").modal('hide');
+
+                                                                        console.log(d);
+                                                                        // setTimeout(location.reload(),1000);
+                                                                        if (d == "error") {
+                                                                            errorOccured = true;
+
+
+                                                                        } else {
+                                                                            unite.isChanged = false;
+                                                                            // window.container.remove();
+                                                                            successOccured = true;
+                                                                            onfinish();
+
+
+                                                                        }
+                                                                    });
+                                                            }
+                                                        }
+                                                    }
+                                                    if (unite.isChanged != undefined) {
+                                                        if (unite.isChanged) {
+
+                                                            if (unite.IdFormation != undefined) {
+
+                                                                // $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
+                                                                $.post("../inc/functions.inc.php", {
+                                                                        function_name: "executeRequeteResponse",
+                                                                        msgSuccess: "Message supprimé avec succès",
+                                                                        msgFaild: "Une erreur s'est produite",
+                                                                        requet: "UPDATE `unité_de_formation` SET `nom_Unité_de_formation`='" + unite['nom_Unité_de_formation'] + "' WHERE `IdFormation`=" + unite['IdFormation'] + ";"
+                                                                    },
+                                                                    function(d) {
+                                                                        // Handle the response here
+                                                                        // $(".DeleteConfirmation").modal('hide');
+
+                                                                        console.log(d);
+                                                                        // setTimeout(location.reload(),1000);
+                                                                        if (d == "error") {
+                                                                            errorOccured = true;
+
+
+                                                                        } else {
+                                                                            unite.isChanged = false;
+                                                                            // window.container.remove();
+                                                                            successOccured = true;
+                                                                            onfinish();
+
+
+                                                                        }
+                                                                    });
+                                                            } else {
+                                                                $.post("../inc/functions.inc.php", {
+                                                                        function_name: "executeRequeteResponse2",
+                                                                        msgSuccess: "Message supprimé avec succès",
+                                                                        msgFaild: "Une erreur s'est produite",
+                                                                        requet: "INSERT INTO `unité_de_formation`(`nom_Unité_de_formation`, `Tableau_des_points_IdTableau_tableau`, `index`) VALUES ('" + unite['nom_Unité_de_formation'] + "','" + unite['Tableau_des_points_IdTableau_tableau'] + "','" + unite['index'] + "');"
+                                                                    },
+                                                                    function(d) {
+                                                                        // Handle the response here
+                                                                        // $(".DeleteConfirmation").modal('hide');
+
+                                                                        console.log(d);
+                                                                        var s = JSON.parse(d);
+                                                                        console.log(s);
+                                                                        // setTimeout(location.reload(),1000);
+                                                                        if (s.state == "error") {
+                                                                            errorOccured = true;
+
+                                                                        } else {
+                                                                            window.uniteID = s.lastId;
+                                                                            console.log(window.uniteID);
+                                                                            unite.isChanged = false;
+                                                                            unite.isDeleted = false;
+                                                                            // window.container.remove();
+                                                                            successOccured = true;
+                                                                            unite.IdFormation = s.lastId;
+                                                                            onfinish();
+
+
+                                                                        }
+                                                                    });
+                                                            }
+                                                        }
+                                                    }
+                                                    if (unite.isDeleted == undefined || unite.isChanged == undefined) {
+                                                        onfinish();
+                                                    } else if (unite.isDeleted == false || unite.isChanged == false) {
+                                                        onfinish();
+                                                    }
+
                                                 });
                                             });
                                         });
-                                        $(".NoteTable").find("td").on("change",(e)=>{
-                                            $(e.target).parent().attr("id","active");
-                                            $(".NoteTable").find("#Apply").prop("disabled",false);
+                                        $(".NoteTable").find("td").on("change", (e) => {
+                                            $(e.target).parent().attr("id", "active");
+                                            // $(".NoteTable").find("#Apply").prop("disabled",false);
+                                            if ($(e.target).hasClass("NameModuleInput")) {
+                                                var index = $(e.target).parent().parent().index();
+                                                var unite = window.unites_de_formation[index];
+                                                if (unite == undefined) {
+
+                                                    var unite = {
+                                                        index: index,
+                                                        "nom_Unité_de_formation": $(e.target).val(),
+                                                        Tableau_des_points_IdTableau_tableau: window.selected3[0]['IdTableau_tableau'],
+                                                        notes: [],
+                                                        isChanged: true,
+                                                        isDeleted: false
+                                                    };
+                                                    $(e.target).parent().parent().find("input[type='number']").each((index2, element) => {
+                                                        if ($(element).val() != "") {
+                                                            unite.notes = [...unite.notes, {
+                                                                index: index2,
+                                                                nomber: $(element).val(),
+                                                                isChanged: true,
+                                                                isDeleted: false
+                                                            }];
+                                                        }
+                                                    });
+                                                    $(".NoteTable").find("#Apply").prop("disabled", false);
+                                                    window.onFinish();
+                                                    window.unites_de_formation = [...window.unites_de_formation, unite];
+                                                } else {
+                                                    if ($(e.target).val() != "") {
+                                                        unite["nom_Unité_de_formation"] = $(e.target).val();
+                                                        unite.isChanged = true;
+                                                        unite.isDeleted = false;
+                                                        $(".NoteTable").find("#Apply").prop("disabled", false);
+                                                        window.onFinish();
+                                                    } else {
+                                                        unite.isChanged = false;
+                                                        unite.isDeleted = true;
+                                                        $(".NoteTable").find("#Apply").prop("disabled", false);
+                                                        window.onFinish();
+                                                    }
+                                                }
+                                            } else {
+                                                if ($(e.target).parent().parent().first().find("input").val() != "") {
+                                                    var index = $(e.target).parent().parent().index();
+                                                    var unite = window.unites_de_formation[index];
+
+                                                    var index2 = $(e.target).parent().index() - 1;
+                                                    var note = unite.notes[index2];
+                                                    if (note == undefined) {
+
+                                                        unite.notes = [...unite.notes, {
+                                                            index: index2,
+                                                            nomber: $(e.target).val(),
+                                                            isChanged: true,
+                                                            isDeleted: false
+                                                        }];
+                                                        $(".NoteTable").find("#Apply").prop("disabled", false);
+                                                        window.onFinish();
+                                                    } else {
+                                                        if ($(e.target).val() != "") {
+                                                            unite.notes[index2].nomber = $(e.target).val();
+                                                            unite.notes[index2].isChanged = true;
+                                                            unite.notes[index2].isDeleted = false;
+                                                            $(".NoteTable").find("#Apply").prop("disabled", false);
+                                                            window.onFinish();
+                                                        } else {
+                                                            unite.notes[index2].isChanged = false;
+                                                            unite.notes[index2].isDeleted = true;
+                                                            $(".NoteTable").find("#Apply").prop("disabled", false);
+                                                            window.onFinish();
+                                                        }
+                                                    }
+
+                                                }
+                                            }
                                         });
-                                        let onFinish = ()=>{
+                                        window.onFinish = () => {
+
                                             console.log(window.unites_de_formation);
                                             //parse information
-                                            $(".NoteTable").find("td").attr("id","");
+                                            $(".NoteTable").find("td").attr("id", "");
                                             $(".NoteTable").find("td input").val("");
-                                            window.unites_de_formation.forEach((unite,index,arr)=>{
+                                            window.unites_de_formation.forEach((unite, index, arr) => {
                                                 var total = 0;
-                                                $(".NomModule_"+(index+1)).find("input").val(unite['nom_Unité_de_formation']);
-                                                unite.notes.forEach((note,index2,arr)=>{
-                                                    $(".note_"+(index+1)+"_"+(index2+1)).find("input").val(note['nomber']);
-                                                    $(".note_"+(index+1)+"_"+(index2+1)).attr("id","active");
+                                                var _index = (index + 1);
+                                                if (unite.index != undefined) {
+                                                    _index = unite.index + 1;
+                                                }
+                                                $(".NomModule_" + _index).find("input").val(unite['nom_Unité_de_formation']);
+                                                unite.notes.forEach((note, index2, arr) => {
+                                                    var _index2 = (index2 + 1);
+                                                    if (note.index != undefined) {
+                                                        _index2 = note.index + 1;
+                                                    }
+                                                    $(".note_" + _index + "_" + _index2).find("input").val(note['nomber']);
+                                                    $(".note_" + _index + "_" + _index2).attr("id", "active");
                                                     total += parseFloat(note['nomber']);
                                                 });
-                                                $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
+                                                $(".total_" + _index).find("input").val(parseInt(total / unite.notes.length));
                                             });
                                         }
-                                        $(".NoteTable").find("#Reset").on("click",(e)=>{
-                                            confirmChanges(null,"Réinitialiser les modifications","Voulez-vous vraiment réinitialiser les modifications ?",()=>{
-    
-                                                $(".NoteTable").find("#Apply").prop("disabled",true);
-                                                onFinish(); 
+                                        $(".NoteTable").find("#Reset").on("click", (e) => {
+                                            confirmChanges(null, "Réinitialiser les modifications", "Voulez-vous vraiment réinitialiser les modifications ?", () => {
+
+                                                $(".NoteTable").find("#Apply").prop("disabled", true);
+                                                $.post("../inc/functions.inc.php", {
+                                                    function_name: "executeRequete",
+                                                    requet: "SELECT * from unité_de_formation where Tableau_des_points_IdTableau_tableau='" + window.selected3[0]['IdTableau_tableau'] + "';"
+                                                }, function(d) {
+                                                    // Handle the response here
+                                                    // console.log(data);
+                                                    var data = JSON.parse(d);
+                                                    window.unites_de_formation = data;
+                                                    console.log(window.unites_de_formation);
+                                                    var count = 0;
+                                                    window.unites_de_formation.forEach(unite => {
+                                                        unite.notes = [];
+                                                        $.post("../inc/functions.inc.php", {
+                                                            function_name: "executeRequete",
+                                                            requet: "SELECT * from note where Unité_de_formation_IdFormation='" + unite['IdFormation'] + "';"
+                                                        }, function(d) {
+                                                            // Handle the response here
+                                                            // console.log(data);
+                                                            var data = JSON.parse(d);
+                                                            unite.notes = [...unite.notes, ...data];
+                                                            count++;
+                                                            if (window.unites_de_formation.length == count) {
+                                                                window.onFinish();
+                                                            }
+                                                        });
+                                                    });
+                                                });
                                             });
                                         });
                                         var count = 0;
-                                        window.unites_de_formation.forEach(unite=>{
+                                        window.unites_de_formation.forEach(unite => {
                                             unite.notes = [];
-                                            $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from note where Unité_de_formation_IdFormation='"+unite['IdFormation']+"';" }, function(d) {
+                                            $.post("../inc/functions.inc.php", {
+                                                function_name: "executeRequete",
+                                                requet: "SELECT * from note where Unité_de_formation_IdFormation='" + unite['IdFormation'] + "';"
+                                            }, function(d) {
                                                 // Handle the response here
                                                 // console.log(data);
                                                 var data = JSON.parse(d);
-                                                unite.notes = [...unite.notes,...data];
+                                                unite.notes = [...unite.notes, ...data];
                                                 count++;
-                                                if(window.unites_de_formation.length == count){
-                                                    onFinish();
+                                                if (window.unites_de_formation.length == count) {
+                                                    window.onFinish();
                                                 }
                                             });
                                         });
 
 
-                                     
+
                                     });
                                 });
                             }
-                            $(".NoteTable .Retour").find("button").on("click",()=>{
-                                $(".viewTablauxCheckbox").prop("checked",false);
+                            $(".NoteTable .Retour").find("button").on("click", () => {
+                                $(".viewTablauxCheckbox").prop("checked", false);
                             });
                         </script>
 
@@ -740,151 +1049,154 @@
 
 
                 </div>
-                <div id="" class="NoteTable" >
-                    
-                        <div class="Retour mb-3">
-                            <button type="button" name="" id="" class="btn btn-primary">Retour en arrière</button>
-                        </div>
-                        <table class="table
+                <div id="" class="NoteTable">
+
+                    <div class="Retour mb-3">
+                        <button type="button" name="" id="" class="btn btn-primary">Retour en arrière</button>
+                    </div>
+                    <table class="table
                         
                         table-bordered 
                         table-primary
                         align-middle">
-                            <thead>
-                                <tr class="bg-primary ">
-                                    <th scope="col" class="bg-primary text-white">La matiere</th>
-                                    <th scope="col" class="bg-primary text-white ">Control 1</th>
-                                    <th scope="col" class="bg-primary text-white ">Control 2</th>
-                                    <th scope="col" class="bg-primary text-white ">Control 3</th>
-                                    <th scope="col" class="bg-primary text-white ">Control 4</th>
-                                    <th scope="col" class="bg-primary text-white">Total</th>
-                                </tr>
-                            </thead>
-                            <style>
-                                .NameModuleInput{
-                                    border: none;
-                                    background-color: transparent;
-                                    color: inherit;
-                                }
-                                .NoteTable td{
-                                    padding: 0;
-                                }
-                                .NoteTable input[type="number"]{
-                                    border: none;
-                                    border-radius: 0;
-                                    background-color: transparent;
-                                    color: inherit;
-                                    appearance: textfield;
-                                    
+                        <thead>
+                            <tr class="bg-primary ">
+                                <th scope="col" class="bg-primary text-white">La matiere</th>
+                                <th scope="col" class="bg-primary text-white ">Control 1</th>
+                                <th scope="col" class="bg-primary text-white ">Control 2</th>
+                                <th scope="col" class="bg-primary text-white ">Control 3</th>
+                                <th scope="col" class="bg-primary text-white ">Control 4</th>
+                                <th scope="col" class="bg-primary text-white">Total</th>
+                            </tr>
+                        </thead>
+                        <style>
+                            .NameModuleInput {
+                                border: none;
+                                background-color: transparent;
+                                color: inherit;
+                            }
 
-                                }
-                                .NoteTable input[type="number"].form-control:focus {
-                                    
-                                    outline: 0;
-                                    box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
-                                }
-                            </style>
-                            <tbody>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_1"><input type="text" value="MDT_101" class="NameModuleInput form-control"></td>
-                                    <td class="note_1_1" id="active"><input type="number" class="form-control form-control-sm" value="0"></td>
-                                    <td class="note_1_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_1_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_1_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_1"><input type="number" disabled class="form-control form-control-sm" value="0"></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_2"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="note_2_1"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_2_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_2_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_2_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_2"><input type="number" disabled class="form-control form-control-sm"></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_3"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="note_3_1"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_3_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_3_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_3_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_3"><input type="number" disabled class="form-control form-control-sm"></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_4"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="note_4_1"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_4_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_4_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_4_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_4"><input type="number" disabled class="form-control form-control-sm"></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_5"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="note_5_1"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_5_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_5_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_5_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_5"><input type="number" disabled class="form-control form-control-sm"></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_6"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="note_6_1"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_6_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_6_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_6_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_6"><input type="number" disabled class="form-control form-control-sm"></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_7"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="note_7_1"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_7_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_7_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_7_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_7"><input type="number" disabled class="form-control form-control-sm"></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white NomModule_8"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="note_8_1"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_8_2"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_8_3"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="note_8_4"><input type="number" class="form-control form-control-sm"></td>
-                                    <td class="total_8"><input type="number" disabled class="form-control form-control-sm"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table class="table w-50
+                            .NoteTable td {
+                                padding: 0;
+                            }
+
+                            .NoteTable input[type="number"] {
+                                border: none;
+                                border-radius: 0;
+                                background-color: transparent;
+                                color: inherit;
+                                appearance: textfield;
+
+
+                            }
+
+                            .NoteTable input[type="number"].form-control:focus {
+
+                                outline: 0;
+                                box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+                            }
+                        </style>
+                        <tbody>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_1"><input type="text" value="MDT_101" class="NameModuleInput form-control"></td>
+                                <td class="note_1_1"><input type="number" class="form-control form-control-sm" value="0"></td>
+                                <td class="note_1_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_1_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_1_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_1"><input type="number" disabled class="form-control form-control-sm" value="0"></td>
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_2"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="note_2_1"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_2_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_2_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_2_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_2"><input type="number" disabled class="form-control form-control-sm"></td>
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_3"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="note_3_1"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_3_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_3_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_3_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_3"><input type="number" disabled class="form-control form-control-sm"></td>
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_4"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="note_4_1"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_4_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_4_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_4_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_4"><input type="number" disabled class="form-control form-control-sm"></td>
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_5"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="note_5_1"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_5_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_5_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_5_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_5"><input type="number" disabled class="form-control form-control-sm"></td>
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_6"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="note_6_1"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_6_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_6_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_6_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_6"><input type="number" disabled class="form-control form-control-sm"></td>
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_7"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="note_7_1"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_7_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_7_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_7_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_7"><input type="number" disabled class="form-control form-control-sm"></td>
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white NomModule_8"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="note_8_1"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_8_2"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_8_3"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="note_8_4"><input type="number" class="form-control form-control-sm"></td>
+                                <td class="total_8"><input type="number" disabled class="form-control form-control-sm"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table w-50
                         table-bordered 
                         table-primary
                         align-middle">
-                            <thead style="opacity: 0; border:none;">
-                                <tr style="border:none;">
-                                    <th scope="col" class="bg-primary text-white">La matiere</th>
-                                    <th scope="col" class="bg-primary text-white">Control 1</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white GNomModule_1"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="Gnote_1"><input type="number" class=" form-control form-control-sm"></td>
-                                    
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white GNomModule_2"><input type="text" value="" class="NameModuleInput form-control"></td>
-                                    <td class="Gnote_2"><input type="number" class=" form-control form-control-sm"></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                        <div class=" mb-3">
-                            <button type="button" id="Apply" class="btn btn-success" disabled>Appliquer les modifications</button>
-                            <button type="button" id="Reset" class="btn btn-danger">Réinitialiser les modifications</button>
-                        </div>
-                    
-                    
+                        <thead style="opacity: 0; border:none;">
+                            <tr style="border:none;">
+                                <th scope="col" class="bg-primary text-white">La matiere</th>
+                                <th scope="col" class="bg-primary text-white">Control 1</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white GNomModule_1"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="Gnote_1"><input type="number" class=" form-control form-control-sm"></td>
+
+                            </tr>
+                            <tr class="">
+                                <td scope="row" class="bg-primary text-white GNomModule_2"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                <td class="Gnote_2"><input type="number" class=" form-control form-control-sm"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div class=" mb-3">
+                        <button type="button" id="Apply" class="btn btn-success" disabled>Appliquer les modifications</button>
+                        <button type="button" id="Reset" class="btn btn-danger">Réinitialiser les modifications</button>
+                    </div>
+
+
 
                 </div>
                 <script>
-                    $(".NoteTable .Retour").find("button").on("click",()=>{
-                        $(".viewTablauxCheckbox").prop("checked",false);
+                    $(".NoteTable .Retour").find("button").on("click", () => {
+                        $(".viewTablauxCheckbox").prop("checked", false);
                     });
                 </script>
             </div>
@@ -892,10 +1204,8 @@
 
         </div>
     </div>
-    <div style="display: none;"
-        class="position-absolute  w-100 h-100 top-50 start-50 translate-middle p-0 m-0 PopupBackground">
-        <div
-            class="container-lg  position-absolute shadow-1  top-50 start-50 translate-middle overflow-hidden bg-white rounded-4 p-0">
+    <div style="display: none;" class="position-absolute  w-100 h-100 top-50 start-50 translate-middle p-0 m-0 PopupBackground">
+        <div class="container-lg  position-absolute shadow-1  top-50 start-50 translate-middle overflow-hidden bg-white rounded-4 p-0">
             <div class="d-flex flex-column justify-content-start p-0">
                 <div class="col-2 w-100 ps-5 p-4 m-0 text-white bg-primary shadow-sm   ">
                     <h3> <b>Membre Edit</b></h3>
@@ -915,8 +1225,7 @@
                             <td colspan="2">
                                 <div class="row">
                                     <div class="col-6    p-0 m-0">
-                                        <input type="text" class="form-control m-0 " disabled name="" id=""
-                                            aria-describedby="helpId" placeholder="">
+                                        <input type="text" class="form-control m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
                                     </div>
                                     <!-- <div class="col-6    p-0 m-0">
                                         <input type="text"
@@ -932,12 +1241,10 @@
                             <td colspan="2">
                                 <div class="row">
                                     <div class="col-6    p-0 m-0">
-                                        <input type="text" class="form-control rounded-start rounded-0 m-0 " disabled
-                                            name="" id="" aria-describedby="helpId" placeholder="">
+                                        <input type="text" class="form-control rounded-start rounded-0 m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
                                     </div>
                                     <div class="col-6    p-0 m-0">
-                                        <input type="text" class="form-control rounded-end rounded-0  m-0 " name=""
-                                            id="" aria-describedby="helpId" placeholder="">
+                                        <input type="text" class="form-control rounded-end rounded-0  m-0 " name="" id="" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </td>
@@ -949,12 +1256,10 @@
                             <td colspan="2">
                                 <div class="row">
                                     <div class="col-6    p-0 m-0">
-                                        <input type="text" class="form-control rounded-start rounded-0 m-0 " disabled
-                                            name="" id="" aria-describedby="helpId" placeholder="">
+                                        <input type="text" class="form-control rounded-start rounded-0 m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
                                     </div>
                                     <div class="col-6    p-0 m-0">
-                                        <input type="text" class="form-control rounded-end rounded-0  m-0 " name=""
-                                            id="" aria-describedby="helpId" placeholder="">
+                                        <input type="text" class="form-control rounded-end rounded-0  m-0 " name="" id="" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </td>
@@ -966,12 +1271,10 @@
                             <td colspan="2">
                                 <div class="row">
                                     <div class="col-6    p-0 m-0">
-                                        <input type="date" class="form-control rounded-start rounded-0 m-0 " disabled
-                                            name="" id="" aria-describedby="helpId" placeholder="">
+                                        <input type="date" class="form-control rounded-start rounded-0 m-0 " disabled name="" id="" aria-describedby="helpId" placeholder="">
                                     </div>
                                     <div class="col-6    p-0 m-0">
-                                        <input type="date" class="form-control rounded-end rounded-0  m-0 " name=""
-                                            id="" aria-describedby="helpId" placeholder="">
+                                        <input type="date" class="form-control rounded-end rounded-0  m-0 " name="" id="" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </td>
@@ -1008,13 +1311,11 @@
     </div>
 
     <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-        </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+    </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>
