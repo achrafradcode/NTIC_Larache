@@ -67,6 +67,44 @@
                                     ?)";
         try {
             $stmt = executeRequete($sql);
+            
+            
+            $pdo->beginTransaction();
+            foreach ($data as $row)
+            {
+                $stmt->execute($row);
+            }
+            $pdo->commit();
+            $result["success"] = ["msg"=>"successfully","msgDet"=>"utilisateur ajouter !"];
+            
+        }catch (Exception $e){
+            $pdo->rollback();
+            $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support ."];
+            die("Error querying database: " . $e->getMessage());
+        }
+        
+        try {
+            $stmt = executeRequete("SELECT * FROM membre where nom_personnel='$Nom'");
+            $idMembre = $stmt->fetchAll(PDO::FETCH_ASSOC)[0]["IdMembres"];
+        }catch (Exception $e){
+            $pdo->rollback();
+            $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support ."];
+            die("Error querying database: " . $e->getMessage());
+        }
+        
+        $data = [ [$idMembre, 
+        
+        "$GroupDeStagiaires"]];
+
+        $sql = "INSERT INTO enseigner (`Membre_IdMembres`, 
+                                    `Groupe_Stagiaires_code_groupe_Groupe`
+                                    ) 
+                                    VALUES 
+                                    (?, 
+                                    ?
+                                    )";
+        try {
+            $stmt = executeRequete($sql);
     
             
             $pdo->beginTransaction();

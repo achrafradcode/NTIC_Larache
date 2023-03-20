@@ -2,6 +2,9 @@
 session_start();
 require_once("inc/functions.inc.php");
 $indexPage=-1;
+$IdArticle = $_GET['id'];
+$stmt5 = executeRequete("SELECT * FROM `articles_d'actualité` where IdArticle=$IdArticle;");
+$stmt5->execute();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +12,7 @@ $indexPage=-1;
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISTA larache</title>
+    <title>ISTA larache - <?php echo $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]["titre_de_l'actualité"];?></title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -149,12 +152,29 @@ $indexPage=-1;
 </head>
 <body>
 <?php require_once("Header.php")?>   
- <section class="heading-link" style="background:  linear-gradient(rgba(0, 0, 0, 0.596), rgba(47, 142, 206, 0.514)), url(pictuer/OFPPT-d.png); background-position: center; background-size: cover; height: 300px;">
-    <h3 style="padding-top: 100px;"> Développement Digital</h3>
+ <section class="heading-link" style="background:  linear-gradient(rgba(0, 0, 0, 0.596), rgba(47, 142, 206, 0.514)), url(/inc/<?php 
+                  $IdArticle = $_GET['id'];
+                  $stmt5 = executeRequete("SELECT * FROM `articles_d'actualité` where IdArticle=$IdArticle;");
+                  $stmt5->execute();
+                  $IdPhoto = $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]["IdPhoto"];
+                  $stmt3 = executeRequete("SELECT * FROM photo where IdPhoto=$IdPhoto;");
+                  $stmt3->execute();
+                  echo urldecode($stmt3->fetchAll(PDO::FETCH_ASSOC)[0]['url']);
+               ?>); background-position: center; background-size: cover; height: 300px;">
+    <h3 style="padding-top: 100px;"> <?php
+            $IdArticle = $_GET['id'];
+            $stmt5 = executeRequete("SELECT * FROM `articles_d'actualité` where IdArticle=$IdArticle;");
+            $stmt5->execute(); 
+            echo $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]["titre_de_l'actualité"];?></h3>
    
  </section>
     <section class="info">
-        <div class="cl">
+    <?php
+    $IdArticle = $_GET['id'];
+    $stmt5 = executeRequete("SELECT * FROM `articles_d'actualité` where IdArticle=$IdArticle;");
+    $stmt5->execute(); 
+    echo $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]['contenu'];?>
+        <!-- <div class="cl">
             <h1>Technicien Spécialisé en Développement Digital</h1>
             <h3>Description de la Formation</h3>
             <p>Le Technicien Spécialisé en Développement Informatique est un professionnel  en charge du développement et de la maintenance des applications informatiques. Il intervient, généralement pour le compte de Sociétés de Services et d’Ingénierie Informatiques, dans de nombreux domaines applicatifs (industrie, gestion, loisirs…).
@@ -195,7 +215,7 @@ $indexPage=-1;
                 <li>Examen de passage ;</li>
                 <li>Examen de fin de formation</li>
               </ul>
-        </div>
+        </div> -->
 
     </section>
 

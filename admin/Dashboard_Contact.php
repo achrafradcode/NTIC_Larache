@@ -446,6 +446,16 @@
             
             <div class="contentPage  mt-5 ms-3 me-3">
                 <!--Logs-->
+                <div class="position-absolute" id="toasts">
+                                <!-- <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="d-flex">
+                                        <div class="toast-body">
+                                        Hello, world! This is a toast message.
+                                        </div>
+                                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                </div> -->
+                            </div>
                 <div class="TapPanel  ">
                     <div class="TapTitle float-start fw-bold text-black-50">
                       <h4>Messages</h4>
@@ -553,7 +563,6 @@
                                             // Handle the response here
                                             $(".DeleteConfirmation").modal('hide');
                                             
-                                            window.container.remove();
                                             
                                             // setTimeout(location.reload(),1000);
                                             if(d=="error"){
@@ -563,6 +572,7 @@
                                                     message:"Une erreur s'est produite !"
                                                 });
                                             }else{
+                                                window.container.remove();
                                                 showToast({
                                                     type:"success",
                                                     autoDismiss: true,
@@ -686,52 +696,28 @@
             parseSelectionData();
         });
         $(".PopupBackground").find("#Enregistrer").on("click",()=>{
-            var inputsFilled = $(".PopupBackground").find("input,select").filter(function () {
-                var l = $.trim($(this).val());
-                if(l.length == 0 && $(this).attr("name")=="Date_de_publication"){
-                    console.log($(this).attr("name")+":"+l +" IGNORE");
-                    $(this).val($(".PopupBackground").find("#old_Date_de_publication").val());
-                    
-                }else if( $(this).attr("name")=="old_Date_de_publication"){
-                    return false;
-                }
-                l = $.trim($(this).val());
-                
-                console.log($(this).attr("name")+":"+l + " :: "+ (l.length == 0));
-                return l.length == 0;
-            }).length == 0;
-            console.log(inputsFilled);
             
-            if(inputsFilled){
-                $(".PopupBackground").find("#form").submit();
-                // $(".TapPanel").find("#ajoutUser").prop("disabled",true);
-            
-                // showToast({
-                //     type:"success",
-                //     autoDismiss: true,
-                //     message:"Le Utilisateur a ete Ajouter avec success !!"
-                // });
-            }else{
+            $(".PopupBackground").modal("hide");
                 showToast({
-                    type:"error",
+                    type:"success",
                     autoDismiss: true,
-                    message:"Verify que tout les chemains corrects !!"
+                    message:"Message envoyé avec succès !!"
                 });
-                
-            }
+            
         });
         $(".PopupBackground").find("#quit").on("click",function(){
             $(".PopupBackground").modal("hide");
         });
         function parseSelectionData(){
             $PopupBackground = $(".PopupBackground");
-            console.log($PopupBackground.find("#form")[0]);
-            $PopupBackground.find("#form")[0].reset();
+            // console.log($PopupBackground.find("#form")[0]);
+            // $PopupBackground.find("#form")[0].reset();
     
-            $PopupBackground.find("#idArticle").val(window.selected[0]['idAnnonces']);
-            $PopupBackground.find("#Contenu").val(window.selected[0]['titre_Annonces']);
-            $PopupBackground.find("#old_Date_de_publication").val(window.selected[0]['date_de_publication']);
-            $PopupBackground.find("#old_NomDelediteur").val(window.selected[0]["Membre_IdMembres"]);
+            $PopupBackground.find("#toEmail").val(window.selected[0]['mail']);
+            $PopupBackground.find("#Contenu").val("");
+            // $PopupBackground.find("#Contenu").val(window.selected[0]['titre_Annonces']);
+            // $PopupBackground.find("#old_Date_de_publication").val(window.selected[0]['date_de_publication']);
+            // $PopupBackground.find("#old_NomDelediteur").val(window.selected[0]["Membre_IdMembres"]);
             
             
     

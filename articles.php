@@ -171,23 +171,44 @@ $indexPage=2;
 
    <h1 class="heading"> Les Dernier Articles </h1>
 
-   <div class="box-container mb-4">
+   <?php
+                                            
+      $stmt = executeRequete("SELECT * FROM `articles_d'actualité`;");
+      $stmt->execute();
+      $index = 0;
 
-      <div class="box d-flex justify-content-md-start">
-         <div class="image">
-            <img src="pictuer/dev2.jpg" alt="">
-            <h3>2023-03-4</h3>
+      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+          $index = $index + 1;
+   ?>
+       
+       <div class="box-container mb-4">
+          
+          <div class="box d-flex justify-content-md-start">
+             <div class="image">
+            <img src="/inc/<?php 
+                  $IdPhoto = $row["IdPhoto"];
+                  $stmt3 = executeRequete("SELECT * FROM photo where IdPhoto=$IdPhoto;");
+                  $stmt3->execute();
+                  echo urldecode($stmt3->fetchAll(PDO::FETCH_ASSOC)[0]['url']);
+               ?>" alt="">
+            <h3><?php echo $row["date_de_publication"];?></h3>
          </div>
          <div class="content w-100">
-            <h3>Technicien Spécialisé en Développement Informatique</h3>
-            <p>Technicien Spécialisé en Développement Informatique proposé par l'OFPPT au Maroc dans le Secteur NTIC</p>
-            <a href="developement.php" class="btn">Lire Plus</a>
+            <h3><?php echo $row["titre_de_l'actualité"];?></h3>
+            <p><?php echo $row["Description"];?></p>
+            <a href="article_contenu.php?id=<?php echo $row["IdArticle"];?>" class="btn">Lire Plus</a>
             <div class="icons">
-               <span> <i class="fas fa-pencil-alt"></i> ADMIN </span>
-              
+               <span> <i class="fas fa-pencil-alt"></i> <?php 
+                  $IdMembres = $row["Membre_IdMembres"];
+                  $stmt2 = executeRequete("SELECT * FROM membre where IdMembres=$IdMembres;");
+                  $stmt2->execute();
+                  echo $stmt2->fetchAll(PDO::FETCH_ASSOC)[0]['nom_personnel'];
+               ?> </span>
+               
             </div>
          </div>
       </div>
+      <?php } ?>
 
       
    </div>  

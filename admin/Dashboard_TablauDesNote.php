@@ -12,7 +12,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <script src="../inc/js/functions.inc.js"></script>
+    <link rel="stylesheet" href="../inc/css/admin_style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -300,7 +301,45 @@
 </head>
 
 <body>
-
+ <!-- Modal YesOrNo -->
+ <div class="YesOrNoConfirmation modal fade " id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modelbody">
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Non</button>
+        <button type="button" id="ConfirmationOk" class="btn btn-danger">Oui</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function confirmChanges(model,title,contenu,callback){
+        if(model != null)$(model).modal('hide');
+        $(".YesOrNoConfirmation").unbind();
+        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').unbind();
+        $(".YesOrNoConfirmation").on("hide.bs.modal",()=>{
+            if(model != null)$(model).modal('show');
+        });
+        $(".YesOrNoConfirmation").modal('show');
+        $(".YesOrNoConfirmation").find('#exampleModalLabel').text(title);
+        if(contenu != ""){
+            $(".YesOrNoConfirmation").find('#modelbody').show();
+            $(".YesOrNoConfirmation").find('#modelbody').html(contenu);
+        }else{
+            $(".YesOrNoConfirmation").find('#modelbody').hide();
+        }
+        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').on("click",()=>{
+            $(".YesOrNoConfirmation").modal('hide');
+            callback();
+        });
+    }
+</script>
 
     <div class="row m-0 h-100">
         
@@ -343,12 +382,22 @@
                     </div>
                 </div>
             </div>
-            <input name="" id="t" class="btn btn-primary" type="checkbox" value="TestTransition">
+            <input  id="t" class="viewTablauxCheckbox btn btn-primary" type="checkbox" value="TestTransition" style="display: none;">
             <!--QUICK TAPS-->
             <div class="contentPage   position-relative d-flex flex-column mt-2 ms-1 me-2">
                 <!-- <div class="TapTitle  fw-bold text-black-50">
                     <h6>Add New Membre</h6>
                 </div> -->
+                <div class="position-absolute" id="toasts">
+                                <!-- <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="d-flex">
+                                        <div class="toast-body">
+                                        Hello, world! This is a toast message.
+                                        </div>
+                                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                </div> -->
+                            </div>
                 <hr>
                 <div id="active" class=" Selecting" >
 
@@ -363,9 +412,21 @@
                                 <div class="item-centent text-center  p-3 bg-black bg-opacity-25">
                                     .....
                                 </div>
+                                <?php
+                                    
+                                    $stmt = executeRequete("SELECT * FROM groupe_stagiaires;");
+                                    $stmt->execute();
+                                    $index = 0;
+
+                                    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+                                        $index = $index + 1;
+                                ?>
+                                
                                 <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
-                                <input id="active"
+                                    type="button" value="<?php echo $row['code_groupe_Groupe']?>">
+
+                                <?php }?>
+                                <!-- <input id="active"
                                     class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
                                     type="button" value="DWS101">
                                 <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
@@ -375,7 +436,7 @@
                                 <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
                                     type="button" value="DWS101">
                                 <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
-                                    type="button" value="DWS101">
+                                    type="button" value="DWS101"> -->
 
 
 
@@ -385,7 +446,7 @@
                         </div>
 
 
-                        <div class="m-2 ScrollTable Tab2 ScrollTable-FixWidth position-relative rounded-4 overflow-hidden ">
+                        <div class="m-2 ScrollTable Tab2 ScrollTable-FixWidth position-relative rounded-4 overflow-hidden " style="display: none;">
                             <div
                                 class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
                                 <b>Stagiaire</b>
@@ -417,7 +478,7 @@
 
 
 
-                        <div class="m-2 ScrollTable Tab2 ScrollTable-2 position-relative rounded-4 overflow-hidden ">
+                        <div class="m-2 ScrollTable Tab3 ScrollTable-2 position-relative rounded-4 overflow-hidden " style="display: none;">
                             <div
                                 class="Title text-center w-100 bg-primary text-white p-2 rounded-pill shadow position-absolute  ">
                                 <b>Liste des information</b>
@@ -430,7 +491,7 @@
                                             <div class="form-label">Nom :</div>
                                         </td>
                                         <td>
-                                            <div class="form-label">Raddah </div>
+                                            <div class="form-label" id="nom_personel">Raddah </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -438,7 +499,7 @@
                                             <div class="form-label">Prenom :</div>
                                         </td>
                                         <td>
-                                            <div class="form-label">Acharf </div>
+                                            <div class="form-label" id="prenom">Acharf </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -446,7 +507,7 @@
                                             <div class="form-label">Group :</div>
                                         </td>
                                         <td>
-                                            <div class="form-label">DWFS202 </div>
+                                            <div class="form-label" id="groupId">DWFS202 </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -470,10 +531,207 @@
                             $(".ScrollTable.Tab1").find("input").on("click",function(){
                                 $(".ScrollTable.Tab1").find("input").attr("id","");
                                 $(this).attr("id","active");
+                                var group_id = $(this).val();
+                                
+                                $(".ScrollTable.Tab3").hide();
+                                $(".ScrollTable.Tab2").find("input").each((index,Element)=>{Element.remove();});
+                                $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from enseigner where Groupe_Stagiaires_code_groupe_Groupe='"+group_id+"';" }, function(d) {
+                                    // Handle the response here
+                                    console.log(group_id);
+                                    var data = JSON.parse(d);
+                                    console.log(data);
+                                    $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where IdMembres in ("+data.map(item=>item['Membre_IdMembres']+"").join(",")+");" }, function(d) {
+                                        
+                                        var data = JSON.parse(d);
+                                        window.selected = data;
+                                        window.selected_group_id = group_id;
+                                        console.log(window.selected);
+                                        $(".ScrollTable.Tab2").show();
+                                        $(".ScrollTable.Tab2").find("input").each((index,Element)=>{Element.remove();});
+                                        $(".ScrollTable.Tab3").hide();
+                                        console.log(window.selected.length);
+                                        for(var i = 0 ; i < window.selected.length ; i++){
+                                            var $input = $("<input>");
+                                            $input.attr("class","item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25");
+                                            $input.val(window.selected[i]['nom_personnel']);
+                                            $(".ScrollTable.Tab2").find(".Content").append($input);
+                                        }
+                                        $(".ScrollTable.Tab2").find("input").on("click",function(e){
+                                            $(".ScrollTable.Tab2").find("input").attr("id","");
+                                            $(e.target).attr("id","active");
+                                            var user_id = $(e.target).val();
+                                            console.log(user_id);
+                                            $(".ScrollTable.Tab3").show();
+                                            // $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from membre where nom_personnel='"+user_id+"';" }, function(d) {
+                                                // Handle the response here
+                                                // console.log(data);
+                                                // var data = JSON.parse(d);
+                                                window.selected2 = window.selected.find(item=>item['nom_personnel']==user_id);
+                                                console.log(window.selected2);
+                                                $(".ScrollTable.Tab3").find("#nom_personel").text(window.selected2['nom_personnel']);
+                                                $(".ScrollTable.Tab3").find("#prenom").text(window.selected2['nom_personnel']);
+                                                $(".ScrollTable.Tab3").find("#groupId").text(window.selected_group_id);
+                                                $(".ScrollTable.Tab3").find("button").unbind(onCLickAcceder);
+                                                $(".ScrollTable.Tab3").find("button").on("click",onCLickAcceder);
+                                                
+                                                // });
+                                            
+                                        });
+                                    });
+                                    
+                                });
+
                             });
-                            $(".ScrollTable.Tab2").find("input").on("click",function(){
-                                $(".ScrollTable.Tab2").find("input").attr("id","");
-                                $(this).attr("id","active");
+
+                            var errorOccured = false;
+                            var successOccured = false;
+                            setInterval(()=>{
+                                if(errorOccured){
+                                    showToast({
+                                        type:"error",
+                                        autoDismiss: true,
+                                        message:"Une erreur s'est produite !"
+                                    });
+                                }else if(successOccured){
+                                
+                                    showToast({
+                                        type:"success",
+                                        autoDismiss: true,
+                                        message:"Enregister avec succès !"
+                                    });
+                                }
+                                successOccured = false;
+                                errorOccured = false;
+                            },1000);
+                            function onCLickAcceder(){
+                                $(".viewTablauxCheckbox").prop("checked",true);
+                                $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from tableau_des_points where Membre_IdMembres='"+window.selected2['IdMembres']+"';" }, function(d) {
+                                    // Handle the response here
+                                    // console.log(data);
+                                    var data = JSON.parse(d);
+                                    window.selected3 = data;
+                                    console.log(window.selected3);
+                                    
+                                    
+                                    // les unite des formations
+                                    $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from unité_de_formation where Tableau_des_points_IdTableau_tableau='"+data[0]['IdTableau_tableau']+"';" }, function(d) {
+                                        // Handle the response here
+                                        // console.log(data);
+                                        var data = JSON.parse(d);
+                                        window.unites_de_formation = data;
+                                        console.log(window.unites_de_formation);
+                                        // Apply
+                                        // Reset
+                                        $(".NoteTable").find("td").attr("id","");
+                                        $(".NoteTable").find("#Apply").on("click",()=>{
+                                            confirmChanges(null,"Appliquer les modifications","Voulez-vous vraiment appliquer les modifications ?",()=>{
+                                                // $.post("../inc/functions.inc.php", { 
+                                                //     function_name: "executeRequete",
+                                                //     msgSuccess:"Utilisateur supprimé avec succès",
+                                                //     msgFaild:"Une erreur s'est produite",
+                                                //     requet:"DELETE from membre where IdMembres='"+window.selected[0].IdMembres+"';" 
+                                                // }, function(d) {
+                                                //     // Handle the response here
+                                                    
+                                                    
+                                                //     // setTimeout(location.reload(),1000);
+                                                //     if(d=="error"){
+                                                //         showToast({
+                                                //             type:"error",
+                                                //             autoDismiss: true,
+                                                //             message:"Une erreur s'est produite !"
+                                                //         });
+                                                //     }else{
+                                                //         showToast({
+                                                //             type:"success",
+                                                //             autoDismiss: true,
+                                                //             message:"Modifications appliquées avec succès !"
+                                                //         });
+
+                                                //     }
+                                                // });
+                                                
+                                                window.unites_de_formation.forEach((unite,index,arr)=>{
+                                                    // $(".NomModule_"+(index+1)).find("input").val(unite['nom_Unité_de_formation']);
+                                                    unite['nom_Unité_de_formation'] = $(".NomModule_"+(index+1)).find("input").val();
+                                                    unite.notes.forEach((note,index2,arr)=>{
+                                                        // $(".note_"+(index+1)+"_"+(index2+1)).find("input").val(note['nomber']);
+                                                        unite.notes[index2].nomber = $(".note_"+(index+1)+"_"+(index2+1)).find("input").val();
+                                                    });
+                                                    // $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
+                                                    $.post("../inc/functions.inc.php", { 
+                                                        function_name: "executeRequete",
+                                                        msgSuccess:"Message supprimé avec succès",
+                                                        msgFaild:"Une erreur s'est produite",
+                                                        requet:"UPDATE `unité_de_formation` SET `nom_Unité_de_formation`='"+unite['nom_Unité_de_formation']+"' WHERE `IdFormation`="+unite['IdFormation']+";" },
+                                                         function(d) {
+                                                            // Handle the response here
+                                                            // $(".DeleteConfirmation").modal('hide');
+                                                            
+                                                            console.log(d);
+                                                            // setTimeout(location.reload(),1000);
+                                                            if(d=="error"){
+                                                                errorOccured = true;
+                                                                
+                                                            }else{
+                                                                // window.container.remove();
+                                                                successOccured = true;
+                                                                
+    
+                                                            }
+                                                    });
+                                                });
+                                            });
+                                        });
+                                        $(".NoteTable").find("td").on("change",(e)=>{
+                                            $(e.target).parent().attr("id","active");
+                                            $(".NoteTable").find("#Apply").prop("disabled",false);
+                                        });
+                                        let onFinish = ()=>{
+                                            console.log(window.unites_de_formation);
+                                            //parse information
+                                            $(".NoteTable").find("td").attr("id","");
+                                            $(".NoteTable").find("td input").val("");
+                                            window.unites_de_formation.forEach((unite,index,arr)=>{
+                                                var total = 0;
+                                                $(".NomModule_"+(index+1)).find("input").val(unite['nom_Unité_de_formation']);
+                                                unite.notes.forEach((note,index2,arr)=>{
+                                                    $(".note_"+(index+1)+"_"+(index2+1)).find("input").val(note['nomber']);
+                                                    $(".note_"+(index+1)+"_"+(index2+1)).attr("id","active");
+                                                    total += parseFloat(note['nomber']);
+                                                });
+                                                $(".total_"+(index+1)).find("input").val(parseInt(total/unite.notes.length));
+                                            });
+                                        }
+                                        $(".NoteTable").find("#Reset").on("click",(e)=>{
+                                            confirmChanges(null,"Réinitialiser les modifications","Voulez-vous vraiment réinitialiser les modifications ?",()=>{
+    
+                                                $(".NoteTable").find("#Apply").prop("disabled",true);
+                                                onFinish(); 
+                                            });
+                                        });
+                                        var count = 0;
+                                        window.unites_de_formation.forEach(unite=>{
+                                            unite.notes = [];
+                                            $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * from note where Unité_de_formation_IdFormation='"+unite['IdFormation']+"';" }, function(d) {
+                                                // Handle the response here
+                                                // console.log(data);
+                                                var data = JSON.parse(d);
+                                                unite.notes = [...unite.notes,...data];
+                                                count++;
+                                                if(window.unites_de_formation.length == count){
+                                                    onFinish();
+                                                }
+                                            });
+                                        });
+
+
+                                     
+                                    });
+                                });
+                            }
+                            $(".NoteTable .Retour").find("button").on("click",()=>{
+                                $(".viewTablauxCheckbox").prop("checked",false);
                             });
                         </script>
 
@@ -482,104 +740,114 @@
 
 
                 </div>
-                <div id="" class="  NoteTable" >
+                <div id="" class="NoteTable" >
                     
-                    
+                        <div class="Retour mb-3">
+                            <button type="button" name="" id="" class="btn btn-primary">Retour en arrière</button>
+                        </div>
                         <table class="table
                         
                         table-bordered 
                         table-primary
                         align-middle">
                             <thead>
-                                <tr class="bg-primary">
+                                <tr class="bg-primary ">
                                     <th scope="col" class="bg-primary text-white">La matiere</th>
-                                    <th scope="col" class="bg-primary text-white">Control 1</th>
-                                    <th scope="col" class="bg-primary text-white">Control 2</th>
-                                    <th scope="col" class="bg-primary text-white">Control 3</th>
-                                    <th scope="col" class="bg-primary text-white">Control 4</th>
+                                    <th scope="col" class="bg-primary text-white ">Control 1</th>
+                                    <th scope="col" class="bg-primary text-white ">Control 2</th>
+                                    <th scope="col" class="bg-primary text-white ">Control 3</th>
+                                    <th scope="col" class="bg-primary text-white ">Control 4</th>
                                     <th scope="col" class="bg-primary text-white">Total</th>
                                 </tr>
                             </thead>
+                            <style>
+                                .NameModuleInput{
+                                    border: none;
+                                    background-color: transparent;
+                                    color: inherit;
+                                }
+                                .NoteTable td{
+                                    padding: 0;
+                                }
+                                .NoteTable input[type="number"]{
+                                    border: none;
+                                    border-radius: 0;
+                                    background-color: transparent;
+                                    color: inherit;
+                                    appearance: textfield;
+                                    
+
+                                }
+                                .NoteTable input[type="number"].form-control:focus {
+                                    
+                                    outline: 0;
+                                    box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
+                                }
+                            </style>
                             <tbody>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 1</td>
-                                    <td></td>
-                                    <td id="active"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_1"><input type="text" value="MDT_101" class="NameModuleInput form-control"></td>
+                                    <td class="note_1_1" id="active"><input type="number" class="form-control form-control-sm" value="0"></td>
+                                    <td class="note_1_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_1_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_1_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_1"><input type="number" disabled class="form-control form-control-sm" value="0"></td>
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_2"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="note_2_1"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_2_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_2_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_2_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_2"><input type="number" disabled class="form-control form-control-sm"></td>
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 3</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_3"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="note_3_1"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_3_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_3_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_3_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_3"><input type="number" disabled class="form-control form-control-sm"></td>
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 4</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_4"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="note_4_1"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_4_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_4_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_4_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_4"><input type="number" disabled class="form-control form-control-sm"></td>
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 5</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_5"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="note_5_1"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_5_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_5_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_5_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_5"><input type="number" disabled class="form-control form-control-sm"></td>
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 6</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_6"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="note_6_1"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_6_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_6_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_6_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_6"><input type="number" disabled class="form-control form-control-sm"></td>
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 7</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_7"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="note_7_1"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_7_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_7_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_7_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_7"><input type="number" disabled class="form-control form-control-sm"></td>
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 8</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 9</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 10</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white NomModule_8"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="note_8_1"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_8_2"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_8_3"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="note_8_4"><input type="number" class="form-control form-control-sm"></td>
+                                    <td class="total_8"><input type="number" disabled class="form-control form-control-sm"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -595,21 +863,30 @@
                             </thead>
                             <tbody>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 1</td>
-                                    <td id="active"></td>
+                                    <td scope="row" class="bg-primary text-white GNomModule_1"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="Gnote_1"><input type="number" class=" form-control form-control-sm"></td>
                                     
                                 </tr>
                                 <tr class="">
-                                    <td scope="row" class="bg-primary text-white">Module 2</td>
-                                    <td></td>
+                                    <td scope="row" class="bg-primary text-white GNomModule_2"><input type="text" value="" class="NameModuleInput form-control"></td>
+                                    <td class="Gnote_2"><input type="number" class=" form-control form-control-sm"></td>
                                 </tr>
                                 
                             </tbody>
                         </table>
+                        <div class=" mb-3">
+                            <button type="button" id="Apply" class="btn btn-success" disabled>Appliquer les modifications</button>
+                            <button type="button" id="Reset" class="btn btn-danger">Réinitialiser les modifications</button>
+                        </div>
                     
                     
 
                 </div>
+                <script>
+                    $(".NoteTable .Retour").find("button").on("click",()=>{
+                        $(".viewTablauxCheckbox").prop("checked",false);
+                    });
+                </script>
             </div>
 
 
