@@ -885,7 +885,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                             // $(".NoteTable").find("#Apply").prop("disabled",false);
                                             if ($(e.target).hasClass("NameModuleInput")) {
                                                 var index = $(e.target).parent().parent().index();
-                                                var unite = window.unites_de_formation[index];
+                                                var unite = window.unites_de_formation.find(i=>i.index==index);
                                                 if (unite == undefined) {
 
                                                     var unite = {
@@ -904,11 +904,12 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                                 isChanged: true,
                                                                 isDeleted: false
                                                             }];
+                                                            
                                                         }
                                                     });
                                                     $(".NoteTable").find("#Apply").prop("disabled", false);
-                                                    window.onFinish();
                                                     window.unites_de_formation = [...window.unites_de_formation, unite];
+                                                    window.onFinish();
                                                 } else {
                                                     if ($(e.target).val() != "") {
                                                         unite["nom_Unité_de_formation"] = $(e.target).val();
@@ -926,10 +927,10 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                             } else {
                                                 if ($(e.target).parent().parent().first().find("input").val() != "") {
                                                     var index = $(e.target).parent().parent().index();
-                                                    var unite = window.unites_de_formation[index];
+                                                    var unite = window.unites_de_formation.find(i=>i.index==index);
 
                                                     var index2 = $(e.target).parent().index() - 1;
-                                                    var note = unite.notes[index2];
+                                                    var note = unite.notes.find(i=>i.index==index2);
                                                     if (note == undefined) {
 
                                                         unite.notes = [...unite.notes, {
@@ -938,21 +939,24 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                             isChanged: true,
                                                             isDeleted: false
                                                         }];
+                                                        console.log(unite);
                                                         $(".NoteTable").find("#Apply").prop("disabled", false);
                                                         window.onFinish();
                                                     } else {
                                                         if ($(e.target).val() != "") {
-                                                            unite.notes[index2].nomber = $(e.target).val();
-                                                            unite.notes[index2].isChanged = true;
-                                                            unite.notes[index2].isDeleted = false;
+                                                            unite.notes.find(i=>i.index=index2).nomber = $(e.target).val();
+                                                            unite.notes.find(i=>i.index=index2).isChanged = true;
+                                                            unite.notes.find(i=>i.index=index2).isDeleted = false;
                                                             $(".NoteTable").find("#Apply").prop("disabled", false);
                                                             window.onFinish();
                                                         } else {
-                                                            unite.notes[index2].isChanged = false;
-                                                            unite.notes[index2].isDeleted = true;
+                                                            unite.notes.find(i=>i.index=index2).isChanged = false;
+                                                            unite.notes.find(i=>i.index=index2).isDeleted = true;
                                                             $(".NoteTable").find("#Apply").prop("disabled", false);
                                                             window.onFinish();
                                                         }
+                                                        console.log($(e.target));
+                                                        console.log(unite);
                                                     }
 
                                                 }
@@ -1163,7 +1167,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table w-50
+                    <!-- SOON <table class="table w-50
                         table-bordered 
                         table-primary
                         align-middle">
@@ -1185,7 +1189,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                             </tr>
 
                         </tbody>
-                    </table>
+                    </table> -->
                     <div class=" mb-3">
                         <button type="button" id="Apply" class="btn btn-success" disabled>Appliquer les modifications</button>
                         <button type="button" id="Reset" class="btn btn-danger">Réinitialiser les modifications</button>

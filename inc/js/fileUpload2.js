@@ -1,7 +1,7 @@
 $(window).on("load",()=>{
 
 
-  let dropArea = document.getElementById('upload_dropZone');
+  let dropArea = document.getElementById('upload_dropZone2');
 
   ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false)
@@ -68,8 +68,8 @@ $(window).on("load",()=>{
   }
   let filesDone = 0
   let filesToDo = 0
-  let progressBar = document.getElementById('progress-bar')
-  let selectBrowser = document.getElementById('upload_image_background')
+  let progressBar = document.getElementById('progress-bar2')
+  let selectBrowser = document.getElementById('upload_image_background2')
   let uploadProgress = []
 
   function initializeProgress(numFiles) {
@@ -91,8 +91,7 @@ $(window).on("load",()=>{
   //   filesDone++
   //   progressBar.value = filesDone / filesToDo * 100
   // }
-  
-  $('#upload_image_background').change(function(){
+  $('#upload_image_background2').change(function(){
     var input = this;
     var url = $(this).val();
     var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
@@ -113,6 +112,7 @@ $(window).on("load",()=>{
     }
   });
   
+  
   progressBar.style.display = "none";
 
   function uploadFile(file ,i) {
@@ -120,8 +120,8 @@ $(window).on("load",()=>{
     var xhr = new XMLHttpRequest()
     var formData = new FormData()
     xhr.open('POST', url, true)
-    $("#upload_image_file")[0].value = "";
-    $("#upload_dropZone").removeClass("filled");
+    $("#upload_image_file2")[0].value = "";
+    $("#upload_dropZone2").removeClass("filled");
     
     // Add following event listener
     progressBar.style.display = "";
@@ -134,7 +134,7 @@ $(window).on("load",()=>{
         // Done. Inform the user
         // progressDone();
         console.log('URL: ', url, '  name: ', xhr.response);
-        $("#upload_image_file")[0].value = JSON.parse(xhr.response).url;
+        $("#upload_image_file2")[0].value = JSON.parse(xhr.response).url;
       }
       else if (xhr.readyState == 4 && xhr.status != 200) {
         // Error. Inform the user
@@ -155,7 +155,7 @@ $(window).on("load",()=>{
       // $("#upload_image_background")[0].value = reader.result
       // console.log(reader.result);
       dropArea.style.backgroundImage = "url('"+reader.result+"')";
-      $("#upload_dropZone").addClass("filled");
+      $("#upload_dropZone2").addClass("filled");
       // let img = document.createElement('img')
       // img.src = reader.result
       // document.getElementById('gallery').appendChild(img)

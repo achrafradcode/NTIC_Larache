@@ -168,7 +168,7 @@ $stmt5->execute();
             echo $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]["titre_de_l'actualité"];?></h3>
    
  </section>
-    <section class="info">
+    <section class="info" style="font-size: x-large;">
     <?php
     $IdArticle = $_GET['id'];
     $stmt5 = executeRequete("SELECT * FROM `articles_d'actualité` where IdArticle=$IdArticle;");
