@@ -584,7 +584,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                             window.selected2 = window.selected.find(item => item['nom_personnel'] == user_id);
                                             console.log(window.selected2);
                                             $(".ScrollTable.Tab3").find("#nom_personel").text(window.selected2['nom_personnel']);
-                                            $(".ScrollTable.Tab3").find("#prenom").text(window.selected2['nom_personnel']);
+                                            $(".ScrollTable.Tab3").find("#prenom").text(window.selected2['prenom']);
                                             $(".ScrollTable.Tab3").find("#groupId").text(window.selected_group_id);
                                             $(".ScrollTable.Tab3").find("button").unbind(onCLickAcceder);
                                             $(".ScrollTable.Tab3").find("button").on("click", onCLickAcceder);
