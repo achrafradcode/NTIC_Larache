@@ -192,3 +192,11 @@ function locationInfo() {
     };
 
 }
+
+function AddLogs(_Category,_Event){
+    
+    $.post("../inc/functions.inc.php", { function_name: "AddLogs",
+        Category:_Category,
+        Event:_Event
+    },(d)=>{});
+}

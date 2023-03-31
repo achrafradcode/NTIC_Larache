@@ -38,8 +38,26 @@ if (isset($_POST["function_name"])) {
         $stmt = executeRequete($_POST["requet"]);
         $stmt->execute();
         $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        
         echo json_encode($array);
+    }
+    if ($_POST["function_name"] == "AddLogs") {
+        session_start();
+        $Category = $_POST["Category"];
+        $Event = $_POST["Event"];
+        try {
+            $currentMemebrId = json_decode($_SESSION["userinfo"],true)[0]['IdMembres'];
+            $stmt = executeRequete("INSERT INTO 
+            `logs`( `Time`, `Category`, `MembreId`, `Event`) 
+            VALUES (curdate(),'$Category','$currentMemebrId','$Event')");
+            $stmt->execute();
+
+            
+        } catch (Exception $e) {
+            // $pdo->rollback();
+            // $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support .[".$e->getMessage()."]"];
+            die("Error querying database: " . $e->getMessage());
+        }
     }
     if ($_POST["function_name"] == "executeRequeteResponse") {
         $sql = $_POST["requet"];

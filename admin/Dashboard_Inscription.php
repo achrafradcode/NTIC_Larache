@@ -34,6 +34,7 @@
         "$Telephone", 
         "$Nationalite", 
         "$Sexe", 
+        "$SecteurProfessionnel", 
         "$CarteNationel", 
         "$CodePostal"]];
         
@@ -49,10 +50,12 @@
                                     `numéro_de_téléphone`, 
                                     `nationalité`, 
                                     `sexe`, 
+                                    `SecteurProfessionnel`, 
                                     `numéro_de_carte`, 
                                     `CodePostal`) 
                                     VALUES 
                                     (?, 
+                                    ?, 
                                     ?, 
                                     ?, 
                                     ?, 
@@ -114,11 +117,115 @@
             }
             $pdo->commit();
             $result["success"] = ["msg"=>"successfully","msgDet"=>"utilisateur ajouter !"];
-            
+            //ADD LOGS
+            try {
+                $currentMemebrId = json_decode($_SESSION["userinfo"],true)[0]['IdMembres'];
+                $stmt = executeRequete("INSERT INTO 
+                `logs`( `Time`, `Category`, `MembreId`, `Event`) 
+                VALUES (curdate(),'Membres','$currentMemebrId','le membre <b>{$newNom}</b> a été ajouter')");
+                $stmt->execute();
+
+                
+            } catch (Exception $e) {
+                // $pdo->rollback();
+                // $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support .[".$e->getMessage()."]"];
+                die("Error querying database: " . $e->getMessage());
+            }
         }catch (Exception $e){
             $pdo->rollback();
             $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support ."];
             die("Error querying database: " . $e->getMessage());
+        }
+    }
+    if (isset($_POST["IdMembres"])) {
+        try {
+            $IdMembres = $_POST["IdMembres"];
+            $newPrenom = $_POST["newPrenom"];
+            $newNom = $_POST["newNom"];
+            $newAdresse = $_POST["newAdresse"];
+            $newNationalite = $_POST["newNationalite"];
+            $newTelephone = $_POST["newTelephone"];
+            $Sexe = $_POST["Sexe"];
+            $DateDeNaissance = $_POST["DateDeNaissance"];
+            $newCodePostal = $_POST["newCodePostal"];
+            $newEmail = $_POST["newEmail"];
+            $GroundStagiaires = $_POST["GroundStagiaires"];
+            $SecteurProfessionnel = $_POST["SecteurProfessionnel"];
+            $DateDinscription = $_POST["DateDinscription"];
+
+
+            try {
+                $stmt = executeRequete("UPDATE `enseigner` SET `Groupe_Stagiaires_code_groupe_Groupe`='$GroundStagiaires' WHERE Membre_IdMembres='$IdMembres'");
+                $stmt->execute();
+
+                
+            } catch (Exception $e) {
+                // $pdo->rollback();
+                // $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support .[".$e->getMessage()."]"];
+                die("Error querying database: " . $e->getMessage());
+            }
+            
+
+
+
+
+            $data = [[
+                $newPrenom,
+                $newNom,
+                $newAdresse,
+                $newNationalite,
+                $newTelephone,
+                $Sexe,
+                $DateDeNaissance,
+                $newCodePostal,
+                $newEmail,
+                $SecteurProfessionnel,
+                $DateDinscription,
+                $IdMembres
+            ]];
+
+
+            $sql = "UPDATE `membre` SET 
+            `prenom`=?,
+            `nom_personnel`=?,
+            `adresse`=?,
+            `nationalité`=?,
+            `numéro_de_téléphone`=?,
+            `sexe`=?,
+            `date_de_naissance`=?,
+            `CodePostal`=?,
+            `email`=?,
+            `SecteurProfessionnel`=?,
+            `date_d'inscription`=?
+            WHERE IdMembres=?";
+            $stmt = executeRequete($sql);
+            // echo "$newPrenom "."$newNom "."$newAdresse "."$newNationalite "."$newTelephone "."$Sexe "."$DateDeNaissance "."$newCodePostal "."$newEmail "."$SecteurProfessionnel "."$DateDinscription ".$IdMembres;
+
+
+            $pdo->beginTransaction();
+            foreach ($data as $row) {
+                $stmt->execute($row);
+            }
+            $pdo->commit();
+            $result["success"] = ["msg" => "successfully", "msgDet" => "Annonce a été enregistrer !"];
+            //ADD LOGS
+            try {
+                $currentMemebrId = json_decode($_SESSION["userinfo"],true)[0]['IdMembres'];
+                $stmt = executeRequete("INSERT INTO 
+                `logs`( `Time`, `Category`, `MembreId`, `Event`) 
+                VALUES (curdate(),'Membres','$currentMemebrId','le membre <b>{$newNom}</b> a été mis à jour')");
+                $stmt->execute();
+
+                
+            } catch (Exception $e) {
+                // $pdo->rollback();
+                // $result["error"] = ["msg"=>"error ??","msgDet"=>"verify les inputs entrer ou contacter le support .[".$e->getMessage()."]"];
+                die("Error querying database: " . $e->getMessage());
+            }
+        } catch (Exception $e) {
+            $pdo->rollback();
+            $result["error"] = ["msg" => "error ??", "msgDet" => "verify les inputs entrer ou contacter le support .[" . $e->getMessage() . "]"];
+            // die("Error querying database: " . $e->getMessage());
         }
     }
 ?>
@@ -821,6 +928,7 @@
                                                         $S.append($newS3);
                                                     });
                                                     // $md.modal("hide");
+                                                    AddLogs("Membres",'les groups des stagiaires a été changer');
                                                     
                                                     showToast({
                                                         type:"success",
@@ -1087,6 +1195,7 @@
                                             // $(".yesOrNoConfirmation").modal('show');
                                             // $(".DeleteConfirmation").find(".UserName").text(window.selected[0].nom_personnel);
                                             confirmChanges(null,"Mot De Pass","Mot De Pass :<strong> ["+window.selected[0].password+"]</strong><br>Voulez-Vous l'envoyer dans un e-mail?",()=>{
+                                                AddLogs("Membres",'le Mot De Pass été envoyer a <b>{'+window.selected[0].email+'}</b>');
                                                 showToast({
                                                     type:"success",
                                                     autoDismiss: true,
@@ -1110,6 +1219,7 @@
                                                     message:"Une erreur s'est produite !"
                                                 });
                                             }else{
+                                                AddLogs("Membres",'le Membre <b>{'+window.selected[0].nom_personnel+'}</b> été supprimer');
                                                 showToast({
                                                     type:"success",
                                                     autoDismiss: true,
@@ -1166,7 +1276,8 @@
                 <div class="col-2 w-100 ps-5 p-4 m-0 text-white bg-primary shadow-sm   ">
                     <h3> <b>Membre Edit</b></h3>
                 </div>
-                <form  id="form">
+                
+                <form method="post" id="form">
                 <div class="col-10 pt-5 ps-4 pe-4 pb-5 w-100">
                     <div class="row m-0">
                         <div class="col-4 ps-3 pe-3">
@@ -1179,7 +1290,7 @@
                                     </div>
                                     <div class="col-6    p-0 m-0">
                                         <input type="text"
-                                        class="form-control rounded-end rounded-0  m-0 " name="" id="newPrenom" aria-describedby="helpId" placeholder="">
+                                        class="form-control rounded-end rounded-0  m-0 " name="newPrenom" id="newPrenom" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1192,7 +1303,7 @@
                                     </div>
                                     <div class="col-6    p-0 m-0">
                                         <input type="text"
-                                        class="form-control rounded-end rounded-0  m-0 " name="" id="newNom" aria-describedby="helpId" placeholder="">
+                                        class="form-control rounded-end rounded-0  m-0 " name="newNom" id="newNom" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1201,11 +1312,11 @@
                                 <div class="row">
                                     <div class="    p-0 m-0">
                                         <input type="text"
-                                        class="form-control rounded-top rounded-0  m-0 " disabled name="oldAdresse" id="" aria-describedby="helpId" placeholder="">
+                                        class="form-control rounded-top rounded-0  m-0 " disabled name="oldAdresse" id="oldAdresse" aria-describedby="helpId" placeholder="">
                                     </div>
                                     <div class="    p-0 m-0">
                                         <input type="text"
-                                        class="form-control rounded-bottom rounded-0  m-0 " name="" id="newAdresse" aria-describedby="helpId" placeholder="">
+                                        class="form-control rounded-bottom rounded-0  m-0 " name="newAdresse" id="newAdresse" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1216,7 +1327,7 @@
                                 <div class="row">
                                     <div class="col-6    p-0 m-0">
                                         
-                                        <select class="form-select form-select-lg rounded-start rounded-0 m-0" name="" id="oldNationalite">
+                                        <select disabled class="form-select form-select-lg rounded-start rounded-0 m-0 countries" name="" id="oldNationalite">
                                             <option selected>Select Nationalite</option>
                                             <option value="">Marocan</option>
                                             <option value="">Formateur</option>
@@ -1225,7 +1336,7 @@
                                     </div>
                                     <div class="col-6    p-0 m-0">
                                         
-                                        <select class="form-select form-select-lg rounded-end rounded-0  m-0" name="" id="newNationalite">
+                                        <select class="form-select form-select-lg rounded-end rounded-0  m-0 countries" name="newNationalite" id="newNationalite">
                                             <option selected>Select Nationalite</option>
                                             <option value="">Marocan</option>
                                             <option value="">Formateur</option>
@@ -1243,7 +1354,7 @@
                                     </div>
                                     <div class="col-6    p-0 m-0">
                                         <input type="text"
-                                        class="form-control rounded-end rounded-0  m-0 " name="" id="newTelephone" aria-describedby="helpId" placeholder="">
+                                        class="form-control rounded-end rounded-0  m-0 " name="newTelephone" id="newTelephone" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1252,10 +1363,10 @@
                                 <label for="" class="form-label">Sexe</label>
                                 <div class="row">
                                     <div class="    p-0 m-0">
-                                        <select class="form-select form-select-lg" name="" id="Sexe">
-                                            <option selected>Select one</option>
-                                            <option value="">Homme</option>
-                                            <option value="">Femme</option>
+                                        <select class="form-select form-select-lg" name="Sexe" id="Sexe">
+                                            <option selected>Selectioner</option>
+                                            <option value="H">Homme</option>
+                                            <option value="F">Femme</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1267,7 +1378,7 @@
                                 <div class="row">
                                     <div class="    p-0 m-0">
                                         <input type="date"
-                                        class="form-control  m-0 "  name="" id="DateDeNaissance" aria-describedby="helpId" placeholder="">
+                                        class="form-control  m-0 "  name="DateDeNaissance" id="DateDeNaissance" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1280,7 +1391,7 @@
                                     </div>
                                     <div class="    p-0 m-0">
                                         <input type="text"
-                                        class="form-control rounded-bottom rounded-0  m-0 " name="" id="oldCodePostal" aria-describedby="helpId" placeholder="">
+                                        class="form-control rounded-bottom rounded-0  m-0 " name="newCodePostal" id="newCodePostal" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1293,7 +1404,7 @@
                                     </div>
                                     <div class="    p-0 m-0">
                                         <input type="email"
-                                        class="form-control rounded-bottom rounded-0  m-0 " name="" id="newEmail" aria-describedby="helpId" placeholder="">
+                                        class="form-control rounded-bottom rounded-0  m-0 " name="newEmail" id="newEmail" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1301,34 +1412,41 @@
                         
                     </div>
                     <div class="row ps-3 pe-5 mb-0">
-                        <div class="col-6 ps-3 pe-3">
+                        <div class="col-6 ps-3 pe-3 " id="GS">
                             
                             
                             <div class="mb-3 ">
                                 <label for="" class="form-label">Ground stagiaires</label>
                                 <div class="row">
                                     <div class="    p-0 m-0">
-                                        <select class="form-select form-select-lg" name="" id="GroundStagiaires">
+                                        <select class="form-select form-select-lg" name="GroundStagiaires" id="GroundStagiaires">
                                             <option selected>Select Group</option>
-                                            <option value="">DWFS-101</option>
-                                            <option value="">DWFS-102</option>
-                                            <option value="">DWFS-201</option>
-                                            <option value="">DWFS-202</option>
+                                            <?php
+                                    
+                                            $stmt = executeRequete("SELECT * FROM groupe_stagiaires;");
+                                            $stmt->execute();
+                                            $index = 0;
+
+                                            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+                                                $index = $index + 1;
+                                        ?>
+                                        <option value="<?php echo $row['code_groupe_Groupe']?>"><?php echo $row['code_groupe_Groupe']?></option>
+
+                                        <?php }?>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 " style="display: none;">
+                        <div class="col-6 " id="SP" style="display: none;">
                             <div class="mb-3 ">
                                 <label for="" class="form-label">Secteur professionnel</label>
                                 <div class="row">
                                     <div class="    p-0 m-0">
-                                        <select class="form-select form-select-lg" name="" id="SecteurProfessionnel">
+                                        <select class="form-select form-select-lg" name="SecteurProfessionnel" id="SecteurProfessionnel">
                                             <option selected>Select Secteur</option>
-                                            <option value="">Marocan</option>
-                                            <option value="">Formateur</option>
-                                            <option value="">Jakarta</option>
+                                            <option value="0">Formateur</option>
+                                            <option value="1">Redacteur</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1340,7 +1458,7 @@
                                 <div class="row">
                                     <div class="    p-0 m-0">
                                         <input type="date"
-                                        class="form-control  m-0 "  name="" id="DateDinscription" aria-describedby="helpId" placeholder="">
+                                        class="form-control  m-0 "  name="DateDinscription" id="DateDinscription" aria-describedby="helpId" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -1350,6 +1468,7 @@
                     </div>
 
                     <div class="d-flex flex-row justify-content-end">
+                    <input name="IdMembres" id="IdMembres" style="display:none;" type="text" value="">
                         <div class="me-3">
                             <input name="" id="quit" class="btn btn-info" type="button" value="Quiter">
                         </div>
@@ -1357,7 +1476,7 @@
                             <input name="" id="r" class="btn btn-primary" type="button" value="Reset">
                         </div>
                         <div class="me-3">
-                            <input name="" id="" class="btn btn-success" type="submit" value="Enregistrer">
+                            <input name="" id="Enregistrer" class="btn btn-success" type="button" value="Enregistrer">
                         </div>
                     </div>
                     
@@ -1367,32 +1486,175 @@
                                     
                                                 
                       
-                                    $(".PopupBackground").find("#r").on("click",()=>{
-                                        parseSelectionData();
-                                    });
-                                    $(".PopupBackground").find("#quit").on("click",function(){
-                                        $(".PopupBackground").hide();
-                                    });
-                                    function parseSelectionData(){
-                                        $PopupBackground = $(".PopupBackground");
-                                        console.log($PopupBackground.find("#form")[0]);
-                                        $PopupBackground.find("#form")[0].reset();
-    
-                                        $PopupBackground.find("#oldPrenom").val(window.selected[0].prenom);
-                                        $PopupBackground.find("#oldNom").val(window.selected[0].nom_personnel);
-                                        $PopupBackground.find("#oldAdresse").val(window.selected[0].adresse);
-                                        $PopupBackground.find("#oldNationalite").val(window.selected[0].nationalité);
-                                        $PopupBackground.find("#oldTelephone").val(window.selected[0].numéro_de_téléphone);
-                                        $PopupBackground.find("#Sexe").val(window.selected[0].sexe);
-                                        $PopupBackground.find("#DateDeNaissance").val(window.selected[0].date_de_naissance);
-                                        $PopupBackground.find("#oldCodePostal").val(window.selected[0].CodePostal);
-                                        $PopupBackground.find("#oldEmail").val(window.selected[0].email);
-                                        $PopupBackground.find("#DateDinscription").val(window.selected[0]["date_d'inscription"]);
-    
-                                        // $PopupBackground.find("#GroundStagiaires").val(window.selected[0].nom_personnel);
-                                        // $PopupBackground.find("#SecteurProfessionnel").val(window.selected[0].nom_personnel);
+                        $(".PopupBackground").find("#r").on("click",()=>{
+                            parseSelectionData();
+                        });
+                        $(".PopupBackground").find("#quit").on("click",function(){
+                            $(".PopupBackground").hide();
+                        });
+                        $(".PopupBackground").find("#Enregistrer").on("click", () => {
+                            
+                                var inputsFilled = $(".PopupBackground").find("input,select").filter(function() {
+                                    console.log($(this));
+                                    var l = $.trim($(this).val());
+                                    if (!$(this).attr("name") || $(this).attr("name") == "oldPrenom") {
+                                        console.log($(this).attr("name") + ":" + l + " IGNORE");
+                                        return false;
+                                    }
+                                    if (!$(this).attr("name") || $(this).attr("name") == "oldNom") {
+                                        console.log($(this).attr("name") + ":" + l + " IGNORE");
+                                        return false;
+                                    }
+                                    if (!$(this).attr("name") || $(this).attr("name") == "oldAdresse") {
+                                        console.log($(this).attr("name") + ":" + l + " IGNORE");
+                                        return false;
+                                    }
+                                    if (!$(this).attr("name") || $(this).attr("name") == "oldNationalite") {
+                                        console.log($(this).attr("name") + ":" + l + " IGNORE");
+                                        return false;
+                                    }
+                                    if (!$(this).attr("name") || $(this).attr("name") == "oldTelephone") {
+                                        console.log($(this).attr("name") + ":" + l + " IGNORE");
+                                        return false;
+                                    }
+                                    if (!$(this).attr("name") || $(this).attr("name") == "oldCodePostal") {
+                                        console.log($(this).attr("name") + ":" + l + " IGNORE");
+                                        return false;
+                                    }
+                                    if (!$(this).attr("name") || $(this).attr("name") == "oldEmail") {
+                                        console.log($(this).attr("name") + ":" + l + " IGNORE");
+                                        return false;
+                                    }
+                                    if(window.selected[0]["type_d'adhésion"] == 1){
+                                        if($(this).attr("name")=="SecteurProfessionnel"){
+                                            console.log($(this).attr("name")+":"+l +" IGNORE");
+                                            return false;   
+                                        }
+                                    }else if(window.selected[0]["type_d'adhésion"] == 2){
+                                        if($(this).attr("name")=="GroundStagiaires"){
+                                            console.log($(this).attr("name")+":"+l +" IGNORE");
+                                            return false;   
+                                        }
 
                                     }
+                                    // Sexe
+                                    // SecteurProfessionnel
+                                    // DateDinscription
+
+                                    if(l.length == 0 && $(this).attr("name")=="newPrenom"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldPrenom").val());
+                                        
+                                    }
+                                    if(l.length == 0 && $(this).attr("name")=="newNom"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldNom").val());
+                                        
+                                    }
+                                    if(l.length == 0 && $(this).attr("name")=="newAdresse"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldAdresse").val());
+                                        
+                                    }
+                                    if(l.length == 0 && $(this).attr("name")=="newNationalite"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldNationalite").val());
+                                        
+                                    }
+                                    if(l.length == 0 && $(this).attr("name")=="newTelephone"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldTelephone").val());
+                                        
+                                    }
+                                    if(l.length == 0 && $(this).attr("name")=="newCodePostal"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldCodePostal").val());
+                                        
+                                    }
+                                    if(l.length == 0 && $(this).attr("name")=="newEmail"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldEmail").val());
+                                        
+                                    }
+                                    
+                                    
+                                    var l = $.trim($(this).val());
+
+                                    console.log($(this).attr("name") + ":" + l + " :: " + (l.length == 0));
+                                    return l.length == 0;
+                                }).length == 0;
+                            console.log(inputsFilled);
+                            /*  var inputsFilled = $(".PopupBackground").find("input,select").filter(function () {
+                                var htm = window.editor2.data.get( );
+                                console.log(htm);
+                                $("#htmlContent2").val(htm);
+                                var l = $.trim($(this).val());
+                                if(l.length == 0 && $(this).attr("name")=="Date_de_publication"){
+                                    console.log($(this).attr("name")+":"+l +" IGNORE");
+                                    $(this).val($(".PopupBackground").find("#old_Date_de_publication").val());
+                                    
+                                }else if( $(this).attr("name")=="old_Date_de_publication"){
+                                    return false;
+                                }
+                                l = $.trim($(this).val());
+                                
+                                console.log($(this).attr("name")+":"+l + " :: "+ (l.length == 0));
+                                return l.length == 0;
+                            }).length == 0; */
+                            // console.log(inputsFilled);
+
+                            if (inputsFilled) {
+                                $(".PopupBackground").find("#form").submit();
+                                // $(".TapPanel").find("#ajoutUser").prop("disabled",true);
+
+                                // showToast({
+                                //     type:"success",
+                                //     autoDismiss: true,
+                                //     message:"Le Utilisateur a ete Ajouter avec success !!"
+                                // });
+                            } else {
+                                showToast({
+                                    type: "error",
+                                    autoDismiss: true,
+                                    message: "Verify que tout les chemains corrects !!"
+                                });
+
+                            }
+                        });
+                        function parseSelectionData(){
+                            $PopupBackground = $(".PopupBackground");
+                            console.log($PopupBackground.find("#form")[0]);
+                            $PopupBackground.find("#form")[0].reset();
+                            $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * FROM enseigner where Membre_IdMembres='"+window.selected[0].IdMembres+"';" }, function(d) {
+                                // Handle the response here
+                                var data = JSON.parse(d);
+                                console.log(data);
+                                $PopupBackground.find("#GroundStagiaires").val(data[0].Groupe_Stagiaires_code_groupe_Groupe);
+
+                            });
+                            if(window.selected[0]["type_d'adhésion"] == 1){
+                                $PopupBackground.find("#GS").show();
+                                $PopupBackground.find("#SP").hide();
+                            }else if(window.selected[0]["type_d'adhésion"] == 2){
+                                $PopupBackground.find("#GS").hide();
+                                $PopupBackground.find("#SP").show();
+                            }
+    
+                            $PopupBackground.find("#IdMembres").val(window.selected[0].IdMembres);
+                            $PopupBackground.find("#oldPrenom").val(window.selected[0].prenom);
+                            $PopupBackground.find("#oldNom").val(window.selected[0].nom_personnel);
+                            $PopupBackground.find("#oldAdresse").val(window.selected[0].adresse);
+                            $PopupBackground.find("#oldNationalite").val(window.selected[0].nationalité);
+                            $PopupBackground.find("#oldTelephone").val(window.selected[0].numéro_de_téléphone);
+                            $PopupBackground.find("#Sexe").val(window.selected[0].sexe);
+                            $PopupBackground.find("#DateDeNaissance").val(window.selected[0].date_de_naissance);
+                            $PopupBackground.find("#oldCodePostal").val(window.selected[0].CodePostal);
+                            $PopupBackground.find("#oldEmail").val(window.selected[0].email);
+                            $PopupBackground.find("#DateDinscription").val(window.selected[0]["date_d'inscription"]);
+    
+                            $PopupBackground.find("#SecteurProfessionnel").val(window.selected[0].SecteurProfessionnel);
+
+                        }
                     </script>
             </div>
 

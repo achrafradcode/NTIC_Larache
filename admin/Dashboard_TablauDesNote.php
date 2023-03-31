@@ -705,6 +705,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                                                     note.isChanged = false;
                                                                                     // window.container.remove();
                                                                                     successOccured = true;
+                                                                                    AddLogs("Tablau des Notes",'le note <b>{'+note["nomber"]+'} sur '+unite['nom_Unité_de_formation']+'</b> été supprimer');
 
 
                                                                                 }
@@ -738,6 +739,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                                                     note.isChanged = false;
                                                                                     // window.container.remove();
                                                                                     successOccured = true;
+                                                                                    AddLogs("Tablau des Notes",'le note sur <b>'+unite['nom_Unité_de_formation']+'</b> été changer a <b>{'+note["nomber"]+'}</b>');
 
 
                                                                                 }
@@ -763,6 +765,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                                                     note.isChanged = false;
                                                                                     // window.container.remove();
                                                                                     successOccured = true;
+                                                                                    AddLogs("Tablau des Notes",'le note <b>{'+note["nomber"]+'} sur '+unite['nom_Unité_de_formation']+'</b> été Ajouter');
 
 
                                                                                 }
@@ -799,6 +802,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                                             // window.container.remove();
                                                                             successOccured = true;
                                                                             onfinish();
+                                                                            AddLogs("Tablau des Notes",'le Unité de formation <b>{'+unite['nom_Unité_de_formation']+'}</b> été supprimer');
 
 
                                                                         }
@@ -833,6 +837,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                                             // window.container.remove();
                                                                             successOccured = true;
                                                                             onfinish();
+                                                                            AddLogs("Tablau des Notes",'le Unité de formation <b>{'+unite['nom_Unité_de_formation']+'}</b> été changer');
 
 
                                                                         }
@@ -864,6 +869,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                                             successOccured = true;
                                                                             unite.IdFormation = s.lastId;
                                                                             onfinish();
+                                                                            AddLogs("Tablau des Notes",'le Unité de formation <b>{'+unite['nom_Unité_de_formation']+'}</b> été ajouter');
 
 
                                                                         }

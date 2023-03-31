@@ -1,4 +1,5 @@
 <?php
+    require_once("../inc/functions.inc.php");
     session_start();
     if(!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false){
         header("Location: ../admin/LogIn.php");
@@ -223,17 +224,17 @@
                 </div>
                 <hr>
                 <div class="TapContent m-3 d-flex flex-row justify-content-around align-items-stretch float-end">
-                    <button name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
+                    <button Category="Membres" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
                                 <img src="/imgs/Dashboard_Membres.png" class="col-6 img-fluid w-50 " alt="">
                             </div>
                             <div class="col-6 w-100">
-                                <b> Membres</b>
+                                <b>Membres</b>
                             </div>
                         </div>
                     </button>
-                    <button name="" id="active" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
+                    <button Category="Emploi du temp" name="" id="active" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
                                 <img src="/imgs/Dashboard_EmploiDuTemp_Active.png" class="col-6 img-fluid w-50 " alt="">
@@ -243,7 +244,7 @@
                             </div>
                         </div>
                     </button>
-                    <button name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
+                    <button Category="Tablau des Notes" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
                                 <img src="/imgs/Dashboard_TablauDesNotes.png" class="col-6 img-fluid w-50 " alt="">
@@ -253,13 +254,33 @@
                             </div>
                         </div>
                     </button>
-                    <button name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
+                    <button Category="Articles" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
                                 <img src="/imgs/Dashboard_AnnoncesEtArticles.png" class="col-6 img-fluid w-50 " alt="">
                             </div>
                             <div class="col-6 w-100">
-                                <b>Annonce Et Articles</b>
+                                <b>Articles</b>
+                            </div>
+                        </div>
+                    </button>
+                    <button Category="Annonces" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
+                        <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
+                            <div>
+                                <img src="/imgs/Dashboard_AnnoncesEtArticles.png" class="col-6 img-fluid w-50 " alt="">
+                            </div>
+                            <div class="col-6 w-100">
+                                <b>Annonces</b>
+                            </div>
+                        </div>
+                    </button>
+                    <button Category="Contacts" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
+                        <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
+                            <div>
+                                <img src="/imgs/boit_email.png" class="col-6 img-fluid w-50 " alt="">
+                            </div>
+                            <div class="col-6 w-100">
+                                <b>Contacts</b>
                             </div>
                         </div>
                     </button>
@@ -280,8 +301,50 @@
                             var attr = $(this).find("img").first().attr("src");
                             attr = attr.split(".").join("_Active.");
                             $(this).find("img").first().attr("src",attr);
-
+                            updateList($(this).attr("Category"));
                         });
+                        $(window).on('load',()=>{
+                            updateList("emploi");
+                        });
+
+                        function updateList(Category){
+                            $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * FROM `logs` WHERE `Category`='"+Category+"'" }, function(d) {
+                                // Handle the response here
+                                console.log(d);
+                                var data = JSON.parse(d);
+                                console.log(data);
+                                window.logs = data;
+                                //    $("EventsContainer").children().length
+                                $.post("../inc/functions.inc.php", { function_name: "executeRequete",requet:"SELECT * FROM `membre`" }, function(d) {
+                                   $("#EventsContainer").empty();
+                                   // Handle the response here
+                                   var data2 = JSON.parse(d);
+                                   console.log(data2);
+                                   window.membres = data2;
+                                   for(var i = 0 ; i < window.logs.length ; i++){
+                                    var tr = $('<tr>');
+                                    var td1 = $('<td>');
+                                    td1.text(window.logs[i].Time);
+                                    td1.attr("scope","row");
+                                    var td2 = $('<td>');
+                                    td2.text(window.logs[i].Category);
+                                    var td3 = $('<td>');
+                                    td3.text(window.membres.find(item=>item.IdMembres==window.logs[i].MembreId).nom_personnel);
+                                    var td4 = $('<td>');
+                                    td4.html(window.logs[i].Event);
+    
+                                    tr.append(td1);
+                                    tr.append(td2);
+                                    tr.append(td3);
+                                    tr.append(td4);
+                                    $("#EventsContainer").append(tr);
+                                   }
+                               });
+
+
+
+                            });
+                        }
                     </script>
 
                 </div>
@@ -308,8 +371,8 @@
                                     <th>Event</th>
                                 </tr>
                             </thead>
-                            <tbody class="table-group-divider">
-                                <tr class="table-light">
+                            <tbody class="table-group-divider" id="EventsContainer">
+                                <!-- <tr class="table-light">
                                     <td scope="row">2023/4/1</td>
                                     <td>Emploi du temp</td>
                                     <td>Benkasem</td>
@@ -332,7 +395,7 @@
                                     <td>Emploi du temp</td>
                                     <td>Benkasem</td>
                                     <td>Event</td>
-                                </tr>
+                                </tr> -->
 
                             </tbody>
                             <tfoot>

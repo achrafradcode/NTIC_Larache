@@ -12,11 +12,14 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    
+    <script src="../inc/js/functions.inc.js"></script>
+    <link rel="stylesheet" href="../inc/css/admin_style.css">
+    <link rel="stylesheet" href="../inc/css/fileUplaod.css">
     <style>
         .background {
             position: absolute;
@@ -380,7 +383,45 @@
 </head>
 
 <body>
-
+<!-- Modal YesOrNo -->
+<div class="YesOrNoConfirmation modal fade " id="exampleModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Supprimer utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modelbody">
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Non</button>
+        <button type="button" id="ConfirmationOk" class="btn btn-danger">Oui</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function confirmChanges(model,title,contenu,callback){
+        if(model != null)$(model).modal('hide');
+        $(".YesOrNoConfirmation").unbind();
+        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').unbind();
+        $(".YesOrNoConfirmation").on("hide.bs.modal",()=>{
+            if(model != null)$(model).modal('show');
+        });
+        $(".YesOrNoConfirmation").modal('show');
+        $(".YesOrNoConfirmation").find('#exampleModalLabel').text(title);
+        if(contenu != ""){
+            $(".YesOrNoConfirmation").find('#modelbody').show();
+            $(".YesOrNoConfirmation").find('#modelbody').html(contenu);
+        }else{
+            $(".YesOrNoConfirmation").find('#modelbody').hide();
+        }
+        $(".YesOrNoConfirmation").find('button[id="ConfirmationOk"]').on("click",()=>{
+            $(".YesOrNoConfirmation").modal('hide');
+            callback();
+        });
+    }
+</script>
     <!-- <div class="iconEdit">
         <div class="   bg-white rounded-circle border border-primary shadow">
             <img src="/imgs/editIcon.png"
@@ -430,12 +471,22 @@
                     </div>
                 </div>
             </div>
-            <input name="" id="t" class="btn btn-primary" type="checkbox" value="TestTransition">
+            
 
             <div class="contentPage   position-relative d-flex flex-column mt-2 ms-1 me-2">
                 <!-- <div class="TapTitle  fw-bold text-black-50">
                     <h6>Add New Membre</h6>
                 </div> -->
+                <div class="position-absolute" id="toasts">
+                        <!-- <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                Hello, world! This is a toast message.
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div> -->
+                    </div>
                 <hr>
                 <div class="Emploi">
 
@@ -451,7 +502,20 @@
                                     <div class="item-centent text-center  p-3 bg-black bg-opacity-25">
                                         .....
                                     </div>
-                                    <input
+                                    <?php
+
+                                $stmt = executeRequete("SELECT * FROM groupe_stagiaires;");
+                                $stmt->execute();
+                                $index = 0;
+
+                                foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                                    $index = $index + 1;
+                                ?>
+
+                                    <input class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25" type="button" value="<?php echo $row['code_groupe_Groupe'] ?>">
+
+                                <?php } ?>
+                                   <!--  <input
                                         class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
                                         type="button" value="DWS101">
                                     <input id="active"
@@ -469,253 +533,214 @@
                                     <input
                                         class="item-centent rounded-0 btn bg-black text-center mt-1 p-2 bg-opacity-25"
                                         type="button" value="DWS101">
-
-
-
-
-
+                                            -->
                                 </div>
                                 <script type="text/javascript">
                                     
                                     $(".ScrollTable").find("input").on("click",function(){
+                                        $('#Apply').prop("disabled",true);
                                         $(".ScrollTable").find("input").attr("id","");
                                         $(this).attr("id","active");
+                                        $(".PDFContainer").show();
+                                        $("#PDFViewer").attr("style","display: none !important;");
+$("#PDFUploader").attr("style","display: none !important;");
+                                        window.selectedGroup = $(this).val();
+                                        $.post("../inc/functions.inc.php", {
+                                            function_name: "executeRequete",
+                                            requet: "SELECT * FROM `tablaux_pdf` where `GroupStagiaire`='" + window.selectedGroup + "';"
+                                        }, function(d) {
+                                            // Handle the response here
+                                            console.log(d);
+                                            var data = JSON.parse(d);
+                                            window.selected = data;
+                                            // $().find().length
+                                            console.log(window.selected);
+                                            
+                                            if(data.length > 0){
+                                                window.IdFichierPDF = data[0]['IdFichierPDF'];
+                                                $("#upload_image_file").val("");
+                                                $.post("../inc/functions.inc.php", {
+                                                    function_name: "executeRequete",
+                                                    requet: "SELECT * FROM `fichier` where `idFichier`='" + window.IdFichierPDF + "';"
+                                                }, function(d) {
+                                                    console.log(d);
+                                                    var data2 = JSON.parse(d);
+                                                    window.UrlFichierPDF = "/inc/"+decodeURIComponent(data2[0]['url']);
+                                                    $("#upload_image_file").val(window.UrlFichierPDF);
+                                                    if($("#upload_image_file").val() == ""){
+                                                        $("#PDFViewer").attr("style","display: none !important;");
+                                                        $("#PDFUploader").attr("style","display: inline !important;");
+                                                    }else{
+                                                        $("#PDFUploader").attr("style","display: none !important;");
+                                                        $("#PDFViewer").attr("style","display: inline !important;");
+                                                    }
+                                                    
+                                                    $("#PDFFrame")[0].src = "/inc/"+decodeURIComponent(data2[0]['url']);
+                                                    
+                                                });
+
+                                            }else{
+                                                $("#upload_image_file").val("");
+                                            }
+
+                                            if($("#upload_image_file").val() == ""){
+                                                $("#PDFViewer").attr("style","display: none !important;");
+                                                $("#PDFUploader").attr("style","display: inline !important;");
+                                                }else{
+                                                $("#PDFUploader").attr("style","display: none !important;");
+                                                $("#PDFViewer").attr("style","display: inline !important;");
+                                            }
+                                            
+                                            
+
+                                        });
                                     });
                                 </script>
                             </div>
                         </div>
 
-                        <div class=" pt-3 pe-5">
-                            <table class="table 
-                        
-                        table-bordered 
-                        table-primary
-                        align-middle">
-                                <thead>
-                                    <tr class="bg-primary">
-                                        <th scope="col" class="bg-primary text-white text-center"></th>
-                                        <th scope="col" class="bg-primary text-white text-center">8:30-11:00</th>
-                                        <th scope="col" class="bg-primary text-white text-center">11:00-13:30</th>
-                                        <th scope="col" class="bg-primary text-white text-center">13:30-16:00</th>
-                                        <th scope="col" class="bg-primary text-white text-center">16:00-18:30</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Lundi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Mardi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td >
-                                            
-                                            <div class="cell">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td >
-                                            
-                                            <div class="  cell ">
-                                                
-                                                <div
-                                                    class="  w-100 h-100   p-2 bg-white border border-primary rounded-2 text-center">
-                                                    <div class="SpecLible"><b> Specialite</b></div>
-                                                    <div class="CenterLible">(BENKASEM) Salle:TDI</div>
-                                                    <div class="TimeLible small text-black-50">De 8h30 a 11h00</div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Mercredi</td>
-                                        <td>
-                                            
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Jeudi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Vendredi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Samedi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                            <div class="prefabs" style="display: none;">
-                                <div class="iconEditC">
-                                    <div class="iconEdit" >
-                                        <div class="bg-white rounded-circle border border-primary shadow">
-                                            
-                                            <img src="/imgs/editIcon.png"
-                                                class="Icon"
-                                                alt="">
-                                        </div>
-                                    </div> 
-                                    <div class="iconContainer" style="display: none;" >
-                                        <div class="ps-3 pe-3 pt-2 pb-2 bg-white w-100 h-100 rounded border border-primary shadow">
-                                            <div class="row">
-                                                <div class="mb-3 col-6">
-                                                    <label for="" class="form-label">Prenom</label>
-                                                    <input type="text"
-                                                    class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
-                                                </div>
-                                                <div class="mb-3 col-6">
-                                                    <label for="" class="form-label">Prenom</label>
-                                                    <input type="text"
-                                                    class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="mb-3 col-6">
-                                                    <label for="" class="form-label">Prenom</label>
-                                                    <input type="text"
-                                                    class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
-                                                </div>
-                                                <div class="mb-3 col-6">
-                                                    <label for="" class="form-label">Prenom</label>
-                                                    <input type="text"
-                                                    class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
+                        <style>
+                            .PDFContainer{
+                                min-width: 300px;
+                                background-color: #00000018 !important;
+                                flex-grow: 1;
+                            }
+                        </style>
+                        <div class="PDFContainer rounded " style="display: none;">
+                            <form method="post" class="p-3 ">
+                                <progress id="progress-bar" max=100 value=0></progress>
+                                <div style="display: none !important;" id="PDFViewer" class="pt-5 d-flex  flex-column justify-content-start">
+                                    <input id="upload_image_background2" name="imageUpload2" data-post-name="image_background" data-post-url="/uploads/" class="position-absolute invisible" type="file" multiple="true" accept="application/pdf" />
+                                    <label class="btn btn-upload mt-3 mb-3" for="upload_image_background2">Choose file(s)</label>
+                                    <iframe id="PDFFrame" src="/inc/uploads/emp.pdf" width="100%" height="500px">
+                                    </iframe>
+                                    <div class="mt-3 mb-3">
+                                        <button type="button" id="Apply" class="btn btn-success" disabled>Appliquer les modifications</button>
+                                        <button type="button" id="Reset" class="btn btn-danger">Réinitialiser les modifications</button>
                                     </div>
-
                                 </div>
-                            </div>
-                             <script type="text/javascript">
+                                <div  id="PDFUploader" class=" d-flex  flex-column justify-content-start">
+                                    <fieldset style="width: 100% !important;" id="upload_dropZone" class="upload_dropZone text-center mb-3 p-4">
 
-                                function onIconEditClicked($cc,e){
-                                    e.stopPropagation();
-                                    console.log($cc.css("display"));
-                                    if($cc.css("display") != "none"){
-                                        $cc.css("display","none");
-                                    }else{
-                                        $cc.css("display","");
-                                    }
-                                }
-
-                                var listSelection = [];
-
-
-
-                                
-                                
-                                $( ".cell" ).on("click",
-                                    function(e) {
+                                        <legend class="visually-hidden">Image uploader</legend>
                                         
+
+
+                                        <p class="small my-2"></p>
+
+                                        <input id="upload_image_file" name="imageFile" type="text" style="display:none;" />
                                         
-                                        var $td = $( this ).parent();
-                                        if($td.attr("id") == "active"){
-                                            $td.attr("id","");
-                                            $(".cell").parent().parent().find( ".iconEditC" ).remove();
-                                            delete listSelection[listSelection.indexOf( this)];
-                                            var filtered = listSelection.filter(function (el) {
-                                                return el != null;
-                                            });
-                                            listSelection = filtered;
-                                            if(listSelection.length > 0){
-                                                for(var i = 0 ; i < listSelection.length ; i++){
-                                                    if(listSelection[i] != null){
-                                                        var $cc = $( ".prefabs .iconEditC" ).clone();
-                                                        $cc.click(function(e){
-                                                            onIconEditClicked($cc.find(".iconContainer"),e);
+                                        <input id="upload_image_background" name="imageUpload" data-post-name="image_background" data-post-url="/uploads/" class="position-absolute invisible" type="file" multiple="true" accept="application/pdf" />
+                                        <label class="btn btn-upload mb-3" for="upload_image_background">Choose file(s)</label>
+
+                                        <div style="display:none;" class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0"></div>
+
+                                    </fieldset>
+                                </div>
+                                <script>
+                                    $('#Apply').on('click',(e)=>{
+                                        var upload_image_file = $('#upload_image_file').val();
+                                        $.post("../inc/functions.inc.php", {
+                                                    function_name: "executeRequete",
+                                                    requet: "SELECT * FROM `tablaux_pdf` where `GroupStagiaire`='" + window.selectedGroup + "';"
+                                                }, function(d) {
+                                                    console.log(d);
+                                                    var data = JSON.parse(d);
+                                                    window.selected = data;
+
+                                                    if(data.length > 0){
+                                                        confirmChanges(null,"Emploi de Temp a ete changé","vous voulez vraiment appliquer cette changement ?",
+                                                        ()=>{
+                                                            $.post("../inc/functions.inc.php", {
+                                                                function_name: "executeRequete",
+                                                                requet: "SELECT * FROM `fichier` where `url`='" + upload_image_file + "';"
+                                                            }, function(d) {
+                                                                console.log(d);
+                                                                var data2 = JSON.parse(d);
+                                                                window.IdFichierPDF = data2[0]['idFichier'];
+                                                                var req = "UPDATE `tablaux_pdf` SET `IdFichierPDF`='"+window.IdFichierPDF+"' WHERE `idTablaux`='"+data[0]['idTablaux']+"'";
+                                                                $.post("../inc/functions.inc.php", {
+                                                                    function_name: "executeRequeteResponse",
+                                                                    requet: req,
+                                                                    msgSuccess:"Utilisateur supprimé avec succès",msgFaild:"Une erreur s'est produite"
+                                                                }, function(d) {
+                                                                    console.log(d);
+                                                                    if(d=="error"){
+                                                                        showToast({
+                                                                            type:"error",
+                                                                            autoDismiss: true,
+                                                                            message:"Une erreur s'est produite !"
+                                                                        });
+                                                                    }else{
+                                                                        AddLogs("Tablau des Notes",'le emploi de temp de group stagiaires <b>{'+window.selectedGroup+'}</b> a été channger');
+                                                                        $('#Apply').prop("disabled",true);
+                                                                        showToast({
+                                                                            type:"success",
+                                                                            autoDismiss: true,
+                                                                            message:"Enrigister avec succès !"
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
                                                         });
-                                                        $(listSelection[i]).prepend($cc);
                                                         
-                                                        break;
+                                                    }else{
+                                                        confirmChanges(null,"Une Nouvel Emploi de Temp Ajouter","vous voulez vraiment ajouter cette emploi de temp ?",
+                                                        ()=>{
+                                                            $.post("../inc/functions.inc.php", {
+                                                                function_name: "executeRequete",
+                                                                requet: "SELECT * FROM `fichier` where `url`='" + upload_image_file + "';"
+                                                            }, function(d) {
+                                                                console.log(d);
+                                                                var data2 = JSON.parse(d);
+                                                                window.IdFichierPDF = data2[0]['idFichier'];
+                                                                var req = "INSERT INTO `tablaux_pdf`(`GroupStagiaire`, `IdFichierPDF`) VALUES ('"+window.selectedGroup+"',"+window.IdFichierPDF+")";
+                                                                $.post("../inc/functions.inc.php", {
+                                                                    function_name: "executeRequeteResponse",
+                                                                    requet: req,
+                                                                    msgSuccess:"Utilisateur supprimé avec succès",msgFaild:"Une erreur s'est produite"
+                                                                }, function(d) {
+                                                                    console.log(d);
+                                                                    if(d=="error"){
+                                                                        showToast({
+                                                                            type:"error",
+                                                                            autoDismiss: true,
+                                                                            message:"Une erreur s'est produite !"
+                                                                        });
+                                                                    }else{
+                                                                        AddLogs("Tablau des Notes",'le emploi de temp de group stagiaires <b>{'+window.selectedGroup+'}</b> a été ajouter');
+                                                                        
+                                                                        $('#Apply').prop("disabled",true);
+                                                                        showToast({
+                                                                            type:"success",
+                                                                            autoDismiss: true,
+                                                                            message:"Enrigister avec succès !"
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+                                                        });
+
                                                     }
-                                                }
-                                            }
-                                        }else{
-                                            $td.attr("id","active");
-                                            var filtered = listSelection.filter(function (el) {
-                                                return el != null;
-                                            });
-                                            listSelection = filtered;
-                                            if(listSelection.length == 0){
-                                                var $cc = $( ".prefabs .iconEditC" ).clone();
-                                                $cc.click(function(e){
-                                                    onIconEditClicked($cc.find(".iconContainer"),e);
+
                                                 });
-                                                $(this).prepend($cc);
-                                            }
-                                            listSelection.push(this);
-                                            
+
+                                    });
+                                    $("#upload_image_background2").on("change",(e)=>{
+                                        $('#Apply').prop("disabled",false);
+                                    });
+                                    $("#upload_image_file").on("change",(e)=>{
+                                        if($(e.target).val() == ""){
+                                            $("#PDFViewer").attr("style","display: none !important;");
+                                            $("#PDFUploader").attr("style","display: inline !important;");
+                                            }else{
+                                            $("#PDFUploader").attr("style","display: none !important;");
+                                            $("#PDFViewer").attr("style","display: inline !important;");
                                         }
-                                    }
-                                );
-                            </script>  
+                                    });
+                                </script>
+                                
+                            </form>
                         </div>
 
                     </div>
@@ -841,6 +866,8 @@
 
         </div>
     </div>
+
+    <script src="../inc/js/fileUploadPDF.js"></script>
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
