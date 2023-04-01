@@ -334,58 +334,7 @@ if(isset($_POST["nom"])){
 
 
 
-
-<!-- footer section starts  -->
-
-<section class="footer">
-
-   <div class="box-container">
-
-      <div class="box">
-         <h3> OFPPT </h3>
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, voluptatem.</p>
-         <div class="share">
-            <a href="#" class="fab fa-facebook-f"></a>
-            <a href="#" class="fab fa-twitter"></a>
-            <a href="#" class="fab fa-instagram"></a>
-            <a href="#" class="fab fa-linkedin"></a>
-         </div>
-      </div>
-
-      <div class="box">
-         <h3>Liens Rapides</h3>
-         <a href="home.php" class="link">Accueil</a>
-         <a href="about.php" class="link">Propos</a>
-         <a href="#" class="link">Institut</a>
-         <a href="courses.php" class="link">Filières</a>
-         <a href="courses.php" class="link">contact</a>
-      </div>
-
-      <div class="box">
-         <h3>Liens utiles</h3>
-         <a href="#" class="link">centre d'aide</a>
-         <a href="#" class="link">poser des questions</a>
-         <a href="#" class="link">envoyer des commentaires</a>
-         <a href="#" class="link">politique privée</a>
-         <a href="#" class="link">conditions d'utilisation</a>
-      </div>
-
-      <div class="box">
-         <h3>bulletin</h3>
-         <p>abonnez-vous pour les dernières mises à jour</p>
-         <form action="">
-            <input type="email" name="" placeholder="entrer votre Email" id="" class="email">
-            <input type="submit" value="valider" class="btn">
-         </form>
-      </div>
-
-   </div>
-
-   
-
-</section>
-
-<!-- footer section ends -->
+<?php require_once("footer.php")?>   
 
 
 

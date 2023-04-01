@@ -224,6 +224,8 @@
                 </div>
                 <hr>
                 <div class="TapContent m-3 d-flex flex-row justify-content-around align-items-stretch float-end">
+                    
+                <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){?>
                     <button Category="Membres" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
@@ -234,6 +236,8 @@
                             </div>
                         </div>
                     </button>
+                    <?php }?>
+                    <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){?>
                     <button Category="Emploi du temp" name="" id="active" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
@@ -244,6 +248,8 @@
                             </div>
                         </div>
                     </button>
+                    <?php }?>
+                    <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){?>
                     <button Category="Tablau des Notes" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
@@ -254,6 +260,8 @@
                             </div>
                         </div>
                     </button>
+                    <?php }?>
+                    <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){?>
                     <button Category="Articles" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
@@ -264,6 +272,8 @@
                             </div>
                         </div>
                     </button>
+                    <?php }?>
+                    <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){?>
                     <button Category="Annonces" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
@@ -274,6 +284,8 @@
                             </div>
                         </div>
                     </button>
+                    <?php }?>
+                    <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){?>
                     <button Category="Contacts" name="" id="" class="QuickTapButton p-3 btn btn-primary" href="#" role="button">
                         <div class="d-flex h-100 flex-column align-content-between justify-content-around text-center">
                             <div>
@@ -284,6 +296,8 @@
                             </div>
                         </div>
                     </button>
+                    <?php }?>
+                    
                     <script type="text/javascript">
                                         
                         $(".TapContent").find("button").on("click",function(){

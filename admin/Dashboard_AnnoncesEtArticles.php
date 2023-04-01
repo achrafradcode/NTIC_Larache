@@ -150,8 +150,12 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5-upload/src/adapters/simpleuploadadapter.js"></script>
+    <!-- Rich Text -->
+    <link rel="stylesheet" href="/richtexteditor/rte_theme_default.css" />
+    <script type="text/javascript" src="/richtexteditor/rte.js"></script>
+    <script type="text/javascript" src='/richtexteditor/plugins/all_plugins.js'></script>
+    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
     <link rel="stylesheet" href="../inc/css/fileUplaod.css">
@@ -634,6 +638,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
 
                                     <div class="form-control" name="mytextarea" id="mytextarea" rows="3"></div>
                                     <!-- <div id="mytextarea"></div> -->
+                                    
                                     <input type="text" name="content" id="htmlContent" style="display:none;">
                                 </td>
                             </tr>
@@ -656,7 +661,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
 
                         <script>
                             $(".TapPanel").find("#ajoutUser").on("click", function() {
-                                var htm = window.editor.data.get();
+                                var htm = window.editor.getHTMLCode();
                                 console.log(htm);
                                 $("#htmlContent").val(htm);
 
@@ -770,17 +775,22 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                         };
 
                                         $(".PopupBackground").modal("show");
-
+                                        
                                         $.post("../inc/functions.inc.php", {
                                             function_name: "executeRequete",
                                             requet: "SELECT * from `articles_d'actualité` where `titre_de_l'actualité`='" + window.selected["titre_de_l'actualité"] + "';"
                                         }, function(d) {
                                             // Handle the response here
+                                            
                                             console.log(data);
                                             var data = JSON.parse(d);
                                             window.selected = data;
                                             console.log(window.selected);
-                                            parseSelectionData();
+                                            setTimeout(()=>{
+                                                
+                                                window.editor2 = new RichTextEditor("#mytextarea2",editor1cfg); 
+                                                parseSelectionData();
+                                            },1000);
 
                                         });
                                     }
@@ -965,11 +975,11 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
 
                             <tr>
 
-                                <td colspan="3">
+                                <td colspan="3" id="textarea2container">
                                     <!-- <input type="text"
                                     class="form-control w-100" name="" id="" aria-describedby="helpId" placeholder=""> -->
-
-                                    <div class="form-control" name="mytextarea2" id="mytextarea2" rows="3"></div>
+                                    <div class="form-control" name="mytextarea2" id="mytextarea2" rows="3" ></div>
+                                    
                                     <!-- <div id="mytextarea"></div> -->
                                     <input type="text" name="content" id="htmlContent2" style="display:none;">
                                 </td>
@@ -1006,7 +1016,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
             parseSelectionData();
         });
         $(".PopupBackground").find("#Enregistrer").on("click", () => {
-            var htm = window.editor2.data.get();
+            var htm = window.editor2.getHTMLCode();
                                 console.log(htm);
                                 $("#htmlContent2").val(htm);
                 var inputsFilled = $(".PopupBackground").find("input,select").filter(function() {
@@ -1119,7 +1129,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
             $PopupBackground.find("#old_Description_De_Article").val(window.selected[0]['Description']);
             $PopupBackground.find("#Membre_IdMembres").val(window.selected[0]["Membre_IdMembres"]);
 
-            window.editor2.data.set(window.selected[0]["contenu"])
+            window.editor2.setHTMLCode(window.selected[0]["contenu"])
             // window.editor2.ui.view.editable.element.innerHTML = window.selected[0]["contenu"];
 
 
@@ -1145,355 +1155,19 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
 
 
     <script>
-        // https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js
-        // import SimpleUploadAdapter from 'https://cdn.ckeditor.com/ckeditor5-upload/src/adapters/simpleuploadadapter';
+        var editor1cfg = { 
+            skin: "rounded-corner", 
+            toolbar: "basic" };    
+            window.editor = new RichTextEditor("#mytextarea",editor1cfg); 
+    
+            // $(window).on('load',()=>{
+            //     $('#textarea2container').append($('#mytextarea2'));
 
-        const config = {
-            // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
-            plugins: [ SimpleUploadAdapter ],
-            toolbar: {
-                items: [
-                    'heading', '|',
-                    'fontfamily', 'fontsize', '|',
-                    'alignment', '|',
-                    'fontColor', 'fontBackgroundColor', '|',
-                    'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
-                    'link', '|',
-                    'outdent', 'indent', '|',
-                    'bulletedList', 'numberedList', 'todoList', '|',
-                    'code', 'codeBlock', '|',
-                    'insertTable', '|',
-                    'uploadImage', 'blockQuote', '|',
-                    'undo', 'redo'
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            simpleUpload: {
-                // The URL that the images are uploaded to.
-                uploadUrl: '/inc/uploads',
-
-                // Enable the XMLHttpRequest.withCredentials property.
-                withCredentials: true,
-
-                // Headers sent along with the XMLHttpRequest to the upload server.
-                headers: {
-                    'X-CSRF-TOKEN': 'CSRF-Token',
-                    Authorization: 'Bearer <JSON Web Token>'
-                },
-                
-            },
-            // Changing the language of the interface requires loading the language file using the <script> tag.
-            // language: 'es',
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-            heading: {
-                options: [{
-                        model: 'paragraph',
-                        title: 'Paragraph',
-                        class: 'ck-heading_paragraph'
-                    },
-                    {
-                        model: 'heading1',
-                        view: 'h1',
-                        title: 'Heading 1',
-                        class: 'ck-heading_heading1'
-                    },
-                    {
-                        model: 'heading2',
-                        view: 'h2',
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2'
-                    },
-                    {
-                        model: 'heading3',
-                        view: 'h3',
-                        title: 'Heading 3',
-                        class: 'ck-heading_heading3'
-                    },
-                    {
-                        model: 'heading4',
-                        view: 'h4',
-                        title: 'Heading 4',
-                        class: 'ck-heading_heading4'
-                    },
-                    {
-                        model: 'heading5',
-                        view: 'h5',
-                        title: 'Heading 5',
-                        class: 'ck-heading_heading5'
-                    },
-                    {
-                        model: 'heading6',
-                        view: 'h6',
-                        title: 'Heading 6',
-                        class: 'ck-heading_heading6'
-                    }
-                ]
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-            placeholder: 'Welcome to CKEditor 5!',
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-            fontSize: {
-                options: [10, 12, 14, 'default', 18, 20, 22],
-                supportAllValues: true
-            },
-            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-            htmlSupport: {
-                allow: [{
-                    name: /.*/,
-                    attributes: true,
-                    classes: true,
-                    styles: true
-                }]
-            },
-            // Be careful with enabling previews
-            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-            htmlEmbed: {
-                showPreviews: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-            mention: {
-                feeds: [{
-                    marker: '@',
-                    feed: [
-                        '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
-                        '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
-                        '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
-                        '@sugar', '@sweet', '@topping', '@wafer'
-                    ],
-                    minimumCharacters: 1
-                }]
-            },
-            // The "super-build" contains more premium features that require additional configuration, disable them below.
-            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-            removePlugins: [
-                // These two are commercial, but you can try them out without registering to a trial.
-                // 'ExportPdf',
-                // 'ExportWord',
-                'CKBox',
-                'CKFinder',
-                'EasyImage',
-                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                // Storing images as Base64 is usually a very bad idea.
-                // Replace it on production website with other solutions:
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                'Base64UploadAdapter',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-                'MathType'
-            ]
-        };
-
-        ClassicEditor
-            .create(document.querySelector('#mytextarea'), config)
-            .then(editor => {
-                window.editor = editor;
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        ClassicEditor
-            .create(document.querySelector('#mytextarea2'), config)
-            .then(editor => {
-                window.editor2 = editor;
-            }).catch(error => {
-                console.error(error);
-            });
+            // });
+        
+        
     </script>
 
-
-
-    <!-- <script>
-        // This sample still does not showcase all CKEditor 5 features (!)
-        // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
-        CKEDITOR.ClassicEditor.create(document.getElementById("mytextarea"), {
-            // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
-            toolbar: {
-                items: [
-                    
-                    
-                    'heading', '|',
-                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
-                    'bulletedList', 'numberedList', 'todoList', '|',
-                    'outdent', 'indent', '|',
-                    'undo', 'redo',
-                    '-',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                    'alignment', '|',
-                    'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
-                    'specialCharacters', 'horizontalLine', 'pageBreak', '|',
-                    'textPartLanguage', '|',
-                    'sourceEditing'
-                ],
-                shouldNotGroupWhenFull: true
-            },
-            // Changing the language of the interface requires loading the language file using the <script> tag.
-            // language: 'es',
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                ]
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-            placeholder: 'ici!',
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-            fontFamily: {
-                options: [
-                    'default',
-                    'Arial, Helvetica, sans-serif',
-                    'Courier New, Courier, monospace',
-                    'Georgia, serif',
-                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                    'Tahoma, Geneva, sans-serif',
-                    'Times New Roman, Times, serif',
-                    'Trebuchet MS, Helvetica, sans-serif',
-                    'Verdana, Geneva, sans-serif'
-                ],
-                supportAllValues: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-            fontSize: {
-                options: [ 10, 12, 14, 'default', 18, 20, 22 ],
-                supportAllValues: true
-            },
-            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-            htmlSupport: {
-                allow: [
-                    {
-                        name: /.*/,
-                        attributes: true,
-                        classes: true,
-                        styles: true
-                    }
-                ]
-            },
-            // Be careful with enabling previews
-            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-            htmlEmbed: {
-                showPreviews: true
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-            link: {
-                decorators: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
-                }
-            },
-            // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-            mention: {
-                feeds: [
-                    {
-                        marker: '@',
-                        feed: [
-                            '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
-                            '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
-                            '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
-                            '@sugar', '@sweet', '@topping', '@wafer'
-                        ],
-                        minimumCharacters: 1
-                    }
-                ]
-            },
-            // The "super-build" contains more premium features that require additional configuration, disable them below.
-            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-            removePlugins: [
-                // These two are commercial, but you can try them out without registering to a trial.
-                // 'ExportPdf',
-                // 'ExportWord',
-                'CKBox',
-                'CKFinder',
-                'EasyImage',
-                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                // Storing images as Base64 is usually a very bad idea.
-                // Replace it on production website with other solutions:
-                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                // 'Base64UploadAdapter',
-                'RealTimeCollaborativeComments',
-                'RealTimeCollaborativeTrackChanges',
-                'RealTimeCollaborativeRevisionHistory',
-                'PresenceList',
-                'Comments',
-                'TrackChanges',
-                'TrackChangesData',
-                'RevisionHistory',
-                'Pagination',
-                'WProofreader',
-                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-                'MathType'
-            ]
-        });
-    </script> -->
     <script src="../inc/js/fileUpload.js"></script>
     <script src="../inc/js/fileUpload2.js"></script>
     <!-- Bootstrap JavaScript Libraries -->

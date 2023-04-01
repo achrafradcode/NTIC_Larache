@@ -586,7 +586,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                             $(".ScrollTable.Tab3").find("#nom_personel").text(window.selected2['nom_personnel']);
                                             $(".ScrollTable.Tab3").find("#prenom").text(window.selected2['prenom']);
                                             $(".ScrollTable.Tab3").find("#groupId").text(window.selected_group_id);
-                                            $(".ScrollTable.Tab3").find("button").unbind(onCLickAcceder);
+                                            $(".ScrollTable.Tab3").find("button").unbind();
                                             $(".ScrollTable.Tab3").find("button").on("click", onCLickAcceder);
 
                                             // });
@@ -622,6 +622,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
 
                             function onCLickAcceder() {
                                 $(".viewTablauxCheckbox").prop("checked", true);
+                                $(".NoteTable").find("input").val("");
                                 $.post("../inc/functions.inc.php", {
                                     function_name: "executeRequete",
                                     requet: "SELECT * from tableau_des_points where Membre_IdMembres='" + window.selected2['IdMembres'] + "';"
@@ -1051,6 +1052,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                             }
                             $(".NoteTable .Retour").find("button").on("click", () => {
                                 $(".viewTablauxCheckbox").prop("checked", false);
+                                window.unites_de_formation = null;
                             });
                         </script>
 
@@ -1108,7 +1110,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                         </style>
                         <tbody>
                             <tr class="">
-                                <td scope="row" class="bg-primary text-white NomModule_1"><input type="text" value="MDT_101" class="NameModuleInput form-control"></td>
+                                <td scope="row" class="bg-primary text-white NomModule_1"><input type="text" value="" class="NameModuleInput form-control"></td>
                                 <td class="note_1_1"><input type="number" class="form-control form-control-sm" value="0"></td>
                                 <td class="note_1_2"><input type="number" class="form-control form-control-sm"></td>
                                 <td class="note_1_3"><input type="number" class="form-control form-control-sm"></td>

@@ -543,7 +543,7 @@
                                         $(this).attr("id","active");
                                         $(".PDFContainer").show();
                                         $("#PDFViewer").attr("style","display: none !important;");
-$("#PDFUploader").attr("style","display: none !important;");
+                                        $("#PDFUploader").attr("style","display: none !important;");
                                         window.selectedGroup = $(this).val();
                                         $.post("../inc/functions.inc.php", {
                                             function_name: "executeRequete",

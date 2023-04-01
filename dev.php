@@ -165,5 +165,7 @@ require_once("inc/functions.inc.php");
             <p>A l’issue de la formation, le stagiaire sera en mesure d’exécuter les opérations et les activités suivantes :</p>
         </div>
     </section>
+    
+   <?php require_once("footer.php")?>   
 </body>
 </html>

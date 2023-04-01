@@ -5,7 +5,13 @@
                 <div class=" text-center p-3 w-100 bg-success">
                     <a href="/home.php"><img src="/imgs/ofppt_icon.png" class="img-fluid LoginIcon" alt=""></a>
                     <div class="text-light">ISTA LARACHE</div>
+                    <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1'){?>
                     <p class="text-white-50">Administrateur</p>
+                    <?php }else if(json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){?>
+                    <p class="text-white-50">Formateur</p>
+                    <?php }else if(json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){?>
+                    <p class="text-white-50">Redacteur</p>
+                    <?php }?>
                 </div>
                 <div class=" text-center pt-4 h-100 w-100 bg-primary">
                     <div class="menuItem d-flex  flex-column align-items-start">
@@ -30,6 +36,7 @@
                                 </div>
                             </div>
                         </button>
+                        <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){?>
                         <button menu="Membres_Menu"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
@@ -51,6 +58,8 @@
                                 </div>
                             </div>
                         </button>
+                        <?php }?>
+                        <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){?>
                         <button menu="EmploiDuTemp_Menu"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
@@ -71,6 +80,8 @@
                                 </div>
                             </div>
                         </button>
+                        <?php }?>
+                        <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){?>
                         <button menu="TablauDesNotes_Menu"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
@@ -92,6 +103,8 @@
                                 </div>
                             </div>
                         </button>
+                        <?php }?>
+                        <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){?>
                         <button menu="AnnoncesEtArticles_Menu"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
@@ -113,6 +126,8 @@
                                 </div>
                             </div>
                         </button>
+                        <?php }?>
+                        <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){?>
                         <button menu="Annonces_Menu"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
@@ -134,6 +149,8 @@
                                 </div>
                             </div>
                         </button>
+                        <?php }?>
+                        <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1' ||json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){?>
                         <button menu="Contact_Menu"
                             class="ps-3 pe-3 rounded-pill btn btn-info text-white mb-3 m-0 w-100 align-items-stretch MenuItem">
                             <div class="row">
@@ -155,6 +172,8 @@
                                 </div>
                             </div>
                         </button>
+                        <?php }?>
+                        
                         <script type="text/javascript">
                             $(".menuItem").find("button").attr("id","");
                                     $(".menuItem").find("button").find("img").each(function(i,e){

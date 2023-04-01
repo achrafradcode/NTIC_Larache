@@ -1,193 +1,36 @@
 <!-- header section starts  -->
    <!-- Modal -->
    <div class="modal fade" id="emploiDeTemp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
-         <div class="modal-header">
-         <h1 class="modal-title " id="ModalLabel">Emploi Du Temp</h1> <span class="badge text-bg-primary" style="font-size: 15px;margin-left: 10px;">[<span id="GroupId">DD</span>]</span>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body" id="ModalBody">
-         
-                <div class="Emploi ">
-
-                    
-                        
-
-                        
-                            <table class="table 
-                            container position-relative top-50 left-50 middle-translate
-                        table-bordered 
-                        table-primary
-                        align-middle">
-                                <thead>
-                                    <tr class="bg-primary">
-                                        <th scope="col" class="bg-primary text-white text-center"></th>
-                                        <th scope="col" class="bg-primary text-white text-center">8:30-11:00</th>
-                                        <th scope="col" class="bg-primary text-white text-center">11:00-13:30</th>
-                                        <th scope="col" class="bg-primary text-white text-center">13:30-16:00</th>
-                                        <th scope="col" class="bg-primary text-white text-center">16:00-18:30</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Lundi</td>
-                                        <td>
-                                            <div class="  cell ">
-                                                
-                                                <div
-                                                    class="  w-100 h-100   p-2 bg-white border border-primary rounded-2 text-center">
-                                                    <div class="SpecLible"><b> Specialite</b></div>
-                                                    <div class="CenterLible">(BENKASEM) Salle:TDI</div>
-                                                    <div class="TimeLible small text-black-50">De 8h30 a 11h00</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="  cell ">
-                                                
-                                                <div
-                                                    class="  w-100 h-100   p-2 bg-white border border-primary rounded-2 text-center">
-                                                    <div class="SpecLible"><b> Specialite</b></div>
-                                                    <div class="CenterLible">(BENKASEM) Salle:TDI</div>
-                                                    <div class="TimeLible small text-black-50">De 8h30 a 11h00</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Mardi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td >
-                                            
-                                            <div class="cell">
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td >
-                                            
-                                            <div class="  cell ">
-                                                
-                                                <div
-                                                    class="  w-100 h-100   p-2 bg-white border border-primary rounded-2 text-center">
-                                                    <div class="SpecLible"><b> Specialite</b></div>
-                                                    <div class="CenterLible">(BENKASEM) Salle:TDI</div>
-                                                    <div class="TimeLible small text-black-50">De 8h30 a 11h00</div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Mercredi</td>
-                                        <td>
-                                            
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Jeudi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Vendredi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="  cell ">
-                                                
-                                                <div
-                                                    class="  w-100 h-100   p-2 bg-white border border-primary rounded-2 text-center">
-                                                    <div class="SpecLible"><b> Specialite</b></div>
-                                                    <div class="CenterLible">(BENKASEM) Salle:TDI</div>
-                                                    <div class="TimeLible small text-black-50">De 8h30 a 11h00</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="  cell ">
-                                                
-                                                <div
-                                                    class="  w-100 h-100   p-2 bg-white border border-primary rounded-2 text-center">
-                                                    <div class="SpecLible"><b> Specialite</b></div>
-                                                    <div class="CenterLible">(BENKASEM) Salle:TDI</div>
-                                                    <div class="TimeLible small text-black-50">De 8h30 a 11h00</div>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    <tr class="">
-                                        <td scope="row" class="bg-primary text-white text-center">Samedi</td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-                                        <td>
-                                            <div class="cell"></div>
-                                        </td>
-
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                            
-
-                    
-
-
-                </div>
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+         <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title " id="ModalLabel">Emploi Du Temp</h1> <span class="badge text-bg-primary" style="font-size: 15px;margin-left: 10px;">[<span id="GroupId">DD</span>]</span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="ModalBody">
+            <div class="PDFContainer rounded ">
+                     
+            <div id="PDFViewer" class="pt-5 d-flex  flex-column justify-content-start">
+               
+                  <iframe id="PDFFrame" src="/inc/uploads/emp.pdf" width="100%" height="500px">
+                  </iframe>
+                  
+            </div>
+            <div id="unexist" class="text-center w-100" style="display: none;">
+               <h1>Pas Encore....</h1>
+            </div>
+            </div>
+               
+               
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             
-         </div>
-         <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         
+            </div>
          </div>
       </div>
    </div>
-   </div>
+  
    <!-- Modal News -->
    <div class="modal fade" id="NewsContent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-scrollable">
@@ -289,6 +132,45 @@
                console.log(e);
                $("#emploiDeTemp").modal("show");
                $("#emploiDeTemp").find("#GroupId").text($(e.target).text());
+               
+                   window.selectedGroup = $(e.target).text();
+                   $("#PDFViewer").attr("style","display: none !important;");
+                   $.post("../inc/functions.inc.php", {
+                      function_name: "executeRequete",
+                      requet: "SELECT * FROM `tablaux_pdf` where `GroupStagiaire`='" + window.selectedGroup + "';"
+                     }, function(d) {
+                        // Handle the response here
+                        console.log(d);
+                        var data = JSON.parse(d);
+                       window.selected = data;
+                       // $().find().length
+                       console.log(window.selected);
+                       
+                       if(data.length > 0){
+                          $("#unexist").hide();
+                          $("#PDFViewer").attr("style","display: inline !important;");
+                           window.IdFichierPDF = data[0]['IdFichierPDF'];
+                           
+                           $.post("../inc/functions.inc.php", {
+                               function_name: "executeRequete",
+                               requet: "SELECT * FROM `fichier` where `idFichier`='" + window.IdFichierPDF + "';"
+                           }, function(d) {
+                               console.log(d);
+                               var data2 = JSON.parse(d);
+                               window.UrlFichierPDF = "/inc/"+decodeURIComponent(data2[0]['url']);
+                               
+                               
+                               $("#PDFFrame")[0].src = "/inc/"+decodeURIComponent(data2[0]['url']);
+                               
+                           });
+
+                       }else{
+                        $("#unexist").show();
+                       }
+
+                       
+                      
+                  });
 
             });
          </script>

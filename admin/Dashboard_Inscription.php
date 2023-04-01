@@ -145,6 +145,7 @@
             $newAdresse = $_POST["newAdresse"];
             $newNationalite = $_POST["newNationalite"];
             $newTelephone = $_POST["newTelephone"];
+            $newNuméro_de_carte = $_POST["newNuméro_de_carte"];
             $Sexe = $_POST["Sexe"];
             $DateDeNaissance = $_POST["DateDeNaissance"];
             $newCodePostal = $_POST["newCodePostal"];
@@ -175,6 +176,7 @@
                 $newAdresse,
                 $newNationalite,
                 $newTelephone,
+                $newNuméro_de_carte,
                 $Sexe,
                 $DateDeNaissance,
                 $newCodePostal,
@@ -191,6 +193,7 @@
             `adresse`=?,
             `nationalité`=?,
             `numéro_de_téléphone`=?,
+            `numéro_de_carte`=?,
             `sexe`=?,
             `date_de_naissance`=?,
             `CodePostal`=?,
@@ -1358,6 +1361,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="mb-5">
+                                <label for="" class="form-label">Carte Nationel</label>
+                                <div class="row">
+                                    <div class="col-6    p-0 m-0">
+                                        <input type="text"
+                                        class="form-control rounded-start rounded-0 m-0 " disabled name="" id="oldNuméro_de_carte" aria-describedby="helpId" placeholder="">
+                                    </div>
+                                    <div class="col-6    p-0 m-0">
+                                        <input type="text"
+                                        class="form-control rounded-end rounded-0  m-0 " name="newNuméro_de_carte" id="newNuméro_de_carte" aria-describedby="helpId" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
                             
                             <div class="mb-3 pt-2">
                                 <label for="" class="form-label">Sexe</label>
@@ -1546,6 +1562,11 @@
                                         $(this).val($(".PopupBackground").find("#oldPrenom").val());
                                         
                                     }
+                                    if(l.length == 0 && $(this).attr("name")=="newNuméro_de_carte"){
+                                        console.log($(this).attr("name")+":"+l +" IGNORE");
+                                        $(this).val($(".PopupBackground").find("#oldNuméro_de_carte").val());
+                                        
+                                    }
                                     if(l.length == 0 && $(this).attr("name")=="newNom"){
                                         console.log($(this).attr("name")+":"+l +" IGNORE");
                                         $(this).val($(".PopupBackground").find("#oldNom").val());
@@ -1646,6 +1667,7 @@
                             $PopupBackground.find("#oldAdresse").val(window.selected[0].adresse);
                             $PopupBackground.find("#oldNationalite").val(window.selected[0].nationalité);
                             $PopupBackground.find("#oldTelephone").val(window.selected[0].numéro_de_téléphone);
+                            $PopupBackground.find("#oldNuméro_de_carte").val(window.selected[0].numéro_de_carte);
                             $PopupBackground.find("#Sexe").val(window.selected[0].sexe);
                             $PopupBackground.find("#DateDeNaissance").val(window.selected[0].date_de_naissance);
                             $PopupBackground.find("#oldCodePostal").val(window.selected[0].CodePostal);

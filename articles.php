@@ -150,6 +150,32 @@ $indexPage=2;
         .courses .box{
          height: 320px;
         }
+        .courses {
+         display:flex; 
+         flex-wrap: wrap;
+         justify-content: center;
+        }
+        .courses .box-container{
+           width: 700px;
+         }
+         @media (max-width: 1800px) {
+            .courses .box-container{
+               width: 600px;
+             }
+
+         }
+         @media (max-width: 1580px) {
+           .courses {
+            display:flex; 
+            flex-wrap: wrap;
+           }
+           .courses .box-container{
+              width: 100%;
+              flex-grow: 1;
+           }
+
+        }
+
    </style>
 
 
@@ -166,10 +192,13 @@ $indexPage=2;
    <h3>Filières</h3>
    <p> <a href="home.php">Accueil</a> / Filières </p>
 </section>
-
-<section class="courses">
+<div class="mt-5 text-start w-100">
 
    <h1 class="heading"> Les Dernier Articles </h1>
+</div>
+
+<section class="courses" >
+
 
    <?php
                                             
@@ -181,18 +210,19 @@ $indexPage=2;
           $index = $index + 1;
    ?>
        
-       <div class="box-container mb-4">
+   <div class="box-container mb-4 ms-4" >
           
-          <div class="box d-flex justify-content-md-start">
-             <div class="image">
-            <img src="/inc/<?php 
-                  $IdPhoto = $row["IdPhoto"];
-                  $stmt3 = executeRequete("SELECT * FROM photo where IdPhoto=$IdPhoto;");
-                  $stmt3->execute();
-                  echo urldecode($stmt3->fetchAll(PDO::FETCH_ASSOC)[0]['url']);
-               ?>" alt="">
-            <h3><?php echo $row["date_de_publication"];?></h3>
-         </div>
+      <div class="box d-flex justify-content-md-start">
+            <div class="image">
+               <img src="/inc/<?php 
+                     $IdPhoto = $row["IdPhoto"];
+                     $stmt3 = executeRequete("SELECT * FROM photo where IdPhoto=$IdPhoto;");
+                     $stmt3->execute();
+                     echo urldecode($stmt3->fetchAll(PDO::FETCH_ASSOC)[0]['url']);
+                  ?>" alt="">
+               <h3><?php echo $row["date_de_publication"];?></h3>
+            </div>
+         
          <div class="content w-100">
             <h3><?php echo $row["titre_de_l'actualité"];?></h3>
             <p><?php echo $row["Description"];?></p>
@@ -208,10 +238,10 @@ $indexPage=2;
             </div>
          </div>
       </div>
+   </div>  
       <?php } ?>
 
       
-   </div>  
      
 
       
@@ -227,58 +257,7 @@ $indexPage=2;
 
 
 
-
-<!-- footer section starts  -->
-
-<section class="footer">
-
-   <div class="box-container">
-
-      <div class="box">
-         <a href="#" class="logo">  <img src="pictuer/l.png" alt="ss"> </a>
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, voluptatem.</p>
-         <div class="share">
-            <a href="#" class="fab fa-facebook-f"></a>
-            <a href="#" class="fab fa-twitter"></a>
-            <a href="#" class="fab fa-instagram"></a>
-            <a href="#" class="fab fa-linkedin"></a>
-         </div>
-      </div>
-
-      <div class="box">
-         <h3>Liens rapides</h3>
-         <a href="home.php" class="link">Accueil</a>
-         <a href="about.php" class="link">props</a>
-         <a href="courses.php"class="link">Institut</a>
-         <a href="#" class="link">Filières</a>
-         <a href="courses.php" class="link">contact</a>
-      </div>
-
-      <div class="box">
-         <h3>Liens utiles</h3>
-         <a href="#" class="link">centre d'aide</a>
-         <a href="#" class="link">poser des questions</a>
-         <a href="#" class="link">envoyer des commentaires</a>
-         <a href="#" class="link">politique privée</a>
-         <a href="#" class="link">conditions d'utilisation</a>
-      </div>
-
-      <div class="box">
-         <h3>les résulte</h3>
-         <p>Entrez le code de la carte nationale</p>
-         <form action="">
-            <input type="text" name="" placeholder="enter cin" id="" class="cin">
-            <input type="submit" value="Valider" class="btn">
-         </form>
-      </div>
-
-   </div>
-
-
-
-</section>
-
-<!-- footer section ends -->
+<?php require_once("footer.php")?>   
 
 
 

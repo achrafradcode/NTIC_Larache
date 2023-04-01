@@ -168,56 +168,26 @@ $stmt5->execute();
             echo $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]["titre_de_l'actualité"];?></h3>
    
  </section>
-    <section class="info" style="font-size: x-large;">
+    <section class="info" style="font-size: medium;">
     <?php
     $IdArticle = $_GET['id'];
     $stmt5 = executeRequete("SELECT * FROM `articles_d'actualité` where IdArticle=$IdArticle;");
     $stmt5->execute(); 
-    echo $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]['contenu'];?>
-        <!-- <div class="cl">
-            <h1>Technicien Spécialisé en Développement Digital</h1>
-            <h3>Description de la Formation</h3>
-            <p>Le Technicien Spécialisé en Développement Informatique est un professionnel  en charge du développement et de la maintenance des applications informatiques. Il intervient, généralement pour le compte de Sociétés de Services et d’Ingénierie Informatiques, dans de nombreux domaines applicatifs (industrie, gestion, loisirs…).
-                En amont, il est réceptif aux attentes du client, il étudie le cahier des charges, les capacités de l’environnement technique et les contraintes du système de production du client.
-                En aval, il participe à la mise en exploitation et au support technique de l’application</p>
-        </div>
-        <div class="pic" >
-            <div class="img1">
-                <img src="pictuer/salle-deve.jpg" alt="photo">
-                <img src="pictuer/OFPPT.jpg" alt="photo">
-                <img src="pictuer/dev2.jpg" alt="photo">
-            </div>
-        </div>
-        <div class="cl" style="padding-top: 10px;">
-            <h3>Conditions d'Accès</h3>
-            <ul class="condition">
-                <li>Age maximum : 23 ans pour les bacheliers et 26 ans pour les licenciés</li>
-                <li>Niveau Scolaire : Bacheliers Scientifiques ou Techniques</li>
-                <li>Les qualités et aptitudes que le candidat doit posséder pour l’accès à cette formation sont :</li>
-                        <ol>
-                            <li>Sens des responsabilités, de l’organisation et de la discipline ;</li>
-                            <li>Autonomie</li>
-                            <li>Esprit d’analyse et de synthèse</li>
-                            <li>Créativité</li>
-                            <li>Curiosité pour les nouvelles technologies de l’information</li>
-                            <li>Fortes capacités d’adaptation</li>
-                            
-                        </ol>
-            </ul>
-
-            <h3 style="padding-top: 15px;">Durée de la Formation</h3>
-            <p>Le mode de formation est résidentiel. La durée de formation est deux années incluant des stages en entreprise</p>
-            <h3 style="padding-top: 15px;">Evaluation de la Formation</h3>
-            <p>La formation dispensée est modulaire et les évaluations sont organisées sous forme de:</p>
-              <ul>
-                <li>Contrôles continus ;</li>
-                <li>Examens de fin de module ;</li>
-                <li>Examen de passage ;</li>
-                <li>Examen de fin de formation</li>
-              </ul>
-        </div> -->
+    
+    $a = $stmt5->fetchAll(PDO::FETCH_ASSOC)[0]['contenu'];
+ $aa = htmlspecialchars($a); //thus, $aa is the $result column data ($a) from a query
+ echo $a;
+ //now the code is html escaped twice, which is quite ugly. I need it cleaned and displayed without execution.
+//   $char = trim(html_entity_decode($aa, ENT_QUOTES, 'UTF-8'));
+//   $char = html_entity_decode($char, ENT_QUOTES, 'UTF-8'); 
+//   $char = htmlentities(html_entity_decode($char, ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8');
+//   echo htmlspecialchars( $char);
+    ?>
+        
 
     </section>
+
+
 
     
 <!-- swiper js link  -->
