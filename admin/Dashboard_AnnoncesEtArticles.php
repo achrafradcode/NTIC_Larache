@@ -612,6 +612,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                         <input type="text" class="form-control w-100" name="Description" id="Description" aria-describedby="helpId" placeholder="">
 
                                         <label for="" class="form-label mt-3">Nom de l'editeur</label>
+                                        <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1') {?>
                                         <select class="form-select form-select-lg" name="Membre_IdMembres" id="Membre_IdMembres">
                                             <?php
 
@@ -626,6 +627,10 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                             <?php } ?>
 
                                         </select>
+                                        <?php }else{?>
+                                        <input type="text" name="Membre_IdMembres" style="display: none;" value="<?php json_decode($_SESSION["userinfo"],true)[0]["IdMembres"]?>">
+                                        <input type="text"  value="<?php json_decode($_SESSION["userinfo"],true)[0]["nom_personnel"]?>" disabled>
+                                    <?php }?>
                                     </div>
                                 </td>
                             </tr>

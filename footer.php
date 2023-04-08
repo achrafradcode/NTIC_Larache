@@ -219,11 +219,11 @@
                            <td class="total_7"><input type="number" disabled class="form-control form-control-sm"></td>
                      </tr>
                      <tr class="">
-                           <td scope="row" class="bg-primary text-white NomModule_8"><inpu disabledt type="text" value="" class="NameModuleInput form-control"></td>
-                           <td class="note_8_1"><input type="number" class="form-control form-control-sm"></td>
-                           <td class="note_8_2"><input type="number" class="form-control form-control-sm"></td>
-                           <td class="note_8_3"><input type="number" class="form-control form-control-sm"></td>
-                           <td class="note_8_4"><input type="number" class="form-control form-control-sm"></td>
+                           <td scope="row" class="bg-primary text-white NomModule_8"><input disabled type="text" value="" class="NameModuleInput form-control"></td>
+                           <td class="note_8_1"><input type="number" disabled class="form-control form-control-sm"></td>
+                           <td class="note_8_2"><input type="number" disabled class="form-control form-control-sm"></td>
+                           <td class="note_8_3"><input type="number" disabled class="form-control form-control-sm"></td>
+                           <td class="note_8_4"><input type="number" disabled class="form-control form-control-sm"></td>
                            <td class="total_8"><input type="number" disabled class="form-control form-control-sm"></td>
                      </tr>
                   </tbody>

@@ -58,14 +58,14 @@
       </div>
       <div class="offcanvas-body">
          <div class=" pt-2 ps-0 pe-0">
-            <button class="btn btn-info annonce-item border p-3 w-100 mb-3">
+            <!-- <button class="btn btn-info annonce-item border p-3 w-100 mb-3">
                <span id="date">[2023-2-13]</span>
                <span id="content">
                Le tronc commun Gestion des Entreprises
                donne au stagiaire toutes les informations
                et compétences nécessaires pour découvrir
                le monde des metiers</span>
-            </button>
+            </button> -->
             <?php
                      
                   $stmt = executeRequete("SELECT * FROM annonces;");
@@ -183,10 +183,9 @@
             
             ?>
                <a href="/admin/LogIn.php" id="account-btn" class="fas fa-user" style="font-size: 25px; padding: 20px;"></a>
-               <div id="menu-btn" class="fas fa-bars"></div>
                <?php
          }else{
-
+            
             $array = json_decode($_SESSION["userinfo"]);
             $id = "type_d'adhésion";
             
@@ -208,6 +207,7 @@
             }
          }
          ?>
+            <div id="menu-btn" class="fas fa-bars"></div>
          </div>
       </div>
       

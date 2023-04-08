@@ -143,8 +143,9 @@ $indexPage=0;
         }
 
         .offcanvas .annonce-item:hover{
-         background-color: #7441ff08 !important;
+         background-color: #ffffff7a !important;
          box-shadow: 0px 0px 0px 4px #8a2be23b;
+         color: blueviolet;
         }
         #NewsContent #date{
          font-size: 12px;

@@ -186,6 +186,11 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
   font-size: 14px;
   padding: 10px;
 }
+@media (max-width:720px) {
+    .loginCol{
+        width: 100% !important;
+    }    
+}
     </style>
 </head>
 

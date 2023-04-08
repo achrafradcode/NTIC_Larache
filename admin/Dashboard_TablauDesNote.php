@@ -621,6 +621,9 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                             }, 1000);
 
                             function onCLickAcceder() {
+                                if($(".viewTablauxCheckbox").prop("checked") == true){
+                                    return;
+                                }
                                 $(".viewTablauxCheckbox").prop("checked", true);
                                 $(".NoteTable").find("input").val("");
                                 $.post("../inc/functions.inc.php", {
@@ -935,6 +938,9 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                                 if ($(e.target).parent().parent().first().find("input").val() != "") {
                                                     var index = $(e.target).parent().parent().index();
                                                     var unite = window.unites_de_formation.find(i=>i.index==index);
+                                                    console.log(unite);
+                                                    console.log(index);
+                                                    console.log($(e.target).parent().parent());
 
                                                     var index2 = $(e.target).parent().index() - 1;
                                                     var note = unite.notes.find(i=>i.index==index2);

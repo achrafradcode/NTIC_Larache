@@ -517,6 +517,7 @@
                                 <td colspan="2">
                                     <!-- <input type="text"
                                     class="form-control w-100" disbaled value="<?php echo $_SESSION["username"];?>" name="" id="" aria-describedby="helpId" placeholder=""> -->
+                                    <?php if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1') {?>
                                     <select class="form-select form-select-lg" name="Membre_IdMembres"  id="GroupsUser">
                                     <?php
                                         
@@ -527,10 +528,14 @@
                                         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
                                             $index = $index + 1;
                                     ?>
-                                        <option value="<?php echo $row["IdMembres"];?>"><?php echo $row["nom_personnel"];?></option>
+                                        <option <?php if ($_SESSION["username"] == $row["nom_personnel"]) echo "selected"; ?> value="<?php echo $row["IdMembres"];?>"><?php echo $row["nom_personnel"];?></option>
                                         <?php } ?>
                                         
                                     </select>
+                                    <?php }else{?>
+                                        <input type="text" name="Membre_IdMembres" style="display: none;" value="<?php json_decode($_SESSION["userinfo"],true)[0]["IdMembres"]?>">
+                                        <input type="text"  value="<?php json_decode($_SESSION["userinfo"],true)[0]["nom_personnel"]?>" disabled>
+                                    <?php }?>
                                 </td>
                             </tr>
                             <tr>
