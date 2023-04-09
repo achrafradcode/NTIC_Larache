@@ -187,21 +187,19 @@
          }else{
             
             $array = json_decode($_SESSION["userinfo"]);
+            
             $id = "type_d'adhésion";
             
-            if($array[0]->$id == "-1"){
+            if(json_decode($_SESSION["userinfo"],true)[0]["type_d'adhésion"] == '-1'){
                echo '<a class="fas fa-user" href="/admin/LogIn.php" style="font-size:18px;color:green;"> Admin</a>';
                
-            }else if($array[0]->$id == "1"){
-               echo '<a class="fas fa-user" href="/admin/LogIn.php" style="font-size:18px;color:green;"> Stagiaire</a>';
-               
-            }else if($array[0]->$id == "2"){
+            }else if(json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '1'){
                echo '<a class="fas fa-user" href="/admin/LogIn.php" style="font-size:18px;color:blue;"> Formateur</a>';
 
-            }else if($array[0]->$id == "3"){
+            }else if(json_decode($_SESSION["userinfo"],true)[0]["SecteurProfessionnel"] == '2'){
                echo '<a class="fas fa-user" href="/admin/LogIn.php" style="font-size:18px;color:grey;"> Rédacteur</a>';
                
-            }else{if($array[0]->$id == "-1")
+            }else{
                echo '<a class="fas fa-user" href="/admin/LogIn.php" style="font-size:18px;color:red;"> unidentifent</a>';
 
             }
