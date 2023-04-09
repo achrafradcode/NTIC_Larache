@@ -1,21 +1,23 @@
 <?php
 session_start();
 require_once("inc/functions.inc.php");
-$indexPage=2;
+$indexPage=-1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>ISTA Larache - Articles</title>
-   <link rel="icon" href="pictuer/l.png"/>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-   integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTA larache</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
    <!-- swiper css link  -->
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 
@@ -142,128 +144,65 @@ $indexPage=2;
             width: 100%;
             height: 100%;
         }
-
-        .courses .image{
-            height: 100% !important;
-            width: 800px;
-        }
-        .courses .box{
-         height: 320px;
-        }
-        .courses {
-         display:flex; 
-         flex-wrap: wrap;
-         justify-content: center;
-        }
-        .courses .box-container{
-           width: 700px;
-         }
-         @media (max-width: 1800px) {
-            .courses .box-container{
-               width: 600px;
-             }
-
-         }
-         @media (max-width: 1580px) {
-           .courses {
-            display:flex; 
-            flex-wrap: wrap;
-           }
-           .courses .box-container{
-              width: 100%;
-              flex-grow: 1;
-           }
-
-        }
-
    </style>
-
 
 </head>
 <body>
+<?php require_once("Header.php")?>   
+ <section class="heading-link" style="background:  linear-gradient(rgba(0, 0, 0, 0.596), rgba(47, 142, 206, 0.514)), url(pictuer/OFPPT-d.png); background-position: center; background-size: cover; height: 300px;">
+    <h3 style="padding-top: 100px;"> E-Commerce</h3>
    
-    <?php require_once("Header.php")?>   
-
-
-
-<!-- header section ends -->
-
-<section class="heading-link" style="padding-top:100px;background-image: url(pictuer/filer1.png),linear-gradient(90deg, rgb(2 0 36 / 45%) 0%, rgb(0 212 255 / 45%) 100%);background-blend-mode: multiply;">
-   <h3>Articles</h3>
-   <p> <a href="home.php">Accueil</a> / Articles </p>
-</section>
-<div class="mt-5 text-start w-100">
-
-   <h1 class="heading"> Les Dernier Articles </h1>
-</div>
-
-<section class="courses" >
-
-
-   <?php
-                                            
-      $stmt = executeRequete("SELECT * FROM `articles_d'actualité`;");
-      $stmt->execute();
-      $index = 0;
-
-      foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-          $index = $index + 1;
-   ?>
-       
-   <div class="box-container mb-4 ms-4" >
-          
-      <div class="box d-flex justify-content-md-start">
-            <div class="image">
-               <img src="/inc/<?php 
-                     $IdPhoto = $row["IdPhoto"];
-                     $stmt3 = executeRequete("SELECT * FROM photo where IdPhoto=$IdPhoto;");
-                     $stmt3->execute();
-                     echo urldecode($stmt3->fetchAll(PDO::FETCH_ASSOC)[0]['url']);
-                  ?>" alt="">
-               <h3><?php echo $row["date_de_publication"];?></h3>
+ </section>
+    <section class="info">
+        <div class="cl">
+            <h1>Technicien Spécialisé en e-commerce</h1>
+            <h3>Description de la Formation</h3>
+            <p>Le Technicien Spécialisé en Développement Informatique est un professionnel  en charge du développement et de la maintenance des applications informatiques. Il intervient, généralement pour le compte de Sociétés de Services et d’Ingénierie Informatiques, dans de nombreux domaines applicatifs (industrie, gestion, loisirs…).
+                En amont, il est réceptif aux attentes du client, il étudie le cahier des charges, les capacités de l’environnement technique et les contraintes du système de production du client.
+                En aval, il participe à la mise en exploitation et au support technique de l’application</p>
+        </div>
+        <div class="pic" >
+            <div class="img1">
+                <img src="pictuer/salle-deve.jpg" alt="photo">
+                <img src="pictuer/OFPPT.jpg" alt="photo">
+                <img src="pictuer/dev2.jpg" alt="photo">
             </div>
-         
-         <div class="content w-100">
-            <h3><?php echo $row["titre_de_l'actualité"];?></h3>
-            <p><?php echo $row["Description"];?></p>
-            <a href="article_contenu.php?id=<?php echo $row["IdArticle"];?>" class="btn">Lire Plus</a>
-            <div class="icons">
-               <span> <i class="fas fa-pencil-alt"></i> <?php 
-                  $IdMembres = $row["Membre_IdMembres"];
-                  $stmt2 = executeRequete("SELECT * FROM membre where IdMembres=$IdMembres;");
-                  $stmt2->execute();
-                  echo $stmt2->fetchAll(PDO::FETCH_ASSOC)[0]['nom_personnel'];
-               ?> </span>
-               
-            </div>
-         </div>
-      </div>
-   </div>  
-      <?php } ?>
+        </div>
+        <div class="cl" style="padding-top: 10px;">
+            <h3>Conditions d'Accès</h3>
+            <ul class="condition">
+                <li>Age maximum : 23 ans pour les bacheliers et 26 ans pour les licenciés</li>
+                <li>Niveau Scolaire : Bacheliers Scientifiques ou Techniques</li>
+                <li>Les qualités et aptitudes que le candidat doit posséder pour l’accès à cette formation sont :</li>
+                        <ol>
+                            <li>Sens des responsabilités, de l’organisation et de la discipline ;</li>
+                            <li>Autonomie</li>
+                            <li>Esprit d’analyse et de synthèse</li>
+                            <li>Créativité</li>
+                            <li>Curiosité pour les nouvelles technologies de l’information</li>
+                            <li>Fortes capacités d’adaptation</li>
+                            
+                        </ol>
+            </ul>
 
-      
-     
+            <h3 style="padding-top: 15px;">Durée de la Formation</h3>
+            <p>Le mode de formation est résidentiel. La durée de formation est deux années incluant des stages en entreprise</p>
+            <h3 style="padding-top: 15px;">Evaluation de la Formation</h3>
+            <p>La formation dispensée est modulaire et les évaluations sont organisées sous forme de:</p>
+              <ul>
+                <li>Contrôles continus ;</li>
+                <li>Examens de fin de module ;</li>
+                <li>Examen de passage ;</li>
+                <li>Examen de fin de formation</li>
+              </ul>
+        </div>
 
-      
-
-</section>
-
-
-
-
-
-
-
-
+    </section>
 
 
-<?php require_once("footer.php")?>   
+    <?php require_once("footer.php")?>   
 
-
-
-
-
-
+    
 <!-- swiper js link  -->
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
@@ -275,6 +214,5 @@ $indexPage=2;
 </script>
 <!-- custom js file link  -->
 <script src="js/script.js"></script>
-
 </body>
 </html>

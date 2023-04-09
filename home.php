@@ -318,7 +318,7 @@ $indexPage=0;
                <div class="content">
                   <h3>E- commerce</h3>
                   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, ratione?</p>
-                  <a href="#" class="btn">read more</a>
+                  <a href="courses.php" class="btn">En savoir plus</a>
                </div>
             </div>
 
@@ -332,7 +332,7 @@ $indexPage=0;
                   <p>Le tronc commun en Développement Digital est une étape
                      importante pour acquérir les bases necessaires
                      de l'étude, la conception, la constructio...</p>
-                  <a href="#" class="btn">read more</a>
+                  <a href="courses.php" class="btn">En savoir plus</a>
                </div>
             </div>
 
@@ -347,7 +347,7 @@ $indexPage=0;
                      donne au stagiaire toutes les informations
                      et compétences nécessaires pour découvrir
                      le monde des metiers</p>
-                  <a href="#" class="btn">read more</a>
+                  <a href="courses.php" class="btn">En savoir plus</a>
                </div>
             </div>
          </div>

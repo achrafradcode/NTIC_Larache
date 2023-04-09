@@ -18,10 +18,10 @@
    <div class="box">
       <h3>Liens rapides</h3>
       <a href="home.php" class="link">Accueil</a>
-      <a href="about.php" class="link">props</a>
-      <a href="courses.php" class="link">Institut</a>
-      <a href="#" class="link">Filières</a>
-      <a href="courses.php" class="link">contact</a>
+      <a href="about.php" class="link">Propos</a>
+      <a href="articles.php" class="link">Articles</a>
+      <a href="courses.php" class="link">Filières</a>
+      <a href="contact.php" class="link">contact</a>
    </div>
 
    <!-- <div class="box">

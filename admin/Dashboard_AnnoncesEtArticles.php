@@ -755,9 +755,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] == false) {
                                             ?></td>
                                         <td>
                                             <div class="d-flex flex-row justify-content-end ActionMembresContainer">
-                                                <div class="d-grid gap-2 m-1 ">
-                                                    <button type="button" name="" id="SeePass" class="btn p-1 btn-primary ">C</button>
-                                                </div>
+                                                
                                                 <div class="d-grid gap-2 m-1 ">
                                                     <button type="button" name="" id="Remove" class="btn p-1 btn-primary "><img src="/imgs/Remove_TrashIcon.png" class="img-fluid " alt=""></button>
                                                 </div>
