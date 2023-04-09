@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 31 mars 2023 à 22:13
+-- Généré le : dim. 09 avr. 2023 à 20:58
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -77,6 +77,7 @@ CREATE TABLE `articles_d'actualité` (
 
 INSERT INTO `articles_d'actualité` (`IdArticle`, `titre_de_l'actualité`, `Description`, `contenu`, `date_de_publication`, `IdPhoto`, `Membre_IdMembres`) VALUES
 (15, 'Article 1', 'adadadadadadad', '', '2023-03-20', 37, -1);
+
 
 -- --------------------------------------------------------
 
@@ -226,7 +227,28 @@ INSERT INTO `logs` (`idlog`, `Time`, `Category`, `MembreId`, `Event`) VALUES
 (8, '2023-03-31', 'Tablau des Notes', -1, 'le emploi de temp de group stagiaires <b>{DWFS-201}</b> a été channger'),
 (9, '2023-03-31', 'Tablau des Notes', -1, 'le Unité de formation <b>{kndkna}</b> été ajouter'),
 (10, '2023-03-31', 'Tablau des Notes', -1, 'le note <b>{48} sur kndkna</b> été Ajouter'),
-(11, '2023-03-31', 'Membres', -1, 'le membre <b></b> a été ajouter');
+(11, '2023-03-31', 'Membres', -1, 'le membre <b></b> a été ajouter'),
+(12, '2023-03-31', 'Tablau des Notes', -1, 'le Unité de formation <b>{TD}</b> été ajouter'),
+(13, '2023-03-31', 'Tablau des Notes', -1, 'le note <b>{5} sur TD</b> été Ajouter'),
+(14, '2023-03-31', 'Tablau des Notes', -1, 'le note <b>{5} sur TD</b> été Ajouter'),
+(15, '2023-04-03', 'Tablau des Notes', -1, 'le note sur <b>SWS-101</b> été changer a <b>{16}</b>'),
+(16, '2023-04-03', 'Tablau des Notes', -1, 'le note <b>{14} sur MPR-102</b> été Ajouter'),
+(17, '2023-04-03', 'Tablau des Notes', -1, 'le note <b>{15} sur MPR-102</b> été Ajouter'),
+(18, '2023-04-03', 'Tablau des Notes', -1, 'le Unité de formation <b>{MPR-102}</b> été ajouter'),
+(19, '2023-04-03', 'Tablau des Notes', -1, 'le Unité de formation <b>{SWS-101}</b> été changer'),
+(20, '2023-04-03', 'Tablau des Notes', -1, 'le note <b>{17} sur MPR-102</b> été Ajouter'),
+(21, '2023-04-03', 'Tablau des Notes', -1, 'le note <b>{17} sur MPR-102</b> été Ajouter'),
+(22, '2023-04-03', 'Tablau des Notes', -1, 'le note <b>{18} sur SWS-101</b> été Ajouter'),
+(23, '2023-04-03', 'Tablau des Notes', -1, 'le note <b>{18} sur SWS-101</b> été Ajouter'),
+(24, '2023-04-03', 'Membres', -1, 'le membre <b>Hamdaoui</b> a été mis à jour'),
+(25, '2023-04-03', 'Membres', -1, 'le membre <b>Hamdaoui</b> a été mis à jour'),
+(26, '2023-04-03', 'Membres', -1, 'le membre <b>Nasri</b> a été mis à jour'),
+(27, '2023-04-06', 'Tablau des Notes', -1, 'le note <b>{512} sur AAA</b> été Ajouter'),
+(28, '2023-04-06', 'Tablau des Notes', -1, 'le Unité de formation <b>{AAA}</b> été ajouter'),
+(29, '2023-04-06', 'Tablau des Notes', -1, 'le note <b>{422} sur AAA</b> été Ajouter'),
+(30, '2023-04-06', 'Tablau des Notes', -1, 'le note <b>{422} sur AAA</b> été Ajouter'),
+(31, '2023-04-07', 'Tablau des Notes', -1, 'le note <b>{412} sur AAA</b> été Ajouter'),
+(32, '2023-04-09', 'Membres', -1, 'le Mot De Pass été envoyer a <b>{Nasri@gmail.com}</b>');
 
 -- --------------------------------------------------------
 
@@ -258,8 +280,8 @@ CREATE TABLE `membre` (
 
 INSERT INTO `membre` (`IdMembres`, `password`, `type_d'adhésion`, `SecteurProfessionnel`, `nom_personnel`, `prenom`, `date_de_naissance`, `date_d'inscription`, `email`, `adresse`, `numéro_de_téléphone`, `nationalité`, `sexe`, `numéro_de_carte`, `CodePostal`) VALUES
 (-1, 'ADMIN', '-1', 0, 'ADMIN', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, 'cr7JlPjx', '1', 0, 'EE', 'Soufian', '2010-04-19', '84992-02-01', 'ajdaojd@adjaidja', 'E', '0187788', 'Angola', 'H', 'OJOAJ', 'E'),
-(7, '5F0jYDU0', '2', 1, 'ijazid', 'direct', '0123-04-12', '49821-08-21', 'Ojaoj@oajzeijza', 'aizdiazj', '00880', 'Select Country', 'H', 'aozdoaj1', 'izadjaiz'),
+(6, 'cr7JlPjx', '1', 0, 'Hamdaoui', 'Soufian', '2010-04-19', '84992-02-01', 'soufian@gmail.com', 'E', '0187788', 'Select Country', 'H', 'OJOAJ', 'E'),
+(7, '5F0jYDU0', '2', 1, 'Nasri', 'Ahmed', '0123-04-12', '49821-08-21', 'Nasri@gmail.com', 'aizdiazj', '00880', 'Select Country', 'H', 'aozdoaj1', 'izadjaiz'),
 (8, 'UImxME1p', '1', 0, 'Raddah', 'Achraf', '2001-09-18', '2010-04-01', 'achraf@gmail.com', 'Hey', '060000002', 'Morocco', 'H', 'LB2222', '9211');
 
 --
@@ -314,7 +336,19 @@ INSERT INTO `note` (`idNote`, `nomber`, `index`, `Unité_de_formation_IdFormatio
 (10, 15, 0, 8),
 (11, 18, 0, 9),
 (12, 17, 0, 9),
-(13, 48, 1, 10);
+(13, 48, 1, 10),
+(14, 5, 1, 0),
+(15, 16, 1, 11),
+(16, 14, 1, 0),
+(17, 15, 0, 0),
+(18, 17, 2, 12),
+(19, 18, 0, 11),
+(20, 17, 2, 0),
+(21, 18, 0, 12),
+(22, 512, 0, 0),
+(23, 422, 1, 0),
+(24, 422, 1, 13),
+(25, 412, 0, 13);
 
 -- --------------------------------------------------------
 
@@ -406,7 +440,10 @@ CREATE TABLE `unité_de_formation` (
 INSERT INTO `unité_de_formation` (`IdFormation`, `nom_Unité_de_formation`, `Tableau_des_points_IdTableau_tableau`, `index`) VALUES
 (8, 'TDI_2', 8, 0),
 (9, 'TDI_3', 8, 0),
-(10, 'kndkna', 8, 3);
+(10, 'kndkna', 8, 3),
+(11, 'SWS-101', 9, 0),
+(12, 'MPR-102', 9, 1),
+(13, 'AAA', 9, 7);
 
 --
 -- Index pour les tables déchargées
@@ -569,7 +606,7 @@ ALTER TABLE `annonces_has_photo`
 -- AUTO_INCREMENT pour la table `articles_d'actualité`
 --
 ALTER TABLE `articles_d'actualité`
-  MODIFY `IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `IdArticle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT pour la table `attaché`
@@ -617,7 +654,7 @@ ALTER TABLE `fichier`
 -- AUTO_INCREMENT pour la table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `idlog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idlog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT pour la table `membre`
@@ -635,7 +672,7 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT pour la table `note`
 --
 ALTER TABLE `note`
-  MODIFY `idNote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idNote` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT pour la table `photo`
@@ -665,7 +702,7 @@ ALTER TABLE `tableau_des_points`
 -- AUTO_INCREMENT pour la table `unité_de_formation`
 --
 ALTER TABLE `unité_de_formation`
-  MODIFY `IdFormation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `IdFormation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Contraintes pour les tables déchargées
